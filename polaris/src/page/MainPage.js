@@ -1,6 +1,161 @@
+import Carousel from "react-bootstrap/Carousel";
+import styled from "styled-components";
+import { ReactComponent as ArrowRight } from "../assets/arrow-right.svg";
+import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
+import NavBar from "../component/NavBar";
+import FooterBar from "../component/FooterBar";
 
-const MainPage = () =>{
-    return (<>MainPage</>)
-}
+const MainPage = () => {
+  return (
+    <>
+      <NavBar />
+      {/* banner */}
+      <Carousel>
+        <Carousel.Item>
+          <Banner />
+          <Carousel.Caption>
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <Banner />
+          <Carousel.Caption>
+            <h3>First slide label</h3>
+            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
+      <div style={{ height: "50px" }} />
+      {/* content */}
+      <MainContainer>
+        <TitleText>Best Seller:</TitleText>
+        <SubTitleText>사람들이 요즘 많이 보는 책을 살펴볼까요?</SubTitleText>
+        <BookContainer>
+          <ArrowLeft />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <ArrowRight />
+        </BookContainer>
+        <div style={{ height: "50px" }} />
+        <TitleText>여행자가 가장 많이 읽은 책:</TitleText>
+        <SubTitleText>
+          북극성 사용자가 많이 완독한 책을 살펴볼까요?
+        </SubTitleText>
+        <BookContainer>
+          <ArrowLeft />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <BookItem />
+          <ArrowRight />
+        </BookContainer>
+        <div style={{ height: "50px" }} />
+        <TitleText>북극성 구독하기:</TitleText>
+        <SubTitleText>북극성의 이야기를 들어보고 싶으시다면,</SubTitleText>
+        <SubTitleText>
+          북극성 운영자가 북극성의 소식과 글조각을 간간이 전해드립니다.
+        </SubTitleText>
+        <SubscribeContainer>
+          <TextInput placeholder="여러분의 닉네임을 입력하세요." />
+          <TextInput placeholder="여러분의 이메일을 입력하세요." />
+          <PersonalInfoBox>
+            <PersonalInfoCheck type="checkbox" />
+            <PersonalInfoText>개인정보처리방침에 동의합니다.</PersonalInfoText>
+          </PersonalInfoBox>
+          <div style={{ height: "50px" }} />
+          <SubscribeBtn>구독하기</SubscribeBtn>
+        </SubscribeContainer>
+        <div style={{ height: "100px" }} />
+      </MainContainer>
+      <FooterBar />
+    </>
+  );
+};
+
+const Banner = styled.div`
+  width: 100%;
+  height: 400px;
+  background-color: #d9d9d9;
+`;
+
+const MainContainer = styled.div`
+  padding: 0 48px;
+`;
+
+const TitleText = styled.p`
+  font-size: 30px;
+  color: #4659a9;
+  font-weight: 700;
+`;
+
+const SubTitleText = styled.p`
+  font-size: 20px;
+  color: #97a4e8;
+`;
+
+const BookContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BookItem = styled.div`
+  width: 270px;
+  height: 400px;
+  background-color: #d9d9d9;
+  margin: 10px;
+  box-shadow: 0px 5px 10px #d9d9d9;
+`;
+
+const SubscribeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TextInput = styled.input`
+  width: 620px;
+  height: 80px;
+  border-radius: 30px;
+  border: 5px solid #d9d9d9;
+  padding: 10px;
+  font-size: 20px;
+  margin: 10px 0;
+`;
+
+const SubscribeBtn = styled.button`
+  width: 350px;
+  height: 80px;
+  background-color: #4659a9;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 20px;
+`;
+
+const PersonalInfoBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PersonalInfoCheck = styled.input`
+  border: 7px solid #4659a9;
+`;
+
+const PersonalInfoText = styled.div`
+  font-size: 16px;
+  color: #97a4e8;
+  margin-left: 10px;
+  margin-top: 10px;
+`;
 
 export default MainPage;
