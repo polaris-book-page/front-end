@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "KOTRA_BOLD";
+  font-style: normal;
+  font-weight: BOLD;
+  src: url("./KOTRA_BOLD.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "KOTRA_GOTHIC";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./KOTRA_GOTHIC.woff2") format("woff2");
+}
