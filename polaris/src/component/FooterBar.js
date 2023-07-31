@@ -62,17 +62,20 @@ const DeveloperInfoBox = styled.div``;
 const CopyrightInfoBox = styled.div`
   color: white;
   font-color: 16px;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 const TitleText = styled.div`
   color: white;
   font-size: 30px;
   font-weight: 700;
+  font-family: "KOTRA_BOLD";
 `;
 
 const ContentText = styled.div`
   color: white;
   font-size: 16px;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 export default FooterBar;

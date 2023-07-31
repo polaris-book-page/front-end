@@ -91,11 +91,13 @@ const TitleText = styled.p`
   font-size: 30px;
   color: #4659a9;
   font-weight: 700;
+  font-family: "KOTRA_BOLD";
 `;
 
 const SubTitleText = styled.p`
   font-size: 20px;
   color: #97a4e8;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 const BookContainer = styled.div`
@@ -128,6 +130,7 @@ const TextInput = styled.input`
   padding: 10px;
   font-size: 20px;
   margin: 10px 0;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 const SubscribeBtn = styled.button`
@@ -138,6 +141,7 @@ const SubscribeBtn = styled.button`
   border-radius: 50px;
   color: white;
   font-size: 20px;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 const PersonalInfoBox = styled.div`
@@ -156,6 +160,7 @@ const PersonalInfoText = styled.div`
   color: #97a4e8;
   margin-left: 10px;
   margin-top: 10px;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 export default MainPage;

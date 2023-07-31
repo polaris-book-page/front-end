@@ -59,6 +59,7 @@ const NavText = styled.p`
   font-size: 20px;
   color: white;
   margin: 15px;
+  font-family: "KOTRA_GOTHIC";
 `;
 
 export default NavBar;
