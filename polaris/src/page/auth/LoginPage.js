@@ -1,5 +1,3 @@
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
 import styled from "styled-components";
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
@@ -11,16 +9,22 @@ const LoginPage = () =>{
             <Background>
                 <LoginContainer >
                     <TitleText>LOGIN</TitleText>
-                <FloatingLabel controlId="floatingId" label="아이디" className="mb-4">
-                    <Form.Control type="text" placeholder='아이디'/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingPassword" label="비밀번호" className="mb-3" >
-                    <Form.Control type="password" placeholder='비밀번호'/>
-                </FloatingLabel>
-                <BtnContainer>
-                    <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
-                    <LoginBtn> 로그인 </LoginBtn>
-                </BtnContainer>
+                    <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="text" placeholder=""/>
+                        <FlotingLabelTitle>아이디</FlotingLabelTitle>
+                    </FlotingLabelContainer>
+                </InputContainer>
+                <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="password" placeholder=""/>
+                        <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
+                    </FlotingLabelContainer>
+                </InputContainer>
+                    <BtnContainer>
+                        <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
+                        <LoginBtn> 로그인 </LoginBtn>
+                    </BtnContainer>
                 </LoginContainer>
             </Background>
             <FooterBar />
@@ -41,9 +45,9 @@ const LoginContainer = styled.div`
     padding: 60px 80px;
     margin: 0 auto;
     @media (min-width: 978px) {
-        width: 586px;
+        width: 530px;
     }
-`
+`;
 
 const TitleText = styled.h1`
     color: white;
@@ -51,6 +55,30 @@ const TitleText = styled.h1`
     text-align: center;
     font-size: 40px;
     font-family: "KOTRA_BOLD";
+`;
+
+const InputContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const FlotingLabelContainer = styled.label`
+    margin: 10px 0;
+    width: 100%;
+`;
+
+const FlotingLabelInput = styled.input`
+    background-color: transparent;
+    width: 100%;
+    color: white;
+    &::placeholder{
+        color: rgba(255, 255, 255, .5);
+	}
+`;
+
+const FlotingLabelTitle = styled.span`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
 `;
 
 const BtnContainer = styled.div`
@@ -76,4 +104,5 @@ const LoginBtn = styled.button`
     font-size: 20px;
     font-family: "KOTRA_GOTHIC";
 `;
+
 export default LoginPage;
