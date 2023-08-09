@@ -6,7 +6,12 @@ import FooterBar from "../../component/FooterBar";
 
 const RegisterPage = () =>{
     const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
-
+    const [userId, setUserId] = useState<String>("")
+	const [Password, setPassword] = useState<String>("")
+	const [ConfirmPassword, setConfirmPassword] = useState<String>("")
+	const [nickname, setNickname] = useState<String>("")
+    const [Email, setEmail] = useState<String>("")
+    
     const handleCheckboxChange = () => {
         setAgreePrivacyPolicy(!agreePrivacyPolicy);
     };
@@ -27,6 +32,7 @@ const RegisterPage = () =>{
                     <FlotingLabelContainer className="has-float-label">
                         <FlotingLabelInput type="password" placeholder=""/>
                         <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
+                        <ValidSentence>비밀번호는 영어, 숫자, 특수문자 중 2가지 조합으로 6글자 이상, 16글자 이하만 이용가능합니다.</ValidSentence>
                     </FlotingLabelContainer>
                 </InputContainer>
                 <InputContainer>
@@ -107,6 +113,13 @@ const FlotingLabelInput = styled.input`
 const FlotingLabelTitle = styled.span`
     color: white;
     font-family: "KOTRA_GOTHIC";
+`;
+
+const ValidSentence = styled.p`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 13px;
+    margin: 0;
 `;
 
 const DuplicateCheckBtn = styled.button`

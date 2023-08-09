@@ -18,6 +18,8 @@ import WritingReviewPage from "./page/mypage/WritingReviewPage.js"
 import LoginPage from "./page/auth/LoginPage.js"
 import RegisterPage from "./page/auth/RegisterPage.js"
 import RegisterEvaluatePage from "./page/auth/RegisterEvaluatePage.js"
+import ForgotPasswordPage from "./page/auth/ForgotPasswordPage.js"
+import ResetPasswordPage from './page/auth/ResetPasswordPage';
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
           <Route path="/auth/login" element={<LoginPage />}/>
           <Route path="/auth/register" element={<RegisterPage />}/>
           <Route path="/auth/register/evaluate" element={<RegisterEvaluatePage />}/>
+          <Route path="/auth/register/forget-password" element={<ForgotPasswordPage />}/>
+          <Route path="/auth/register/reset-password" element={<ResetPasswordPage />}/>
         </Routes>
       </Router>
     </>

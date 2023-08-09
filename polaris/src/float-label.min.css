@@ -95,7 +95,7 @@
 .has-float-label select:placeholder-shown:not(:focus)+*,
 .has-float-label textarea:placeholder-shown:not(:focus)+*
 {
-    font-size:150%;
+    font-size:140%;
     opacity:.5;
     top:.25em
 }
