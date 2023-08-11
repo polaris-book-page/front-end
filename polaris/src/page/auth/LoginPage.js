@@ -14,13 +14,13 @@ const LoginPage = () =>{
                         <FlotingLabelInput type="text" placeholder=""/>
                         <FlotingLabelTitle>아이디</FlotingLabelTitle>
                     </FlotingLabelContainer>
-                </InputContainer>
-                <InputContainer>
-                    <FlotingLabelContainer className="has-float-label">
-                        <FlotingLabelInput type="password" placeholder=""/>
-                        <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
-                    </FlotingLabelContainer>
-                </InputContainer>
+                    </InputContainer>
+                    <InputContainer>
+                        <FlotingLabelContainer className="has-float-label">
+                            <FlotingLabelInput type="password" placeholder=""/>
+                            <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
+                        </FlotingLabelContainer>
+                    </InputContainer>
                     <BtnContainer>
                         <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
                         <LoginBtn> 로그인 </LoginBtn>

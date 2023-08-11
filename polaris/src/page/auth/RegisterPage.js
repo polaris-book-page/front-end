@@ -6,11 +6,11 @@ import FooterBar from "../../component/FooterBar";
 
 const RegisterPage = () =>{
     const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
-    const [userId, setUserId] = useState<String>("")
-	const [Password, setPassword] = useState<String>("")
-	const [ConfirmPassword, setConfirmPassword] = useState<String>("")
-	const [nickname, setNickname] = useState<String>("")
-    const [Email, setEmail] = useState<String>("")
+    // const [userId, setUserId] = useState<String>("")
+	// const [Password, setPassword] = useState<String>("")
+	// const [ConfirmPassword, setConfirmPassword] = useState<String>("")
+	// const [nickname, setNickname] = useState<String>("")
+    // const [Email, setEmail] = useState<String>("")
     
     const handleCheckboxChange = () => {
         setAgreePrivacyPolicy(!agreePrivacyPolicy);
