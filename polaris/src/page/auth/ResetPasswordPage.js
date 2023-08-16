@@ -2,35 +2,37 @@ import styled from "styled-components";
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 
-const LoginPage = () =>{
+const ResetPasswordPage = () =>{
     return (
         <>
             <NavBar/>
             <Background>
                 <LoginContainer >
-                    <TitleText>LOGIN</TitleText>
-                    <InputContainer>
-                    <FlotingLabelContainer className="has-float-label">
-                        <FlotingLabelInput type="text" placeholder=""/>
-                        <FlotingLabelTitle>아이디</FlotingLabelTitle>
-                    </FlotingLabelContainer>
-                    </InputContainer>
+                    <TitleText>비밀번호 재설정</TitleText>
                     <InputContainer>
                         <FlotingLabelContainer className="has-float-label">
                             <FlotingLabelInput type="password" placeholder=""/>
                             <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
+                            <ValidSentence>비밀번호는 영어, 숫자, 특수문자 중 2가지 조합으로 6글자 이상, 16글자 이하만 이용가능합니다.</ValidSentence>
+                        </FlotingLabelContainer>
+                    </InputContainer>
+                    <InputContainer>
+                        <FlotingLabelContainer className="has-float-label">
+                            <FlotingLabelInput type="password" placeholder=""/>
+                            <FlotingLabelTitle>비밀번호 확인</FlotingLabelTitle>
                         </FlotingLabelContainer>
                     </InputContainer>
                     <BtnContainer>
-                        <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
-                        <LoginBtn> 로그인 </LoginBtn>
+                        <LoginBtn>완료</LoginBtn>
                     </BtnContainer>
                 </LoginContainer>
             </Background>
-            <FooterBar />
+
+            <FooterBar/>
         </>
     )
 }
+
 
 const Background = styled.div`
     position: relative;
@@ -51,9 +53,9 @@ const LoginContainer = styled.div`
 
 const TitleText = styled.h1`
     color: white;
-    margin: 40px 0 60px 0;
+    margin: 40px 0 50px 0;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     font-family: "KOTRA_BOLD";
 `;
 
@@ -81,16 +83,17 @@ const FlotingLabelTitle = styled.span`
     font-family: "KOTRA_GOTHIC";
 `;
 
+const ValidSentence = styled.p`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 13px;
+    margin: 0;
+`;
+
 const BtnContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-`;
-
-const FindPwdText = styled.p`
-    font-size: 15px;
-    color: white;
-    font-family: "KOTRA_GOTHIC";
 `;
 
 const LoginBtn = styled.button`
@@ -105,4 +108,4 @@ const LoginBtn = styled.button`
     font-family: "KOTRA_GOTHIC";
 `;
 
-export default LoginPage;
+export default ResetPasswordPage;

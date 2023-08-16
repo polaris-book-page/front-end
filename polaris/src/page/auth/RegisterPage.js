@@ -1,5 +1,3 @@
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Form from 'react-bootstrap/Form';
 import styled from "styled-components";
 import React, { useState } from 'react';
 import NavBar from "../../component/NavBar";
@@ -8,7 +6,12 @@ import FooterBar from "../../component/FooterBar";
 
 const RegisterPage = () =>{
     const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
-
+    // const [userId, setUserId] = useState<String>("")
+	// const [Password, setPassword] = useState<String>("")
+	// const [ConfirmPassword, setConfirmPassword] = useState<String>("")
+	// const [nickname, setNickname] = useState<String>("")
+    // const [Email, setEmail] = useState<String>("")
+    
     const handleCheckboxChange = () => {
         setAgreePrivacyPolicy(!agreePrivacyPolicy);
     };
@@ -18,21 +21,37 @@ const RegisterPage = () =>{
             <Background>
                 <RegisterContainer >
                     <TitleText>REGISTER</TitleText>
-                <FloatingLabel controlId="floatingId" label="아이디" className="mb-4">
-                    <Form.Control type="text" placeholder='아이디'/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingPassword" label="비밀번호" className="mb-4" >
-                    <Form.Control type="password" placeholder='비밀번호'/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingCheckPassword" label="비밀번호 확인" className="mb-4" >
-                    <Form.Control type="password" placeholder='비밀번호 확인'/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingNickname" label="닉네임" className="mb-4" >
-                    <Form.Control type="text" placeholder='닉네임'/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingEmail"  label="이메일" className="mb-4" >
-                    <Form.Control type="email" placeholder='abc@gmail.com'/>
-                </FloatingLabel>
+                <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="text" placeholder=""/>
+                        <FlotingLabelTitle>아이디</FlotingLabelTitle>
+                    </FlotingLabelContainer>
+                    <DuplicateCheckBtn>중복확인</DuplicateCheckBtn>
+                </InputContainer>
+                <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="password" placeholder=""/>
+                        <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
+                        <ValidSentence>비밀번호는 영어, 숫자, 특수문자 중 2가지 조합으로 6글자 이상, 16글자 이하만 이용가능합니다.</ValidSentence>
+                    </FlotingLabelContainer>
+                </InputContainer>
+                <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="password" placeholder=""/>
+                        <FlotingLabelTitle>비밀번호 확인</FlotingLabelTitle>
+                    </FlotingLabelContainer>
+                </InputContainer>
+                <InputContainer>
+                    <FlotingLabelContainer className="has-float-label">
+                        <FlotingLabelInput type="text" placeholder=""/>
+                        <FlotingLabelTitle>닉네임</FlotingLabelTitle>
+                    </FlotingLabelContainer>
+                    <DuplicateCheckBtn>중복확인</DuplicateCheckBtn>
+                </InputContainer>
+                <FlotingLabelContainer className="has-float-label">
+                    <FlotingLabelInput type="email" placeholder="polaris-book@gmail.com"/>
+                    <FlotingLabelTitle>이메일</FlotingLabelTitle>
+                </FlotingLabelContainer>
                 <BtnContainer>
                     <CheckboxWrapper>
                         <input type="checkbox" checked={agreePrivacyPolicy} onChange={handleCheckboxChange} style={{ display: 'none' }} />
@@ -58,7 +77,7 @@ const Background = styled.div`
 const RegisterContainer = styled.div`
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
-    padding: 70px 85px;
+    padding: 60px 80px;
     margin: 0 auto;
     @media (min-width: 978px) {
         width: 586px;
@@ -68,9 +87,50 @@ const RegisterContainer = styled.div`
 const TitleText = styled.h1`
     color: white;
     text-align: center;
-    margin-bottom: 50px; 
+    margin: 30px 0 50px 0;
     font-size: 40px;
     font-family: "KOTRA_BOLD";
+`;
+
+const InputContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const FlotingLabelContainer = styled.label`
+    margin: 10px 0;
+    flex-grow: 14;
+`;
+const FlotingLabelInput = styled.input`
+    background-color: transparent;
+    width: 100%;
+    color: white;
+    &::placeholder{
+        color: rgba(255, 255, 255, .5);
+	}
+`;
+
+const FlotingLabelTitle = styled.span`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+`;
+
+const ValidSentence = styled.p`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 13px;
+    margin: 0;
+`;
+
+const DuplicateCheckBtn = styled.button`
+    background-color: transparent;
+    color: white;
+    flex-grow: 1;
+    padding: 0;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    font-size: 15.5px;
+    font-family: "KOTRA_GOTHIC";
 `;
 
 const BtnContainer = styled.div`
@@ -90,7 +150,7 @@ const CustomCheckbox = styled.span`
     position: relative;
     width: 20px;
     height: 20px;
-    border: 2px solid #ffffff;
+    border: solid #ffffff;
     &:after {
         content: '';
         position: absolute;

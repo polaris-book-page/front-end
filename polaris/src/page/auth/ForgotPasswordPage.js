@@ -2,35 +2,34 @@ import styled from "styled-components";
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 
-const LoginPage = () =>{
+const ForgotPasswordPage = () =>{
     return (
         <>
             <NavBar/>
             <Background>
                 <LoginContainer >
-                    <TitleText>LOGIN</TitleText>
+                    <TitleText>비밀번호 찾기</TitleText>
+                    <SubtextContainer>
+                        <Sentence>아이디를 입력해주세요</Sentence>
+                        <Sentence>가입하신 이메일로 비밀번호 재설정 링크를 보내드립니다</Sentence>
+                    </SubtextContainer>
                     <InputContainer>
                     <FlotingLabelContainer className="has-float-label">
                         <FlotingLabelInput type="text" placeholder=""/>
                         <FlotingLabelTitle>아이디</FlotingLabelTitle>
                     </FlotingLabelContainer>
-                    </InputContainer>
-                    <InputContainer>
-                        <FlotingLabelContainer className="has-float-label">
-                            <FlotingLabelInput type="password" placeholder=""/>
-                            <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
-                        </FlotingLabelContainer>
-                    </InputContainer>
+                </InputContainer>
                     <BtnContainer>
-                        <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
-                        <LoginBtn> 로그인 </LoginBtn>
+                        <LoginBtn>다음</LoginBtn>
                     </BtnContainer>
                 </LoginContainer>
             </Background>
-            <FooterBar />
+
+            <FooterBar/>
         </>
     )
 }
+
 
 const Background = styled.div`
     position: relative;
@@ -51,10 +50,17 @@ const LoginContainer = styled.div`
 
 const TitleText = styled.h1`
     color: white;
-    margin: 40px 0 60px 0;
+    margin: 40px 0 15px 0;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     font-family: "KOTRA_BOLD";
+`;
+
+const SubtextContainer = styled.div`
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+    text-align: center;
+    margin: 10px;
 `;
 
 const InputContainer = styled.div`
@@ -87,10 +93,11 @@ const BtnContainer = styled.div`
     align-items: center;
 `;
 
-const FindPwdText = styled.p`
+const Sentence = styled.p`
     font-size: 15px;
     color: white;
     font-family: "KOTRA_GOTHIC";
+    margin: 5px;
 `;
 
 const LoginBtn = styled.button`
@@ -105,4 +112,4 @@ const LoginBtn = styled.button`
     font-family: "KOTRA_GOTHIC";
 `;
 
-export default LoginPage;
+export default ForgotPasswordPage;
