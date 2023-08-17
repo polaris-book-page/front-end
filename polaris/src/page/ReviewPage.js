@@ -2,6 +2,7 @@ import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
 import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
+import StarRating from '../component/StarRating.js'
 
 const ReviewPage = () => {
   return (
@@ -16,8 +17,8 @@ const ReviewPage = () => {
               <TitleText color={'#97A4E8'} size={'18px'}>30</TitleText>
             </ReviewTitle>
             <EvaluateBox>
-              <TitleText color={'#97A4E8'} size={'16px'}>라이브러리 추가</TitleText>
-              <TitleText color={'#97A4E8'} size={'16px'}>3.8</TitleText>
+              <StarRating rating={3.8} size={'20px'} />
+              <TitleText style={{marginTop: 4, marginLeft: 5}} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
             </EvaluateBox>
           </ReviewTitleBox>
           {/* review content */}
@@ -76,7 +77,7 @@ const ReviewContentBox = styled.div`
 const EvaluateBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-self: flex-start;
+  margin-top: -5px;
 `;
 
 // conetnt

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
 import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
+import StarRating from '../component/StarRating.js'
 import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 
 const BookInfoPage = () => {
@@ -16,7 +17,7 @@ const BookInfoPage = () => {
             {/* book image */}
             <BookImageBox>
               <img style={{ width: '150px', height: '200px' }} />
-              <TitleText style={{justifySelf: 'center'}} color={'#97A4E8'} size={'16px'}>라이브러리 추가</TitleText>
+              <StarRating rating={3.5} size={'25px'} />
               <LikeBox>
                 <ICLike />
                 <TitleText color={'#97A4E8'} size={'16px'}>43</TitleText>
@@ -61,8 +62,8 @@ const BookInfoPage = () => {
               <TitleText color={'#97A4E8'} size={'18px'}>30</TitleText>
             </ReviewTitle>
             <EvaluateBox>
-              <TitleText color={'#97A4E8'} size={'16px'}>라이브러리 추가</TitleText>
-              <TitleText color={'#97A4E8'} size={'16px'}>3.8</TitleText>
+              <StarRating rating={3.8} size={'20px'} />
+              <TitleText style={{marginTop: 4, marginLeft: 5}} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
             </EvaluateBox>
             <TitleText style={{justifySelf: 'flex-end'}} color={'#4659A9'} size={'15px'}>더보기</TitleText>
           </ReviewTitleBox>
@@ -166,7 +167,7 @@ const BookImageBox = styled.div`
   display: grid;
   grid-template-rows: 200px 20px 20px;
   grid-row: auto / span 2;
-  gap: 5px;
+  gap: 10px;
 `;
 
 const LikeBox = styled.div`
@@ -174,6 +175,7 @@ const LikeBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 4px;
+  margin-top: 10px
 `;
 
 const ButtonBox = styled.div`
@@ -184,6 +186,7 @@ const ButtonBox = styled.div`
 const ReviewTitleBox = styled.div`
   display: grid;
   grid-template-columns: 220px 150px 1.5fr;
+  align-items: center;
 `;
 
 const ReviewContentBox = styled.div`
@@ -194,7 +197,7 @@ const ReviewContentBox = styled.div`
 const EvaluateBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-self: flex-start;
+  margin-bottom: 7px;
 `;
 
 // content
