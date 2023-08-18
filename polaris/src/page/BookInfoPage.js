@@ -4,6 +4,7 @@ import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
 import StarRating from '../component/StarRating.js'
 import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
+import BookProgressDropDown from '../component/BookProgressDropDown';
 
 const BookInfoPage = () => {
   return (
@@ -50,6 +51,7 @@ const BookInfoPage = () => {
           <ButtonBox>
             <Button>북킷리스트에 추가</Button>
             <Button>알라딘에서 책 구매하기</Button>
+            <BookProgressDropDown />
           </ButtonBox>
         </InfoContainer>
         <div style={{ height: 30 }} />
