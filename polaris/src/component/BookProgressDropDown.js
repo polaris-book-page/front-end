@@ -1,13 +1,16 @@
 import styled, { css } from "styled-components";
 import { useRef, useState } from "react";
 import useDetectClose from "./hook/useDetectClose";
+import UnitDropDown from "./UnitDropDown";
 import Modal from 'react-modal';
+import DatePicker from 'react-datepicker';
 
 
 const BookProgressDropDown = () => {
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
     const [isModal, setIsModal] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     return (
         <>
@@ -39,10 +42,27 @@ const BookProgressDropDown = () => {
                         <ModalTitleText color={'#4659A9'}>진행도</ModalTitleText>
                         <Line />
                     </ModalSubTitleBox>
+                    <ModalContentBox>
+                        <ProgressInput placeholder="페이지를 입력하세요." />
+                        <UnitDropDown />
+                    </ModalContentBox>
+                    <div style={{height: 20}} />
                     <ModalSubTitleBox>
                         <ModalTitleText color={'#4659A9'}>독서 시작일</ModalTitleText>
                         <Line />
                     </ModalSubTitleBox>
+                    <ModalContentBox>
+                        <DatePicker
+                            dateFormat='yyyy.MM.dd'
+                            shouldCloseOnSelect
+                            minDate={new Date('2000-01-01')}
+                            maxDate={new Date()}
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            withPortal
+                        />
+                    </ModalContentBox>
+                    <div style={{height: 25}} />
                     <ModalButton onClick={() => setIsModal(false)}>확인</ModalButton>
                 </ModalContentContainer>
             </Modal>
@@ -52,11 +72,17 @@ const BookProgressDropDown = () => {
 
 const customStyle = {
     overlay: {
-        backgroundColor: '#00000040'
+        backgroundColor: '#00000040',
     },
     content: {
-        top: '30%',
-        height: 300,
+        position: 'fixed',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: 'auto',
+        width: '75%',
+        height: 370,
         background: '#fff',
         overflow: 'auto',
         WebkitOverflowScrolling: 'touch',
@@ -76,7 +102,7 @@ const ModalTitleText = styled.text`
     font-size: 20px;
 `;
 
-// modal
+// modal-container
 const ModalTitleContainer = styled.div`
     height: 60px;
     display: flex;
@@ -90,9 +116,11 @@ const ModalContentContainer = styled.div`
     flex: 1;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 15px;
 `
 
+// modal-box
 const ModalSubTitleBox = styled.div`
     display: flex;
     flex-direction: column;
@@ -100,21 +128,42 @@ const ModalSubTitleBox = styled.div`
     padding: 5px;
 `
 
+const ModalContentBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+// modal-content
 const Line = styled.div`
     width: 200px;
     height: 2px;
     background-color: #4659A9;
+    margin-bottom: 15px;
 `
 
 const ModalButton = styled.button`
+    width: 45%;
     font-family: "KOTRA_BOLD";
     color: white;
     background-color: #4659A9;
     border-style: none;
     font-size: 16px;
     padding: 7px 50px;
-    margin: 8px;
+    margin: 10px;
     border-radius: 50px;
+`;
+
+const ProgressInput = styled.input`
+    width: 120px;
+    color: #404040;
+    font-family: "KOTRA_BOLD";
+    border-style: none;
+    font-size: 12px;
+
+	&::placeholder{
+		color: #B7B5B5;
+	}
 `;
 
 // container
