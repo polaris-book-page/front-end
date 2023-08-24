@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import NavBar from "../../component/NavBar";
 import BookReviewItem from "../../component/BookReviewItem";
+import ReviewRatingChart from "../../component/ReviewRatingChart";
 import { ReactComponent as ICStar } from "../../assets/ic-star-white.svg";
 import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg";
 
@@ -20,6 +21,7 @@ const MyReviewPage = () => {
                             <TitleText color={'#ffffff'} size={'20px'}>56</TitleText>
                         </StatisticsBox>
                         {/* statistics lib */}
+                        <ReviewRatingChart />
                     </StatisticsContainer>
                     <div style={{height: 20}} />
                     <Reviewcontainer>
