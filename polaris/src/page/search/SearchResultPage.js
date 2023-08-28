@@ -12,19 +12,26 @@ const SearchResultPage = () => {
     const [currentArray, setCurrentArray] = useState(0);
     const [totalPage, setTotalPage] = useState([]);
     const [slicePages, setSlicePages] = useState([]);
+    const [itemsPerPage, setItemsPerPage] = useState([]);
+    const [currentItems, setCurrentItems] = useState([]);
     const pagePerLimit = 10
     const pageArrayLimit = 5
-    
-    // 책 데이터 db에 저장
+    const maxResults = 50
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
+    // 책 데이터 db에 저장
     
     const searchResultFunc = async () => {
         setLoading(true);
         try {
-            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=모순&QueryType=Title&MaxResults=10&start=${currentPage}&SearchTarget=Book&output=js&Version=20131101`);
+            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=모순&QueryType=Title&MaxResults=${maxResults}&start=${currentArray + 1}&SearchTarget=Book&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
+            const newItemSlice = [];
+            for (let i = 0; i < maxResults; i += pagePerLimit) {
+                newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));
+            }
+            setItemsPerPage(newItemSlice)
         } catch (e) {
             console.log(e);
         }
@@ -33,7 +40,16 @@ const SearchResultPage = () => {
 
     useEffect(() => {
         searchResultFunc();
-    }, [currentPage]);
+    }, [currentArray]);
+
+    useEffect(() => {
+        // change page(ex 1, 2, 3, 4, 5)
+        setCurrentItems(itemsPerPage[(currentPage - 1) % 5])
+        // if current page is 1, 6..., page array change
+        if (currentPage % pageArrayLimit === 1) {
+            setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
+        }
+    }, [currentPage, itemsPerPage, currentItems])
 
     useEffect(() => {
         if (data) {
@@ -45,20 +61,14 @@ const SearchResultPage = () => {
             setTotalPage(newTotalPage);
             // divide per limitPage
             const newSlicePages = [];
-            for (let i = 0; i < newTotalPage.length; i += pageArrayLimit) {
-                newSlicePages.push(newTotalPage.slice(i, i + pageArrayLimit));
+            for (let i = 0; i < totalPage.length; i += pageArrayLimit) {
+                newSlicePages.push(totalPage.slice(i, i + pageArrayLimit));
             }
             setSlicePages(newSlicePages);
-            // when press <, > button, change page array
-            if (currentPage % pageArrayLimit === 1) {
-                setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
-            } else if (currentPage % pageArrayLimit === 0) {
-                setCurrentArray(currentPage / pageArrayLimit - 1);
-            }
         }
-    }, [currentPage, data]);
+    }, [data]);
 
-    if (!data) {
+    if (!(data && currentItems)) {
         return null;
     }
     const handlePageChange = (newCurrentArray, newCurrentPage) => {
@@ -75,10 +85,9 @@ const SearchResultPage = () => {
                         <SearchBtn size="54"/>
                     </SearchBox>
                     <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
-                    
                     <ResultFilter></ResultFilter>
-                    {data.item.map((item, index) => (
-                        <GridBox key={index} item={item} gridArea={`gridBox${index + 1}`} />
+                    {currentItems && currentItems.map((item, index) => (
+                        <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
                     ))}
                     <Pagination
                         slicePages={slicePages}

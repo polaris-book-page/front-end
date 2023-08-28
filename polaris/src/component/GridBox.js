@@ -3,7 +3,6 @@ import styled from "styled-components";
 import LikeIcon from "./LikeIcon"; 
 
 const GridBox = ({ item }) => {
-	// if item.isbn13
 	return (
 		<div>
 			<Imgdiv>
