@@ -37,16 +37,19 @@ const SearchResultPage = () => {
 
     useEffect(() => {
         if (data) {
+            // calculate the total number of pages
             const newTotalPage = [];
             for (let i = 1; i <= Math.ceil(data.totalResults / pagePerLimit); i++) {
                 newTotalPage.push(i);
             }
             setTotalPage(newTotalPage);
+            // divide per limitPage
             const newSlicePages = [];
             for (let i = 0; i < newTotalPage.length; i += pageArrayLimit) {
                 newSlicePages.push(newTotalPage.slice(i, i + pageArrayLimit));
             }
             setSlicePages(newSlicePages);
+            // when press <, > button, change page array
             if (currentPage % pageArrayLimit === 1) {
                 setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
             } else if (currentPage % pageArrayLimit === 0) {
