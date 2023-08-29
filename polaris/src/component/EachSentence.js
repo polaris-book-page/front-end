@@ -2,13 +2,14 @@ import React from 'react';
 import styled from "styled-components";
 import { PiBookFill } from "react-icons/pi";
 
-const EachSentence = ({ onClick, quote, bookColor }) => {
+const EachSentence = ({ onClick, quote, bookCategory, bookColor }) => {
     return (
         <Container onClick={onClick}>
             <QuoteBox>
                 <QuoteText>{quote}</QuoteText>
             </QuoteBox>
             <BookIcon size="250" color={bookColor} />
+            <BookCategory>{bookCategory}</BookCategory>
         </Container>
     );
 }

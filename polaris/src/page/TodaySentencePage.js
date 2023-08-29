@@ -16,10 +16,10 @@ const TodaySentencePage = () => {
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
                 <ExplainationText>※ 하루에 한 문장만 선택해서 책을 추천받을 수 있습니다.</ExplainationText>
                 <SentencesContainer className="container-fluid row">
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="고독을 배설한 자리에서 내려앉는 환희. 이 달콤함을 위해 그는 예술을 표방한다." bookColor="#97A4E8" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="전부 바다에 밀어버리자. 더 이상 내가 나를 미워하지 않고 싫어하지 않을 때까지." bookColor="#4659A9" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="타인의 언어는 결코, 나의 정답이 될 수 없음을 알기에, 홀로 밤을 읽지 않기로 한다." bookColor="#6F61C6" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="슬픔을 병처럼 여기지 않겠다고 말하면서 나는 조금씩 의연해졌다. 슬픔에게도 비밀이 있을거라고. 그 비밀을 추궁하지 않기로 했다." bookColor="#2C2C60" />
+                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="고독을 배설한 자리에서 내려앉는 환희. 이 달콤함을 위해 그는 예술을 표방한다." bookCategory="#카테고리" bookColor="#97A4E8" />
+                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="전부 바다에 밀어버리자. 더 이상 내가 나를 미워하지 않고 싫어하지 않을 때까지." bookCategory="#카테고리" bookColor="#4659A9" />
+                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="타인의 언어는 결코, 나의 정답이 될 수 없음을 알기에, 홀로 밤을 읽지 않기로 한다." bookCategory="#카테고리" bookColor="#6F61C6" />
+                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="슬픔을 병처럼 여기지 않겠다고 말하면서 나는 조금씩 의연해졌다. 슬픔에게도 비밀이 있을거라고. 그 비밀을 추궁하지 않기로 했다." bookCategory="#카테고리" bookColor="#2C2C60" />
                 </SentencesContainer>
                 <BookModal 
                     isOpen={modalIsOpen} 
