@@ -9,11 +9,11 @@ const GridBox = ({ item }) => {
 				<BookImg style={{ backgroundImage: `url(${item.cover})` }}/>
 			</Imgdiv>
 			<BookInfo>
-				<div>
+				<BookText>
 					<BookTitle>{item.title}</BookTitle>
 					<BookAuthor>{item.author.substr(0, item.author.indexOf('('))}</BookAuthor>
 					<BookPub>{item.publisher}</BookPub>
-				</div>
+				</BookText>
 				<LikeIcon/>
 			</BookInfo>
 		</div>
@@ -36,6 +36,11 @@ const BookImg = styled.img`
 
 const BookInfo = styled.div`
     display: flex;
+    margin-right: 26px;
+`;
+
+const BookText = styled.div`
+    flex-grow: 1;
 `;
 
 const BookTitle = styled.div`
