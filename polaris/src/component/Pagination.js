@@ -8,6 +8,7 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
     };
 
 	const isactive = (page) => {
+		// to focus on the current page
 		const initialActive = [true, false, false, false, false];
 		initialActive[0] = false
 		initialActive[(page - 1) % 5] = true
@@ -15,6 +16,7 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
 	}
 
 	const pagination = (slicePages, currentPage) => {
+		// to show such as [1, 2, 3, 4, 5] button
         return slicePages[currentArray]?.map((page, index) => (
             <PageButton
                 key={index}

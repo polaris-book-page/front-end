@@ -19,7 +19,6 @@ const SearchResultPage = () => {
     const maxResults = 50
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
-    // 책 데이터 db에 저장
     
     const searchResultFunc = async () => {
         setLoading(true);
@@ -27,6 +26,7 @@ const SearchResultPage = () => {
             const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=모순&QueryType=Title&MaxResults=${maxResults}&start=${currentArray + 1}&SearchTarget=Book&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
+            // divide books to show 10 per page
             const newItemSlice = [];
             for (let i = 0; i < maxResults; i += pagePerLimit) {
                 newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));

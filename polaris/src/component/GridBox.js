@@ -11,7 +11,6 @@ const GridBox = ({ item }) => {
 			<BookInfo>
 				<div>
 					<BookTitle>{item.title}</BookTitle>
-					{/* 옮긴이까지 보여줄까 */}
 					<BookAuthor>{item.author.substr(0, item.author.indexOf('('))}</BookAuthor>
 					<BookPub>{item.publisher}</BookPub>
 				</div>
