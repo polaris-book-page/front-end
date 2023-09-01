@@ -8,7 +8,6 @@ import FooterBar from "../component/FooterBar";
 const MainPage = () => {
   return (
     <>
-      <NavBar />
       {/* banner */}
       <Carousel>
         <Carousel.Item>

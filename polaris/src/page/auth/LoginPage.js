@@ -5,7 +5,6 @@ import FooterBar from "../../component/FooterBar";
 const LoginPage = () =>{
     return (
         <>
-            <NavBar/>
             <Background>
                 <LoginContainer >
                     <TitleText>LOGIN</TitleText>

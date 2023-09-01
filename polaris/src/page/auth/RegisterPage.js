@@ -17,7 +17,6 @@ const RegisterPage = () =>{
     };
     return (
         <>
-            <NavBar/>
             <Background>
                 <RegisterContainer >
                     <TitleText>REGISTER</TitleText>

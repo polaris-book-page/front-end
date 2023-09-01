@@ -7,7 +7,6 @@ import StarRating from '../component/StarRating.js'
 const ReviewPage = () => {
   return (
     <>
-      <NavBar />
       <Container>
         <ReviewContainer>
           {/* review title */}

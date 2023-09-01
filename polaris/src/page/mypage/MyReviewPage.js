@@ -8,7 +8,6 @@ import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg
 const MyReviewPage = () => {
     return (
         <>
-            <NavBar />
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>

@@ -5,7 +5,6 @@ import FooterBar from "../component/FooterBar";
 const RecommendPage = () =>{
     return (
         <>
-            <NavBar/>
                 <TitleContainer>
                     <TitleText>북극성 탐험</TitleText>
                     <RocketIcon src='rocket.png' alt="로켓 아이콘"/>

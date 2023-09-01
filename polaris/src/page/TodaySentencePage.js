@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS 임포트
 const TodaySentencePage = () =>{
     return (
         <>
-            <NavBar/>
             <Background>
                 <TitleText>오늘의 문장</TitleText>
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
