@@ -1,27 +1,21 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => {
-	const [isActive, setIsActive] = useState([true, false, false, false, false]);
 	const setPage = (newCurrentArray) => {
         onPageChange(newCurrentArray, slicePages[newCurrentArray][0]);
     };
 
 	const isactive = (page) => {
-		// to focus on the current page
-		const initialActive = [true, false, false, false, false];
-		initialActive[0] = false
-		initialActive[(page - 1) % 5] = true
-		setIsActive(initialActive);
+		return currentPage === page;
 	}
 
 	const pagination = (slicePages, currentPage) => {
 		// to show such as [1, 2, 3, 4, 5] button
         return slicePages[currentArray]?.map((page, index) => (
-            <PageButton
-                key={index}
-                onClick={() => {onPageChange(currentArray, page); isactive(page)}}
-				className={isActive[(page - 1) % 5] ? 'active' : ''}
+			<PageButton
+				key={index}
+				onClick={() => {onPageChange(currentArray, page); }}
+				className={isactive(page) ? 'active' : ''}
             >
                 {page}
             </PageButton>
@@ -65,6 +59,7 @@ const SideBtn = styled.button`
 `
 const Paging = styled.div`
     grid-area: pagination;
+	margin-top: 30px;
 `;
 
 export default Pagination;

@@ -38,12 +38,11 @@ const Dropdown = styled.div`
 	position: relative;
     cursor: default;
     margin: 10px;
-
 `;
 
 const FilterBtn = styled.button`
     display: flex;
-    width: 150px;
+    width: 170px;
     height: 42px;
     border: none;
     border-radius: 50px;
@@ -69,7 +68,7 @@ const OptionList = styled.ul`
 		box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 		border-radius: 20px;
     }
-    `;
+`;
 
 const Option = styled.li`
     list-style-type: none;
@@ -81,7 +80,6 @@ const Option = styled.li`
     padding: 5px;
 	margin: 5px;
 	border-radius: 50px;
-
 `;
 
 const BottomArrow = styled(GoTriangleDown)`

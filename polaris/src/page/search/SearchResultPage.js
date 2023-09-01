@@ -6,7 +6,7 @@ import FooterBar from "../../component/FooterBar";
 import { IoSearch } from "react-icons/io5";
 import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
-import { bookOptions, bookOptionsSelect, categoryOptions, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
+import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
 
 const SearchResultPage = () => {
@@ -31,7 +31,10 @@ const SearchResultPage = () => {
     const searchResultFunc = async () => {
         setLoading(true);
         try {
-            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기&Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&output=js&Version=20131101`);
+            // const result = await axios.get(query);
+            console.log("before api: ", categoryOptions[categories])
+            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기
+            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
             // divide books to show 10 per page
@@ -50,6 +53,24 @@ const SearchResultPage = () => {
     const prevOrderRef = useRef(order);
 
     useEffect(() => {
+        // var query = `ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기&Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&output=js&Version=20131101`
+        // if (orderOptionsSelect[orderOptions.indexOf(order)] !== orderOptionsSelect[0]){
+        //     query += `&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}`
+        // }
+        // if (bookOptionsSelect[bookOptions.indexOf(bookType)] !== bookOptionsSelect[0]){
+        //     query += `&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}`
+        // }
+        // if (bookType === '종이책') {
+
+        // } else if (bookType === '전자책'){
+
+        // } else {
+
+        // }
+        // if (categoryOptions[categories] !== 0){
+        //     query += `&CategoryId=${categoryOptions[categories]}`
+        // }
+        console.log("cate: ", categories)
         searchResultFunc();
         if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
             setcurrentPage(1);
@@ -57,7 +78,7 @@ const SearchResultPage = () => {
         }
         prevBookTypeRef.current = bookType;
         prevOrderRef.current = order;
-    }, [currentArray, bookType, order]);
+    }, [currentArray, bookType, order, categories]);
 
     useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
@@ -121,11 +142,11 @@ const SearchResultPage = () => {
         setOrder(order);
         console.log(orderOptionsSelect[orderOptions.indexOf(order)])
     };
-
-    // const handleCategoryChange = (order) => {
-    //     setOrder(order);
-    //     console.log(orderOptionsSelect[categoryOptions.indexOf(order)])
-    // };
+    
+    const handleCategoryChange = (categories) => {
+        setCategories(categories);
+        console.log("categoryOptions: ", categoryOptions[categories])
+    };
 
     return (
         <>
@@ -138,16 +159,10 @@ const SearchResultPage = () => {
                     <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
                     <FilterContainer>
                         <FilterDropdown 
-                            isActive={isActive1}
-                            setIsActive={toggleActive1}
-                            options={bookOptions}
-                            setOptions={handleBookTypeChange}
-                        />
-                        <FilterDropdown 
                             isActive={isActive3}
                             setIsActive={toggleActive3}
-                            options={categoryOptions}
-                            // setOptions={handleCategoryChange}
+                            options={categoryKeys}
+                            setOptions={handleCategoryChange}
                         />
                         <FilterDropdown 
                             isActive={isActive2}
