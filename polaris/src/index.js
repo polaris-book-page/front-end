@@ -7,10 +7,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/fonts/font.css";
 import "./float-label.min.css"
 import 'react-datepicker/dist/react-datepicker.css';
+import NavBar from "./component/NavBar";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <NavBar />
     <App />
   </React.StrictMode>
 );

@@ -5,7 +5,6 @@ import FooterBar from "../../component/FooterBar";
 const ResetPasswordPage = () =>{
     return (
         <>
-            <NavBar/>
             <Background>
                 <LoginContainer >
                     <TitleText>비밀번호 재설정</TitleText>

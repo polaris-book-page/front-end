@@ -5,7 +5,6 @@ import FooterBar from "../../component/FooterBar";
 const ForgotPasswordPage = () =>{
     return (
         <>
-            <NavBar/>
             <Background>
                 <LoginContainer >
                     <TitleText>비밀번호 찾기</TitleText>
@@ -24,7 +23,6 @@ const ForgotPasswordPage = () =>{
                     </BtnContainer>
                 </LoginContainer>
             </Background>
-
             <FooterBar/>
         </>
     )
