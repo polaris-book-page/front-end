@@ -150,7 +150,6 @@ const SearchResultPage = () => {
 
     return (
         <>
-            <NavBar/>
                 <MainContainer className="container">
                     <SearchBox>
                         <SearchInput placeholder="책 이름을 입력해주세요."/>
