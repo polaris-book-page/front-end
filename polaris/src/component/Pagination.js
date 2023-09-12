@@ -5,12 +5,17 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
         onPageChange(newCurrentArray, slicePages[newCurrentArray][0]);
     };
 
+	const isactive = (page) => {
+		return currentPage === page;
+	}
+
 	const pagination = (slicePages, currentPage) => {
+		// to show such as [1, 2, 3, 4, 5] button
         return slicePages[currentArray]?.map((page, index) => (
-            <PageButton
-                key={index}
-                isActive={page === currentPage}
-                onClick={() => onPageChange(currentArray, page)}
+			<PageButton
+				key={index}
+				onClick={() => {onPageChange(currentArray, page); }}
+				className={isactive(page) ? 'active' : ''}
             >
                 {page}
             </PageButton>
@@ -20,13 +25,14 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
 	return (
 		<Paging>
 			<SideBtn 
-				onClick={()=>setPage(currentArray - 1, slicePages)} 
-				disabled={currentArray === 0}>
+				onClick={()=>{setPage(currentArray - 1, slicePages); isactive(1)}} 
+				disabled={currentArray === 0}
+				>
 				&lt;
 			</SideBtn>
 				{pagination(slicePages, currentPage)}
 			<SideBtn 
-				onClick={()=>setPage(currentArray + 1, slicePages)} 
+				onClick={()=>{setPage(currentArray + 1, slicePages); isactive(1)}} 
 				disabled={currentArray === slicePages.length - 1}>
 				&gt;
 			</SideBtn>
@@ -40,6 +46,10 @@ const PageButton = styled.button`
     border: transparent;
     background-color: transparent;
     margin-bottom: 40px;
+	&.active {
+		color: #ffffff;
+		background-color: #4659A9;
+	}
 `
 const SideBtn = styled.button`
     font-size: 27px;
@@ -49,6 +59,7 @@ const SideBtn = styled.button`
 `
 const Paging = styled.div`
     grid-area: pagination;
+	margin-top: 30px;
 `;
 
 export default Pagination;

@@ -30,10 +30,6 @@ const LikeIcon = () => {
 
 
 const Icon = styled.div`
-    /* margin-bottom: 5px; */
-    margin-left: auto;
-    margin-right: 25px;
-    
 `;
 
 const HeartFilledIcon = styled(AiFillHeart)`

@@ -3,19 +3,17 @@ import styled from "styled-components";
 import LikeIcon from "./LikeIcon"; 
 
 const GridBox = ({ item }) => {
-	// if item.isbn13
 	return (
 		<div>
 			<Imgdiv>
 				<BookImg style={{ backgroundImage: `url(${item.cover})` }}/>
 			</Imgdiv>
 			<BookInfo>
-				<div>
+				<BookText>
 					<BookTitle>{item.title}</BookTitle>
-					{/* 옮긴이까지 보여줄까 */}
 					<BookAuthor>{item.author.substr(0, item.author.indexOf('('))}</BookAuthor>
 					<BookPub>{item.publisher}</BookPub>
-				</div>
+				</BookText>
 				<LikeIcon/>
 			</BookInfo>
 		</div>
@@ -38,6 +36,11 @@ const BookImg = styled.img`
 
 const BookInfo = styled.div`
     display: flex;
+    margin-right: 26px;
+`;
+
+const BookText = styled.div`
+    flex-grow: 1;
 `;
 
 const BookTitle = styled.div`
