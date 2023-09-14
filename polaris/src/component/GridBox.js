@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import LikeIcon from "./LikeIcon"; 
+import Marquee from "./marquee";
 
 const GridBox = ({ item }) => {
 	return (
@@ -10,7 +11,7 @@ const GridBox = ({ item }) => {
 			</Imgdiv>
 			<BookInfo>
 				<BookText>
-					<BookTitle>{item.title}</BookTitle>
+                    <Marquee title={item.title}/>
 					<BookAuthor>{item.author.substr(0, item.author.indexOf('('))}</BookAuthor>
 					<BookPub>{item.publisher}</BookPub>
 				</BookText>
@@ -41,15 +42,6 @@ const BookInfo = styled.div`
 
 const BookText = styled.div`
     flex-grow: 1;
-`;
-
-const BookTitle = styled.div`
-    margin-left: 25px;
-    line-height: 1.5;
-    font-size: 24px;
-    color: #4659A9;
-    font-weight: 700;
-    font-family: "KOTRA_GOTHIC";
 `;
 
 const BookAuthor = styled.div`
