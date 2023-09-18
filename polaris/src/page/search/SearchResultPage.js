@@ -26,11 +26,12 @@ const SearchResultPage = () => {
     const [categories, setCategories] = useState('');
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
+    const [searchText, setSearchText] = useState('모순');
     
     const searchResultFunc = async () => {
         setLoading(true);
         try {
-            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=모순
+            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=${searchText}
             &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}
             &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
@@ -51,16 +52,6 @@ const SearchResultPage = () => {
     const prevOrderRef = useRef(order);
 
     useEffect(() => {
-        // var query = `ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기&Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&output=js&Version=20131101`
-        // if (orderOptionsSelect[orderOptions.indexOf(order)] !== orderOptionsSelect[0]){
-        //     query += `&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}`
-        // }
-        // if (bookOptionsSelect[bookOptions.indexOf(bookType)] !== bookOptionsSelect[0]){
-        //     query += `&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}`
-        // }
-        // if (categoryOptions[categories] !== 0){
-        //     query += `&CategoryId=${categoryOptions[categories]}`
-        // }
         searchResultFunc();
         if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
             setcurrentPage(1);
@@ -68,7 +59,7 @@ const SearchResultPage = () => {
         }
         prevBookTypeRef.current = bookType;
         prevOrderRef.current = order;
-    }, [currentArray, bookType, order, categories]);
+    }, [currentArray, bookType, order, categories, searchText]);
 
     useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
@@ -125,13 +116,22 @@ const SearchResultPage = () => {
         console.log("categoryOptions: ", categoryOptions[categories])
     };
 
+    const handleSearchText = (e) => {
+        // const currentText = e.currentTarget.querySelector('#searchInput').innerText;
+        const currentText = e.currentTarget.parentNode.children[0].value;
+        // const searchInput = document.querySelector('input[name="searchInput"]'); // SearchInput 요소를 선택합니다.
+        // const currentText = searchInput.value; // 입력된 텍스트를 가져옵니다.
+		setSearchText(currentText)
+        console.log(e.currentTarget.parentNode.children[0].value)
+	}
+
     return (
         <>
             <MainContainer className="container">
-                <SearchBox>
-                    <SearchInput placeholder="책 이름을 입력해주세요."/>
-                    <SearchBtn size="54"/>
-                </SearchBox>
+            <SearchBox>
+        <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
+        <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
+    </SearchBox>
                 <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
                 <FilterContainer>
                     <FilterDropdown 
