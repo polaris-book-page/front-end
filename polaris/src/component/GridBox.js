@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import LikeIcon from "./LikeIcon"; 
-import Marquee from "./marquee";
+import Marquee from "./Marquee";
 
 const GridBox = ({ item }) => {
 	return (
