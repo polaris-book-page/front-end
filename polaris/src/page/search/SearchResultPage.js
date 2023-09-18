@@ -23,16 +23,16 @@ const SearchResultPage = () => {
     const [loading, setLoading] = useState(false);
     const [isActive2, setIsActive2] = useState(false);
     const [isActive3, setIsActive3] = useState(false);
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState('');
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
     
     const searchResultFunc = async () => {
         setLoading(true);
         try {
-            // const result = await axios.get(query);
             const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=모순
-            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
+            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}
+            &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
             // divide books to show 10 per page
@@ -41,7 +41,6 @@ const SearchResultPage = () => {
                 newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));
             }
             setItemsPerPage(newItemSlice)
-
         } catch (e) {
             console.log(e);
         }
@@ -90,8 +89,8 @@ const SearchResultPage = () => {
             setTotalPage(newTotalPage);
             // divide per limitPage
             const newSlicePages = [];
-            for (let i = 0; i < totalPage.length; i += pageArrayLimit) {
-                newSlicePages.push(totalPage.slice(i, i + pageArrayLimit));
+            for (let i = 0; i < newTotalPage.length; i += pageArrayLimit) {
+                newSlicePages.push(newTotalPage.slice(i, i + pageArrayLimit));
             }
             setSlicePages(newSlicePages);
         }
