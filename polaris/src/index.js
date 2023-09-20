@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/fonts/font.css";
 import "./float-label.min.css"
 import 'react-datepicker/dist/react-datepicker.css';
-import 'react-calendar/dist/Calendar.css'
+import './Calendar.css'
 import NavBar from "./component/NavBar";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
