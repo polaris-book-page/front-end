@@ -64,7 +64,8 @@ const OptionList = styled.ul`
     max-height: 0;
 	padding: 0;
     &.active {
-		max-height: none;
+        overflow-y: auto;
+        max-height: 230px;
 		box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 		border-radius: 20px;
     }

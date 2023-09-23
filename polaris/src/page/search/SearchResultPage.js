@@ -21,20 +21,19 @@ const SearchResultPage = () => {
     const maxResults = 50
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [isActive1, setIsActive1] = useState(false);
     const [isActive2, setIsActive2] = useState(false);
     const [isActive3, setIsActive3] = useState(false);
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState('');
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
+    const [searchText, setSearchText] = useState('모순');
     
     const searchResultFunc = async () => {
         setLoading(true);
         try {
-            // const result = await axios.get(query);
-            console.log("before api: ", categoryOptions[categories])
-            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기
-            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
+            const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=${searchText}
+            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}
+            &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
             // divide books to show 10 per page
@@ -53,24 +52,6 @@ const SearchResultPage = () => {
     const prevOrderRef = useRef(order);
 
     useEffect(() => {
-        // var query = `ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=물고기&Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&output=js&Version=20131101`
-        // if (orderOptionsSelect[orderOptions.indexOf(order)] !== orderOptionsSelect[0]){
-        //     query += `&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}`
-        // }
-        // if (bookOptionsSelect[bookOptions.indexOf(bookType)] !== bookOptionsSelect[0]){
-        //     query += `&SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}`
-        // }
-        // if (bookType === '종이책') {
-
-        // } else if (bookType === '전자책'){
-
-        // } else {
-
-        // }
-        // if (categoryOptions[categories] !== 0){
-        //     query += `&CategoryId=${categoryOptions[categories]}`
-        // }
-        console.log("cate: ", categories)
         searchResultFunc();
         if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
             setcurrentPage(1);
@@ -78,7 +59,7 @@ const SearchResultPage = () => {
         }
         prevBookTypeRef.current = bookType;
         prevOrderRef.current = order;
-    }, [currentArray, bookType, order, categories]);
+    }, [currentArray, bookType, order, categories, searchText]);
 
     useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
@@ -99,12 +80,12 @@ const SearchResultPage = () => {
             setTotalPage(newTotalPage);
             // divide per limitPage
             const newSlicePages = [];
-            for (let i = 0; i < totalPage.length; i += pageArrayLimit) {
-                newSlicePages.push(totalPage.slice(i, i + pageArrayLimit));
+            for (let i = 0; i < newTotalPage.length; i += pageArrayLimit) {
+                newSlicePages.push(newTotalPage.slice(i, i + pageArrayLimit));
             }
             setSlicePages(newSlicePages);
         }
-    }, [data]);
+    }, [data, categories]);
 
     if (!(data && currentItems)) {
         return null;
@@ -115,27 +96,14 @@ const SearchResultPage = () => {
         setcurrentPage(newCurrentPage);
     };
 
-    const toggleActive1 = () => {
-        setIsActive1(prevIsActive => !prevIsActive);
-        setIsActive2(false);
-        setIsActive3(false);
-    };
-
     const toggleActive2 = () => {
-        setIsActive1(false);
         setIsActive2(prevIsActive => !prevIsActive);
         setIsActive3(false);
     };
 
     const toggleActive3 = () => {
-        setIsActive1(false);
         setIsActive2(false);
         setIsActive3(prevIsActive => !prevIsActive);
-    };
-
-    const handleBookTypeChange = (bookType) => {
-        setBookType(bookType);
-        console.log(bookOptionsSelect[bookOptions.indexOf(bookType)])
     };
     
     const handleOrderChange = (order) => {
@@ -148,39 +116,47 @@ const SearchResultPage = () => {
         console.log("categoryOptions: ", categoryOptions[categories])
     };
 
+    const handleSearchText = (e) => {
+        // const currentText = e.currentTarget.querySelector('#searchInput').innerText;
+        const currentText = e.currentTarget.parentNode.children[0].value;
+        // const searchInput = document.querySelector('input[name="searchInput"]'); // SearchInput 요소를 선택합니다.
+        // const currentText = searchInput.value; // 입력된 텍스트를 가져옵니다.
+		setSearchText(currentText)
+        console.log(e.currentTarget.parentNode.children[0].value)
+	}
+
     return (
         <>
-                <MainContainer className="container">
-                    <SearchBox>
-                        <SearchInput placeholder="책 이름을 입력해주세요."/>
-                        <SearchBtn size="54"/>
-                    </SearchBox>
-                    <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
-                    <FilterContainer>
-                        <FilterDropdown 
-                            isActive={isActive3}
-                            setIsActive={toggleActive3}
-                            options={categoryKeys}
-                            setOptions={handleCategoryChange}
+            <MainContainer className="container">
+            <SearchBox>
+        <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
+        <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
+    </SearchBox>
+                <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
+                <FilterContainer>
+                    <FilterDropdown 
+                        isActive={isActive3}
+                        setIsActive={toggleActive3}
+                        options={categoryKeys}
+                        setOptions={handleCategoryChange}
                         />
-                        <FilterDropdown 
-                            isActive={isActive2}
-                            setIsActive={toggleActive2}
-                            options={orderOptions}
-                            setOptions={handleOrderChange}
-                            //가격순은 옵션에 없음 
+                    <FilterDropdown 
+                        isActive={isActive2}
+                        setIsActive={toggleActive2}
+                        options={orderOptions}
+                        setOptions={handleOrderChange}
                         />
-                    </FilterContainer>
-                    {currentItems && currentItems.map((item, index) => (
-                        <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
-                    ))}
-                    <Pagination
-                        slicePages={slicePages}
-                        currentArray={currentArray}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                </MainContainer>
+                </FilterContainer>
+                {currentItems && currentItems.map((item, index) => (
+                    <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
+                ))}
+                <Pagination
+                    slicePages={slicePages}
+                    currentArray={currentArray}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                />
+            </MainContainer>
             <FooterBar/>
         </>
     )
@@ -189,6 +165,8 @@ const SearchResultPage = () => {
 const FilterContainer = styled.div`
     grid-area: resultFilter;
     display: flex;
+    justify-self: end;
+    margin-right: 20px;
 `
 
 const MainContainer = styled.div`
@@ -237,7 +215,5 @@ const ResultText = styled.div`
     font-family: "KOTRA_BOLD";
     justify-self: start;
 `;
-
-
 
 export default SearchResultPage;

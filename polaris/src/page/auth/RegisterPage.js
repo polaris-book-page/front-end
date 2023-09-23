@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
+import Checkbox from "../../component/CheckBox";
 
 
 const RegisterPage = () =>{
@@ -52,11 +53,11 @@ const RegisterPage = () =>{
                     <FlotingLabelTitle>이메일</FlotingLabelTitle>
                 </FlotingLabelContainer>
                 <BtnContainer>
-                    <CheckboxWrapper>
-                        <input type="checkbox" checked={agreePrivacyPolicy} onChange={handleCheckboxChange} style={{ display: 'none' }} />
-                        <CustomCheckbox checked={agreePrivacyPolicy} />
-                        <CheckboxLabel>개인정보처리방침에 동의합니다.</CheckboxLabel>
-                    </CheckboxWrapper>
+                    <Checkbox 
+                        label={'개인정보처리방침에 동의합니다.'} 
+                        selectedValue={agreePrivacyPolicy}
+                        setSelectedValue={handleCheckboxChange}
+                    />
                     <NextBtn> 다음 </NextBtn>
                 </BtnContainer>
                 </RegisterContainer>
@@ -137,40 +138,6 @@ const BtnContainer = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-
-const CheckboxWrapper = styled.label`
-    display: flex;
-    align-items: center;
-    width: 240px; 
-    cursor: pointer;
-`;
-
-const CustomCheckbox = styled.span`
-    position: relative;
-    width: 20px;
-    height: 20px;
-    border: solid #ffffff;
-    &:after {
-        content: '';
-        position: absolute;
-        top: 2px;
-        left: 5px;
-    width: 6px;
-    height: 10px;
-    border: solid #ffffff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    display: ${({ checked }) => (checked ? 'block' : 'none')};
-    }
-`;
-
-const CheckboxLabel = styled.span`
-    margin-left: 8px;
-    margin-bottom: 1px;
-    color: white;
-    font-size: 16px;
-`;
-
 
 const NextBtn = styled.button`
     width: 75%;
