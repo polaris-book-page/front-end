@@ -11,21 +11,21 @@ const CalendarPage = () => {
 
     // react-query
 
-    const obj = [
-        {
-            endDate: "2023-09-20",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        },
-        {
-            endDate: "2023-09-21",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        },
-        {
-            endDate: "2023-09-24",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        }
+    // const obj = [
+    //     {
+    //         endDate: "2023-09-20",
+    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+    //     },
+    //     {
+    //         endDate: "2023-09-21",
+    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+    //     },
+    //     {
+    //         endDate: "2023-09-24",
+    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+    //     }
     
-    ]
+    // ]
 
     // save mark book: start date, end date
 
@@ -43,16 +43,7 @@ const CalendarPage = () => {
                         navigationLabel={null}
                         showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
                         tileContent={({ date }) => {
-                            const review = Object.entries(obj).reduce((total, [id, item]) => {        
-                                // if (item.endDate === moment(date).format("YYYY-MM-DD")) {
-                                //     total.endDate = item.endDate;
-                                //     total.image = item.image;
-                                // }
-                                const res = item.filter(i => i.endDate === moment(date).format("YYYY-MM-DD"))
-                                
-                                return res;
-                            })
-                            console.log("res: ", review)
+                            //console.log("res: ", review)
                             // if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) review.push(res) 
                             // if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) {                         
                                 return (
