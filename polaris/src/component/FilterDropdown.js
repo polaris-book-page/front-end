@@ -42,7 +42,7 @@ const Dropdown = styled.div`
 
 const FilterBtn = styled.button`
     display: flex;
-    width: 170px;
+    width: 175px;
     height: 42px;
     border: none;
     border-radius: 50px;
@@ -60,14 +60,24 @@ const Text = styled.div`
 const OptionList = styled.ul`
     position: absolute;
     width: 100%;
-    overflow: hidden;
+    overflow: overlay;
     max-height: 0;
 	padding: 0;
     &.active {
-        overflow-y: auto;
         max-height: 230px;
-		box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-		border-radius: 20px;
+        box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+        border-radius: 20px;
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: hsla(0, 0%, 42%, 0.49);
+            border-radius: 100px;
+        }
+        &::-webkit-scrollbar-button:vertical:start:increment {
+            display: block;
+            height: 10px;
+        }
     }
 `;
 
