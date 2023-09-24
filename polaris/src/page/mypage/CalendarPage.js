@@ -11,23 +11,27 @@ const CalendarPage = () => {
 
     // react-query
 
-    // const obj = [
-    //     {
-    //         endDate: "2023-09-20",
-    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-    //     },
-    //     {
-    //         endDate: "2023-09-21",
-    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-    //     },
-    //     {
-    //         endDate: "2023-09-24",
-    //         image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-    //     }
+    const obj = [
+        {
+            endDate: "2023-09-20",
+            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+        },
+        {
+            endDate: "2023-09-21",
+            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+        },
+        {
+            endDate: "2023-09-24",
+            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
+        }
     
-    // ]
+    ]
 
     // save mark book: start date, end date
+    const CalIndexFunc = (date) => {
+        console.log("date: ", date)
+        return obj.findIndex((x) => x.endDate === moment(date).format("YYYY-MM-DD"))
+    }
 
     return (
         <>
@@ -43,17 +47,13 @@ const CalendarPage = () => {
                         navigationLabel={null}
                         showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
                         tileContent={({ date }) => {
-                            //console.log("res: ", review)
-                            // if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) review.push(res) 
-                            // if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) {                         
+                            if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) {
                                 return (
-                                <>
-                                    <BookImage>
-                                            {/* <div>{review[0].endDate}</div> */}
-                                        {/* <img src={} /> */}
-                                    </BookImage>
-                                </>
-                            )
+                                    <>
+                                        <BookImage src={obj[CalIndexFunc(date)]['image']} />
+                                    </>
+                                )
+                            }
                             }
                         }
                         />
@@ -89,8 +89,11 @@ const CalendarContainer = styled.div`
 // box
 
 // component
-const BookImage = styled.div`
-
+const BookImage = styled.img`
+    display: flex;
+    width: 65px;
+    height: 100px;
+    background-color: #dddddd;
 `;
 
 

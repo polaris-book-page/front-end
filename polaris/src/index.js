@@ -9,12 +9,24 @@ import "./float-label.min.css"
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css'
 import NavBar from "./component/NavBar";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60,
+      cacheTime: 1000 * 60 * 5,
+    }
+  },
+});
+
 root.render(
   <React.StrictMode>
-    <NavBar />
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <NavBar />
+      <App />
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
