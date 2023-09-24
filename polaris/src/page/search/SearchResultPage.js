@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import styled from "styled-components";
-import NavBar from "../../component/NavBar";
+
 import FooterBar from "../../component/FooterBar";
 import { IoSearch } from "react-icons/io5";
 import GridBox from "../../component/GridBox";
@@ -117,10 +117,7 @@ const SearchResultPage = () => {
     };
 
     const handleSearchText = (e) => {
-        // const currentText = e.currentTarget.querySelector('#searchInput').innerText;
         const currentText = e.currentTarget.parentNode.children[0].value;
-        // const searchInput = document.querySelector('input[name="searchInput"]'); // SearchInput 요소를 선택합니다.
-        // const currentText = searchInput.value; // 입력된 텍스트를 가져옵니다.
 		setSearchText(currentText)
         console.log(e.currentTarget.parentNode.children[0].value)
 	}
@@ -129,9 +126,9 @@ const SearchResultPage = () => {
         <>
             <MainContainer className="container">
             <SearchBox>
-        <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
-        <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
-    </SearchBox>
+                <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
+                <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
+            </SearchBox>
                 <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
                 <FilterContainer>
                     <FilterDropdown 
