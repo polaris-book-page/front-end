@@ -78,6 +78,10 @@ const OptionList = styled.ul`
             display: block;
             height: 10px;
         }
+        &::-webkit-scrollbar-button:vertical:end:decrement {
+            display: block;
+            height: 10px;
+        }
     }
 `;
 
