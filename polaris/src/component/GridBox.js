@@ -4,6 +4,12 @@ import LikeIcon from "./LikeIcon";
 import Marquee from "./Marquee";
 
 const GridBox = ({ item }) => {
+    var author = ''
+    if (item.author.indexOf('(') !== -1) {
+        author = item.author.substr(0, item.author.indexOf('('))
+    } else {
+        author = item.author
+    }
 	return (
 		<div>
 			<Imgdiv>
@@ -12,7 +18,7 @@ const GridBox = ({ item }) => {
 			<BookInfo>
 				<BookText>
                     <Marquee title={item.title}/>
-					<BookAuthor>{item.author.substr(0, item.author.indexOf('('))}</BookAuthor>
+					<BookAuthor>{author}</BookAuthor>
 					<BookPub>{item.publisher}</BookPub>
 				</BookText>
 				<LikeIcon/>
