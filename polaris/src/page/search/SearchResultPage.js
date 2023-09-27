@@ -129,7 +129,7 @@ const SearchResultPage = () => {
                 <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
                 <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
             </SearchBox>
-                <ResultText>'{data.query}'에 대한 검색 결과({data.totalResults})</ResultText>
+                <ResultText>&lsquo;{data.query}&rsquo;에 대한 검색 결과({data.totalResults})</ResultText>
                 <FilterContainer>
                     <FilterDropdown 
                         isActive={isActive3}
@@ -211,6 +211,7 @@ const ResultText = styled.div`
     font-size: 36px;
     font-family: "KOTRA_BOLD";
     justify-self: start;
+    margin-left: 20px;
 `;
 
 export default SearchResultPage;
