@@ -11,6 +11,7 @@ const Checkbox = ({ label, selectedValue, setSelectedValue }) => {
 }
 
 const CheckboxWrapper = styled.label`
+    margin-top: 20px;
     display: flex;
     align-items: center;
     width: 240px; 
