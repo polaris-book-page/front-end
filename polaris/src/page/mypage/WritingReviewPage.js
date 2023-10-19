@@ -75,8 +75,9 @@ const WritingReviewPage = () => {
                                 <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
                             </QuoteInputTitleBox>
                             {quote}
-                            <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>
-                                <ContentText color={'red'} size={'12px'}>+ 구절 삭제하기</ContentText>
+                            <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>{
+                                quote.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
+                            }
                             </DeleteQuoteButton>
                             <AddQuoteButton onClick={() => inputQuoteFunc()}>
                                 <ContentText color={'white'} size={'12px'}>+ 구절 추가하기</ContentText>
