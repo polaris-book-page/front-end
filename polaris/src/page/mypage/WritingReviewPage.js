@@ -1,7 +1,15 @@
 import styled from "styled-components";
 import StarRating from "../../component/StarRating";
+import { useState } from "react";
 
 const WritingReviewPage = () => {
+    const [select, setSelect] = useState('1');
+
+    // radio func
+    const selectRadioFunc = (e) => {
+        setSelect(e.target.value)
+    }
+
     return (
         <>
             <Background>
@@ -15,6 +23,19 @@ const WritingReviewPage = () => {
                         <ContentText color={'white'} size={'13px'}>저자</ContentText>
                         <StarRating rating={3.5} size={'20px'} />
                     </BookImageBox>
+                    {/* book type */}
+                    <div style={{height: 20}} />
+                    <RadioContainer>
+                        <RadioBox>
+                            <RadioButton type='radio' value='1' checked={select === '1'} onChange={selectRadioFunc} />
+                            <ContentText color={'white'} size={'13px'}>종이책</ContentText>
+                        </RadioBox>
+                        <RadioBox>
+                            <RadioButton type='radio' value='2' checked={select === '2'} onChange={selectRadioFunc} />
+                            <ContentText color={'white'} size={'13px'} >전자책</ContentText>
+                        </RadioBox>
+                    </RadioContainer>
+
                     {/* input date */}
                     <DateInputBox>
                         <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
@@ -109,6 +130,11 @@ const QuoteColumnAlignContainer = styled.div`
     align-items: center;
 `;
 
+const RadioContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
 // box
 const BookImageBox = styled.div`
     display: flex;
@@ -148,6 +174,13 @@ const ReviewBox = styled.div`
     flex: 1;
     flex-direction: column;
     align-items: center;
+`;
+
+const RadioBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin: 5px;
 `;
 
 // component
@@ -229,5 +262,8 @@ const Button = styled.div`
     text-align: center;
 `;
 
+const RadioButton = styled.input`
+
+`;
 
 export default WritingReviewPage;
