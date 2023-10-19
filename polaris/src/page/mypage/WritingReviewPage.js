@@ -4,10 +4,31 @@ import { useState } from "react";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
+    const [quote, setQuote] = useState([
+            <QuoteInputBox>
+                <QuoteInput style={{flex: 0.8}} />
+                <QuotePageInput style={{flex: 0.2}}/>
+            </QuoteInputBox>]);
 
     // radio func
     const selectRadioFunc = (e) => {
         setSelect(e.target.value)
+    }
+
+    // quote func
+    const inputQuoteFunc = () => {
+        setQuote(quote.concat(
+            <QuoteInputBox>
+                <QuoteInput style={{flex: 0.8}} />
+                <QuotePageInput style={{flex: 0.2}}/>
+            </QuoteInputBox>
+            )
+        )
+    }
+
+    const deleteQuoteFunc = () => {
+        if (quote.length <= 1) return;
+        else setQuote(quote.slice(0, quote.length - 1))
     }
 
     return (
@@ -53,11 +74,13 @@ const WritingReviewPage = () => {
                                 <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
                                 <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
                             </QuoteInputTitleBox>
-                            <QuoteInputBox>
-                                <QuoteInput style={{flex: 0.8}} />
-                                <QuotePageInput style={{flex: 0.2}}/>
-                            </QuoteInputBox>
-                            <ContentText color={'white'} size={'12px'} style={{margin: 'auto', float:'right'}}>+구절 추가하기</ContentText>
+                            {quote}
+                            <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>
+                                <ContentText color={'red'} size={'12px'}>+ 구절 삭제하기</ContentText>
+                            </DeleteQuoteButton>
+                            <AddQuoteButton onClick={() => inputQuoteFunc()}>
+                                <ContentText color={'white'} size={'12px'}>+ 구절 추가하기</ContentText>
+                            </AddQuoteButton>
                     </QuoteColumnAlignContainer>
                     </QuoteContainer>
                     {/* input review */}
@@ -264,6 +287,18 @@ const Button = styled.div`
 
 const RadioButton = styled.input`
 
+`;
+
+const AddQuoteButton = styled.button`
+    float: right;
+    background: none;
+    border: none;
+`;
+
+const DeleteQuoteButton = styled.button`
+    float: left;
+    background: none;
+    border: none;
 `;
 
 export default WritingReviewPage;
