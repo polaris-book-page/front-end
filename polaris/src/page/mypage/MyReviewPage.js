@@ -4,10 +4,32 @@ import BookReviewItem from "../../component/BookReviewItem";
 import ReviewRatingChart from "../../component/ReviewRatingChart";
 import { ReactComponent as ICStar } from "../../assets/ic-star-white.svg";
 import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const MyReviewPage = () => {
+
+
+    // fetch API
+    const fetchReviewList = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log("data: ",data);
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // react-query
+    const ReviewQuery = useQuery({
+        queryKey: ['review-list'],
+        queryFn: fetchReviewList
+    })
+
     return (
-        <>
+        !ReviewQuery.isloading && <>
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
@@ -24,15 +46,11 @@ const MyReviewPage = () => {
                     </StatisticsContainer>
                     <div style={{height: 20}} />
                     <Reviewcontainer>
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
+                        {
+                            ReviewQuery.data.map((item, index) => {
+                                return <BookReviewItem rate={item.evaluation} image={item.bookImage} />
+                            })
+                        }
                     </Reviewcontainer>
                 </Container>
             </Background>
