@@ -239,6 +239,7 @@ const QuoteInput = styled.input`
     padding: 4px;
     font-family: "KOTRA_GOTHIC";
     margin: 3px;
+    padding: 5px 10px;
 `;
 
 const QuotePageInput = styled.input`
@@ -250,6 +251,7 @@ const QuotePageInput = styled.input`
     font-family: "KOTRA_GOTHIC";
     text-align: center;
     margin: 3px;
+    padding: 5px 10px;
 `;
 
 const ReviewInput = styled.textarea`
