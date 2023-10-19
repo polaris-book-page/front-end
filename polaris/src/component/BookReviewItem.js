@@ -35,7 +35,7 @@ const Container = styled.div`
     align-items: center;
     background-color: #CBCDFA;
     width: 180px;
-    height: 500px;
+    height: 230px;
     margin: 40px 30px;
     border-radius: 30px;
     box-shadow: 0px 2px 7px #00000022;
