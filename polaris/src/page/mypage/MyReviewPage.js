@@ -28,6 +28,14 @@ const MyReviewPage = () => {
         queryFn: fetchReviewList
     })
 
+    // average a evaluation
+    const funcAverage = () => {
+        let init = 0;
+        const sum = ReviewQuery.data.reduce((acc, item) => acc + item.evaluation, init);
+        let avg = sum/ReviewQuery.data.length;
+        return avg;
+    }
+
     return (
         !ReviewQuery.isloading && <>
             <Background>
@@ -36,10 +44,10 @@ const MyReviewPage = () => {
                     <StatisticsContainer>
                         <StatisticsBox>
                             <ICStar width={23} style={{marginRight: 5, marginTop: -6}} />
-                            <TitleText color={'#ffffff'} size={'20px'}>3.85</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{funcAverage()}</TitleText>
                             <div style={{width: 20}} />
                             <ICBook width={20} style={{marginRight: 7, marginTop: -4}}/>
-                            <TitleText color={'#ffffff'} size={'20px'}>56</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.length}</TitleText>
                         </StatisticsBox>
                         {/* statistics lib */}
                         <ReviewRatingChart />
@@ -48,7 +56,7 @@ const MyReviewPage = () => {
                     <Reviewcontainer>
                         {
                             ReviewQuery.data.map((item, index) => {
-                                return <BookReviewItem rate={item.evaluation} image={item.bookImage} />
+                                return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} />
                             })
                         }
                     </Reviewcontainer>
