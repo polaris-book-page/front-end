@@ -123,7 +123,7 @@ const Background = styled.div`
     position: flex;
     justify-content: center;
     background-color: #4659a9;
-    height: 90vh;
+    height: 100vh;
     padding: 20px 5%;
     overflow: none;
 `;
