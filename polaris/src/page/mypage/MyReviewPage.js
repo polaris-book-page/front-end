@@ -4,35 +4,61 @@ import BookReviewItem from "../../component/BookReviewItem";
 import ReviewRatingChart from "../../component/ReviewRatingChart";
 import { ReactComponent as ICStar } from "../../assets/ic-star-white.svg";
 import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const MyReviewPage = () => {
+
+
+    // fetch API
+    const fetchReviewList = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log("data: ",data);
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // react-query
+    const ReviewQuery = useQuery({
+        queryKey: ['review-list'],
+        queryFn: fetchReviewList
+    })
+
+    // average a evaluation
+    const funcAverage = () => {
+        let init = 0;
+        const sum = ReviewQuery.data.reduce((acc, item) => acc + item.evaluation, init);
+        let avg = sum/ReviewQuery.data.length;
+        return avg;
+    }
+
     return (
-        <>
+        !ReviewQuery.isLoading && <>
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
                     <StatisticsContainer>
                         <StatisticsBox>
                             <ICStar width={23} style={{marginRight: 5, marginTop: -6}} />
-                            <TitleText color={'#ffffff'} size={'20px'}>3.85</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{funcAverage()}</TitleText>
                             <div style={{width: 20}} />
                             <ICBook width={20} style={{marginRight: 7, marginTop: -4}}/>
-                            <TitleText color={'#ffffff'} size={'20px'}>56</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.length}</TitleText>
                         </StatisticsBox>
                         {/* statistics lib */}
                         <ReviewRatingChart />
                     </StatisticsContainer>
                     <div style={{height: 20}} />
                     <Reviewcontainer>
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
-                        <BookReviewItem />
+                        {
+                            ReviewQuery.data.map((item, index) => {
+                                return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} />
+                            })
+                        }
                     </Reviewcontainer>
                 </Container>
             </Background>

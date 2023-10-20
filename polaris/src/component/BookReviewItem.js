@@ -2,7 +2,7 @@ import styled from "styled-components";
 import StarRatingVertical from "./StarRatingVertical";
 import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
 
-const BookReviewItem = () => {
+const BookReviewItem = ({rate, image}) => {
 
     return (
         <>
@@ -11,8 +11,8 @@ const BookReviewItem = () => {
                     <Bookmark>
                         <ICBookmark width={35} />
                     </Bookmark>
-                    <StarRatingVertical rating={3.5} size={'18px'} />
-                    <Image />
+                    <StarRatingVertical rating={rate} size={'18px'} />
+                    <Image src={image} />
                 </BookContainer>
                 <TitleText>책 이름</TitleText>
             </Container>
@@ -35,7 +35,7 @@ const Container = styled.div`
     align-items: center;
     background-color: #CBCDFA;
     width: 180px;
-    height: 500px;
+    height: 230px;
     margin: 40px 30px;
     border-radius: 30px;
     box-shadow: 0px 2px 7px #00000022;
