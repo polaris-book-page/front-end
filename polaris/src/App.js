@@ -1,5 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import HomePage from "./page/HomePage.js"
 import MainPage from "./page/MainPage.js"
 import RecommendPage from "./page/RecommendPage.js"
@@ -21,7 +23,20 @@ import RegisterEvaluatePage from "./page/auth/RegisterEvaluatePage.js"
 import ForgotPasswordPage from "./page/auth/ForgotPasswordPage.js"
 import ResetPasswordPage from './page/auth/ResetPasswordPage';
 
+const checkUser = async () => {
+  const response = await axios.get(`http://localhost:3001/user/check`, {
+    withCredentials: true,
+  });
+  console.log("checkuser data: ", response.data)
+  return response.data;
+};
+
 function App() {
+  const { data } = useQuery({
+    queryKey: ['check'],
+    queryFn: checkUser
+  })
+
   return (
     <>
       <Router>
