@@ -6,6 +6,7 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from '@tanstack/react-query'
+import NavBar from "../../component/NavBar";
 
 const RegisterPage = () =>{
     const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
@@ -169,6 +170,7 @@ const RegisterPage = () =>{
 
     return (
         <>
+            <NavBar/>
             <Background>
                 <RegisterContainer >
                     <TitleText>REGISTER</TitleText>

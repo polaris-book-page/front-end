@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import moment from 'moment/moment';
+import NavBar from "../../component/NavBar";
 
 const CalendarPage = () => {
     const [value, onChange] = useState(new Date());
@@ -35,6 +36,7 @@ const CalendarPage = () => {
 
     return (
         <>
+            <NavBar/>
             <Container>
                 <div style={{height: 50}} />
                 <TitleText color={'#4659A9'} size={'25px'}>월별 달력</TitleText>

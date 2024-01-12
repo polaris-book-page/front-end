@@ -9,6 +9,7 @@ import BookProgressDropDown from '../component/BookProgressDropDown';
 const BookInfoPage = () => {
   return (
     <>
+      <NavBar />
       <Container>
         {/* book info */}
         <TitleText style={{ justifySelf: 'center' }}  color={'#4659A9'} size={'24px'}>도서 제목</TitleText>

@@ -10,7 +10,7 @@ import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
 const MyPage = () => {
   return (
     <>
-
+      <NavBar/>
       <BookContainer>
         <Background>
           <div style={{ height: '30px' }} />

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import styled from "styled-components";
-
+import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 import { IoSearch } from "react-icons/io5";
 import GridBox from "../../component/GridBox";
@@ -124,6 +124,7 @@ const SearchResultPage = () => {
 
     return (
         <>
+            <NavBar/>
             <MainContainer className="container">
             <SearchBox>
                 <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>

@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import StarRating from "../../component/StarRating";
+import NavBar from "../../component/NavBar";
 
 const WritingReviewPage = () => {
     return (
         <>
+            <NavBar/>
             <Background>
                 <Container>
                     {/* book image */}

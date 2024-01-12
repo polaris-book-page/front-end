@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import NavBar from "../../component/NavBar.js";
+import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 import { ReactComponent as Upload } from "../../assets/ic-upload.svg";
 

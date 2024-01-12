@@ -1,5 +1,12 @@
+import NavBar from "../../component/NavBar";
+
 const StatisticsPage = () =>{
-    return (<>StatisticsPage</>)
+    return (
+        <>
+            <NavBar/>
+            StatisticsPage
+        </>
+    )
 }
 
 export default StatisticsPage;
