@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import StarRating from "../../component/StarRating";
 import { useState } from "react";
+import CustomDatePicker from "../../component/CustomDatePicker";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -8,7 +9,7 @@ const WritingReviewPage = () => {
             <QuoteInputBox>
                 <QuoteInput style={{flex: 0.8}} />
                 <QuotePageInput style={{flex: 0.2}}/>
-            </QuoteInputBox>]);
+        </QuoteInputBox>]);
 
     // radio func
     const selectRadioFunc = (e) => {
@@ -40,9 +41,19 @@ const WritingReviewPage = () => {
                         <ContentContainer>
                         {/* book image */}
                         <BookImageBox>
-                            <BookImage>
-                                <img style={{ width: 80, height: 130 }} />                            
-                            </BookImage>
+                            <PlanetBox>
+                                <BookImage>
+                                    <img style={{ width: 120, height: 200 }} />                            
+                                </BookImage>
+                                {/* select plenet image */}
+                                <PlanetSelBox>
+                                    <ContentText color={'white'} size={'12px'} style={{textAlign: 'center'}}>통계 페이지에 <br />들어가요!</ContentText>
+                                    <AddPlanet>
+                                        <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
+                                    </AddPlanet>
+                                </PlanetSelBox>
+                                </PlanetBox>
+                                <div style={{marginBottom: 20}} />
                             <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
                             <ContentText color={'white'} size={'13px'}>저자</ContentText>
                             <StarRating rating={3.5} size={'20px'} />
@@ -63,10 +74,10 @@ const WritingReviewPage = () => {
                         {/* input date */}
                         <DateInputBox>
                             <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                            <DateInput />
+                            <CustomDatePicker setDate='2024-01-01' />
                             <div style={{height: 20}} />
                             <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                            <DateInput />
+                            <CustomDatePicker setDate='2020-01-13' />
                         </DateInputBox>
                         {/* dashed line */}
                         <Line />
@@ -211,6 +222,7 @@ const BookImageBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    
 `;
 
 const DateInputBox = styled.div`
@@ -254,28 +266,24 @@ const RadioBox = styled.div`
     margin: 5px;
 `;
 
+const PlanetBox = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+`;
+
+const PlanetSelBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+`;
+
 // component
 const BookImage = styled.div`
     background-color: #4659a9;
     border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
-`;
-
-const DateInput = styled.input`
-    font-size: 14px;
-    flex: 1;
-    color: white;
-    border-bottom: solid;
-    border-color: white;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    background: transparent;
-    padding: 4px;
-    text-align: center;
-    font-family: "KOTRA_BOLD";
-    
+    padding: 17px;
+    grid-column: 2;
 `;
 
 const QuoteInput = styled.input`
@@ -352,5 +360,20 @@ const DeleteQuoteButton = styled.button`
     background: none;
     border: none;
 `;
+
+const AddPlanet = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    border-style: dashed;
+    border-color: #4659A9;
+    border-radius: 50px;
+    grid-column: 3;
+    text-align: center;
+`
 
 export default WritingReviewPage;

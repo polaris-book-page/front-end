@@ -154,3 +154,38 @@
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
 }
+
+.datePicker-header{
+  background-color: transparent;
+  font-family: 'KOTRA_BOLD';
+  color: white;
+  border: none;
+  border-bottom-color: white;
+  border-bottom-style: solid;
+  text-align: center;
+}
+
+.datePicker-wrapper{
+  background-color: #ffffffaa;
+  font-family: 'KOTRA_GOTHIC';
+}
+
+.datePicker-select{
+  background-color: #D5CFFB;
+  border-radius: 50%;
+
+  &:hover {
+    border-radius: 50%;
+    background-color: #D5CFFB;
+  }
+}
+
+.datePicker-unselect{
+  color: white;
+  &:hover {
+    border-radius: 50%;
+    background-color: #D5CFFBaa;
+    transition: background-color 0.5s 
+  }
+  
+}
