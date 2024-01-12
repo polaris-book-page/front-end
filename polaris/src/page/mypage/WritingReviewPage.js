@@ -15,7 +15,8 @@ const WritingReviewPage = () => {
     
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
-    
+    const [selPlanet, setSelPlanet] = useState("")
+
     const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png')]
     // radio func
     const selectRadioFunc = (e) => {
@@ -54,15 +55,18 @@ const WritingReviewPage = () => {
                                 </BookImage>
                                 {/* select plenet image */}
                                 <PlanetSelBox>
-                                        <PlenetList $isClicked={isOpen} >
-                                            {plenetImgArr.map((item) => {
-                                                return (<PlenetComponents src={item} />)
-                                            })}
+                                    <PlenetList $isClicked={isOpen} >
+                                        {plenetImgArr.map((item) => {
+                                            return (<PlenetComponents src={item} onClick={() => setSelPlanet(item)} />)
+                                        })}
                                     </PlenetList>
                                     <div style={{margin: 5}} />
-                                    <AddPlanet ref={dropDownRef} onClick={() => setIsOpen(!isOpen)}>
-                                        <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
-                                    </AddPlanet>
+                                    {selPlanet === "" ?
+                                        <AddPlanet ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}>
+                                            <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
+                                        </AddPlanet> :  <SelectedPlanetImg src={selPlanet} ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}/>
+                                    }
+
                                     <div style={{margin: 3}} />
                                     <ContentText color={'white'} size={'12px'} style={{ textAlign: 'center' }}>통계 페이지에 <br />들어가요!</ContentText>
                                 </PlanetSelBox>
@@ -389,6 +393,18 @@ const AddPlanet = styled.button`
     grid-column: 3;
     text-align: center;
 `
+
+const SelectedPlanetImg = styled.img`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 70px;
+    height: 70px;
+    grid-column: 3;
+    text-align: center;
+`
+
 const PlenetList = styled.div`
     width: 120px;
     padding: 10px;
