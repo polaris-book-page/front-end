@@ -38,6 +38,7 @@ const MyReviewPage = () => {
 
     return (
         !ReviewQuery.isLoading && <>
+            <NavBar/>
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>

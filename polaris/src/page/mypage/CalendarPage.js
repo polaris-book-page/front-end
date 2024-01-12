@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import moment from 'moment/moment';
+import NavBar from "../../component/NavBar";
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -34,6 +35,7 @@ const CalendarPage = () => {
     return (
         !ReviewQuery.isLoading && 
         <>
+            <NavBar/>
             <Container>
                 <div style={{height: 50}} />
                 <TitleText color={'#4659A9'} size={'25px'}>월별 달력</TitleText>

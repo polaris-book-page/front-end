@@ -1,28 +1,67 @@
 import styled from "styled-components";
-import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from "react";
+import NavBar from "../../component/NavBar";
 
 const LoginPage = () =>{
+    const [_id, setUserId] = useState('')
+	const [password, setPassword] = useState('')
+    const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    
+    const { mutate } = useMutation({
+        mutationFn: async (userInfo) => {
+            const { data } = await axios.post(`http://localhost:3001/user/login`, userInfo, { withCredentials: true })
+            console.log("data", data)
+            return data;
+        }, 
+        onSuccess: (data) => {
+            console.log("login success")
+            queryClient.invalidateQueries(['check']);
+            CheckUserAuth()
+            goBack()
+        },
+        onError: () => {
+            console.log("login failure")
+        }
+    });
+
+    let goBack = () => {
+        navigate(-1);
+    };
+
+    const CheckUserAuth = () => {
+        const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+        console.log("UserAuthInfoCheck", UserAuthInfoCheck);
+    };
+
+    const handleLogin = () => {
+        mutate({ _id, password });
+    }
     return (
         <>
+            <NavBar/>
             <Background>
                 <LoginContainer >
                     <TitleText>LOGIN</TitleText>
                     <InputContainer>
                     <FlotingLabelContainer className="has-float-label">
-                        <FlotingLabelInput type="text" placeholder=""/>
+                        <FlotingLabelInput type="text" placeholder="" onChange={(e) => {setUserId(e.target.value)}}/>
                         <FlotingLabelTitle>아이디</FlotingLabelTitle>
                     </FlotingLabelContainer>
                     </InputContainer>
                     <InputContainer>
                         <FlotingLabelContainer className="has-float-label">
-                            <FlotingLabelInput type="password" placeholder=""/>
+                            <FlotingLabelInput type="password" placeholder="" onChange={(e) => {setPassword(e.target.value)}}/>
                             <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
                         </FlotingLabelContainer>
                     </InputContainer>
                     <BtnContainer>
                         <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
-                        <LoginBtn> 로그인 </LoginBtn>
+                        <LoginBtn onClick={handleLogin}> 로그인 </LoginBtn>
                     </BtnContainer>
                 </LoginContainer>
             </Background>

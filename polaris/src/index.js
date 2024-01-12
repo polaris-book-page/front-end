@@ -8,7 +8,6 @@ import "./assets/fonts/font.css";
 import "./float-label.min.css"
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css'
-import NavBar from "./component/NavBar";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -25,7 +24,6 @@ const queryClient = new QueryClient({
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <NavBar />
       <App />
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>

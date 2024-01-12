@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import StarRating from "../../component/StarRating";
+import NavBar from "../../component/NavBar";
 import { useState } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
 
@@ -34,6 +35,7 @@ const WritingReviewPage = () => {
 
     return (
         <>
+            <NavBar/>
             <Background>
                 <Container>
                     {/* scroll */}

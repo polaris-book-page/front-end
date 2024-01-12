@@ -1,10 +1,11 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 import styled from "styled-components";
 import FooterBar from "../../component/FooterBar";
 import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import NavBar from "../../component/NavBar";
 
 const BooketListPage = () =>{
     const [currentPage, setcurrentPage] = useState(1)
@@ -13,22 +14,29 @@ const BooketListPage = () =>{
     const [slicePages, setSlicePages] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState([]);
     const [currentItems, setCurrentItems] = useState([]);
+    const [currentUser, setCurrentUser] = useState([]);
     const pagePerLimit = 10
     const pageArrayLimit = 5
 
+    const queryClient = useQueryClient()
+    
     const { isLoading, error, data } = useQuery({
         queryKey: ['likeList'],
         queryFn: async () => {
-            const response = await fetch(
-                "http://localhost:3001/mypage/like/list",
-                { credentials: 'include',  }
-            );
-            console.log("loginUser: " + JSON.stringify(response))
-            const data = await response.json();
-            return data;
+            const response = await axios.get('http://localhost:3001/mypage/like/list', {
+                withCredentials: true,
+            })
+            return response.data;
         },
     });
-    
+    const checkUser = queryClient.getQueryData(["check"])
+    if (checkUser) {
+        console.log("checkUser", checkUser.userId)
+        if (currentUser !== checkUser.userId) {
+            setCurrentUser(checkUser.userId)
+        }
+    }
+
     useEffect(() => {
         const newTotalPage = [];
         const newSlicePages = [];
@@ -50,7 +58,7 @@ const BooketListPage = () =>{
             }
             setSlicePages(newSlicePages);
         }
-    }, [data]);
+    }, [data, currentUser]);
 
     useEffect(() => {
         setcurrentPage(1);
@@ -80,6 +88,7 @@ const BooketListPage = () =>{
 
     return (
         <>
+            <NavBar/>
             <MainContainer className="container">
                 <ResultText>{data[0].nickname}님의 북킷리스트({data.length})</ResultText>
                 {currentItems && currentItems.map((item, index) => (

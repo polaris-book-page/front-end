@@ -1,5 +1,12 @@
+import NavBar from "../component/NavBar";
+
 const HomePage = () =>{
-    return (<>{"port: " + process.env.REACT_APP_PORT}</>)
+    return (
+        <>
+            <NavBar />
+            {"port: " + process.env.REACT_APP_PORT}
+        </>
+    )
 }
 
 export default HomePage;

@@ -1,5 +1,11 @@
+import NavBar from "../../component/NavBar";
+
 const CompletePage = () =>{
-    return (<>CompletePage</>)
+    return (
+        <>
+            <NavBar/>
+            CompletePage
+        </>)
 }
 
 export default CompletePage;
