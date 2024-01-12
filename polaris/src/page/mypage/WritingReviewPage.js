@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import StarRating from "../../component/StarRating";
 import NavBar from "../../component/NavBar";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
+import useDetectClose from "../../component/hook/useDetectClose";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -11,7 +12,11 @@ const WritingReviewPage = () => {
                 <QuoteInput style={{flex: 0.8}} />
                 <QuotePageInput style={{flex: 0.2}}/>
         </QuoteInputBox>]);
-
+    
+    const dropDownRef = useRef(null);
+    const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
+    
+    const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png')]
     // radio func
     const selectRadioFunc = (e) => {
         setSelect(e.target.value)
@@ -49,14 +54,20 @@ const WritingReviewPage = () => {
                                 </BookImage>
                                 {/* select plenet image */}
                                 <PlanetSelBox>
-                                    <ContentText color={'white'} size={'12px'} style={{textAlign: 'center'}}>통계 페이지에 <br />들어가요!</ContentText>
-                                    <div style={{margin: 3}} />
-                                    <AddPlanet>
+                                        <PlenetList $isClicked={isOpen} >
+                                            {plenetImgArr.map((item) => {
+                                                return (<PlenetComponents src={item} />)
+                                            })}
+                                    </PlenetList>
+                                    <div style={{margin: 5}} />
+                                    <AddPlanet ref={dropDownRef} onClick={() => setIsOpen(!isOpen)}>
                                         <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
                                     </AddPlanet>
+                                    <div style={{margin: 3}} />
+                                    <ContentText color={'white'} size={'12px'} style={{ textAlign: 'center' }}>통계 페이지에 <br />들어가요!</ContentText>
                                 </PlanetSelBox>
-                                </PlanetBox>
-                                <div style={{marginBottom: 20}} />
+                            </PlanetBox>
+                            <div style={{marginBottom: 20}} />
                             <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
                             <ContentText color={'white'} size={'13px'}>저자</ContentText>
                             <StarRating rating={3.5} size={'20px'} />
@@ -364,7 +375,7 @@ const DeleteQuoteButton = styled.button`
     border: none;
 `;
 
-const AddPlanet = styled.div`
+const AddPlanet = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -378,5 +389,30 @@ const AddPlanet = styled.div`
     grid-column: 3;
     text-align: center;
 `
+const PlenetList = styled.div`
+    width: 120px;
+    padding: 10px;
+    background-color: #ffffff44;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    opacity: 0;
+    gap: 10px;
+    visibility: hidden;
+    border-radius: 10px;
+    align-self: center;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+
+    ${({ $isClicked }) => 
+    $isClicked &&
+    css`
+        opacity: 1;
+        visibility: visible;
+    `};
+
+`
+
+const PlenetComponents = styled.img`
+    width: 25px;
+`;
 
 export default WritingReviewPage;
