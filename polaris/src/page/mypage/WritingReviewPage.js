@@ -50,6 +50,7 @@ const WritingReviewPage = () => {
                                 {/* select plenet image */}
                                 <PlanetSelBox>
                                     <ContentText color={'white'} size={'12px'} style={{textAlign: 'center'}}>통계 페이지에 <br />들어가요!</ContentText>
+                                    <div style={{margin: 3}} />
                                     <AddPlanet>
                                         <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
                                     </AddPlanet>
