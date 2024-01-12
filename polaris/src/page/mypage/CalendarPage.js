@@ -3,38 +3,37 @@ import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import moment from 'moment/moment';
 import NavBar from "../../component/NavBar";
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 const CalendarPage = () => {
     const [value, onChange] = useState(new Date());
 
-    const port = process.env.REACT_APP_PORT
-    const host = process.env.REACT_APP_API_URL
+    // fetch API
+    const fetchReviewList = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log("data: ",data);
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     // react-query
-
-    const obj = [
-        {
-            endDate: "2023-09-20",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        },
-        {
-            endDate: "2023-09-21",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        },
-        {
-            endDate: "2023-09-24",
-            image: "https://polaris-book.s3.ap-northeast-2.amazonaws.com/book/1691744659471_app_logo.png"
-        }
-    
-    ]
+    const ReviewQuery = useQuery({
+        queryKey: ['review-list'],
+        queryFn: fetchReviewList
+    })
 
     // save mark book: start date, end date
     const CalIndexFunc = (date) => {
-        console.log("date: ", date)
-        return obj.findIndex((x) => x.endDate === moment(date).format("YYYY-MM-DD"))
+        return ReviewQuery.data.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
     }
 
     return (
+        !ReviewQuery.isLoading && 
         <>
             <NavBar/>
             <Container>
@@ -49,10 +48,11 @@ const CalendarPage = () => {
                         navigationLabel={null}
                         showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
                         tileContent={({ date }) => {
-                            if (obj.find((x) => x.endDate === moment(date).format("YYYY-MM-DD"))) {
+                            if (ReviewQuery.data.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
+                                console.log(CalIndexFunc(date))
                                 return (
                                     <>
-                                        <BookImage src={obj[CalIndexFunc(date)]['image']} />
+                                        <BookImage src={ReviewQuery.data[CalIndexFunc(date)]['bookImage']} />
                                     </>
                                 )
                             }
@@ -95,6 +95,7 @@ const BookImage = styled.img`
     display: flex;
     width: 65px;
     height: 100px;
+    border-radius: 5px;
     background-color: #dddddd;
 `;
 

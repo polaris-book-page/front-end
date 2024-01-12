@@ -1,56 +1,106 @@
 import styled from "styled-components";
 import StarRating from "../../component/StarRating";
 import NavBar from "../../component/NavBar";
+import { useState } from "react";
 
 const WritingReviewPage = () => {
+    const [select, setSelect] = useState('1');
+    const [quote, setQuote] = useState([
+            <QuoteInputBox>
+                <QuoteInput style={{flex: 0.8}} />
+                <QuotePageInput style={{flex: 0.2}}/>
+            </QuoteInputBox>]);
+
+    // radio func
+    const selectRadioFunc = (e) => {
+        setSelect(e.target.value)
+    }
+
+    // quote func
+    const inputQuoteFunc = () => {
+        setQuote(quote.concat(
+            <QuoteInputBox>
+                <QuoteInput style={{flex: 0.8}} />
+                <QuotePageInput style={{flex: 0.2}}/>
+            </QuoteInputBox>
+            )
+        )
+    }
+
+    const deleteQuoteFunc = () => {
+        if (quote.length <= 1) return;
+        else setQuote(quote.slice(0, quote.length - 1))
+    }
+
     return (
         <>
             <NavBar/>
             <Background>
                 <Container>
-                    {/* book image */}
-                    <BookImageBox>
-                        <BookImage>
-                            <img style={{ width: 80, height: 130 }} />                            
-                        </BookImage>
-                        <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
-                        <ContentText color={'white'} size={'13px'}>저자</ContentText>
-                        <StarRating rating={3.5} size={'20px'} />
-                    </BookImageBox>
-                    {/* input date */}
-                    <DateInputBox>
-                        <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                        <DateInput />
+                    {/* scroll */}
+                    <ScrollbarContainer>
+                        <ContentContainer>
+                        {/* book image */}
+                        <BookImageBox>
+                            <BookImage>
+                                <img style={{ width: 80, height: 130 }} />                            
+                            </BookImage>
+                            <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
+                            <ContentText color={'white'} size={'13px'}>저자</ContentText>
+                            <StarRating rating={3.5} size={'20px'} />
+                        </BookImageBox>
+                        {/* book type */}
                         <div style={{height: 20}} />
-                        <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                        <DateInput />
-                    </DateInputBox>
-                    {/* dashed line */}
-                    <Line />
-                    {/* input quote */}
-                    <QuoteContainer>
-                        <QuoteColumnAlignContainer>
-                            <QuoteInputTitleBox>
-                                <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
-                                <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
-                            </QuoteInputTitleBox>
-                            <QuoteInputBox>
-                                <QuoteInput style={{flex: 0.8}} />
-                                <QuotePageInput style={{flex: 0.2}}/>
-                            </QuoteInputBox>
-                            <ContentText color={'white'} size={'12px'} style={{margin: 'auto', float:'right'}}>+구절 추가하기</ContentText>
-                    </QuoteColumnAlignContainer>
-                    </QuoteContainer>
-                    {/* input review */}
-                    <div style={{height: 20}} />
-                    <ReviewBox>
-                        <TitleText color='white' size='16px'>리뷰</TitleText>
-                        <ReviewInput />
-                    </ReviewBox>
-                    <div style={{height: 10}} />
-                    <Button>
-                        <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
-                    </Button>
+                        <RadioContainer>
+                            <RadioBox>
+                                <RadioButton type='radio' value='1' checked={select === '1'} onChange={selectRadioFunc} />
+                                <ContentText color={'white'} size={'13px'}>종이책</ContentText>
+                            </RadioBox>
+                            <RadioBox>
+                                <RadioButton type='radio' value='2' checked={select === '2'} onChange={selectRadioFunc} />
+                                <ContentText color={'white'} size={'13px'} >전자책</ContentText>
+                            </RadioBox>
+                        </RadioContainer>
+
+                        {/* input date */}
+                        <DateInputBox>
+                            <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
+                            <DateInput />
+                            <div style={{height: 20}} />
+                            <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
+                            <DateInput />
+                        </DateInputBox>
+                        {/* dashed line */}
+                        <Line />
+                        {/* input quote */}
+                        <QuoteContainer>
+                            <QuoteColumnAlignContainer>
+                                <QuoteInputTitleBox>
+                                    <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
+                                    <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
+                                </QuoteInputTitleBox>
+                                {quote}
+                                <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>{
+                                    quote.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
+                                }
+                                </DeleteQuoteButton>
+                                <AddQuoteButton onClick={() => inputQuoteFunc()}>
+                                    <ContentText color={'white'} size={'12px'}>+ 구절 추가하기</ContentText>
+                                </AddQuoteButton>
+                        </QuoteColumnAlignContainer>
+                        </QuoteContainer>
+                        {/* input review */}
+                        <div style={{height: 20}} />
+                        <ReviewBox>
+                            <TitleText color='white' size='16px'>리뷰</TitleText>
+                            <ReviewInput />
+                        </ReviewBox>
+                        <div style={{height: 10}} />
+                        <Button>
+                            <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
+                        </Button>
+                        </ContentContainer>
+                    </ScrollbarContainer>
                 </Container>
             </Background>
         </>
@@ -75,18 +125,25 @@ const Background = styled.div`
     position: flex;
     justify-content: center;
     background-color: #4659a9;
-    padding: 20px;
+    height: 90vh;
+    padding: 20px 5%;
+    overflow: none;
 `;
 
 const Container = styled.div`
     display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     margin: auto;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     flex-direction: column;
     padding: 40px 20px;
-    height: 100vh;
+    height: 80vh;
     width: 90vh;
     box-shadow: 0px 2px 7px #00000022;
 
@@ -99,6 +156,40 @@ const Container = styled.div`
     }
 `;
 
+const ScrollbarContainer = styled.div`
+    display: flex;
+    overflow-y: scroll;
+    width: 100%;
+    justify-content: center;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 6px;
+    }
+
+    @media screen and (max-width: 900px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (max-width: 500px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
+const ContentContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+    gap: 10px 0;
+`;
+
 const QuoteContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -109,6 +200,12 @@ const QuoteColumnAlignContainer = styled.div`
     flex-direction: column;
     flex: 1;
     align-items: center;
+`;
+
+const RadioContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 `;
 
 // box
@@ -152,6 +249,13 @@ const ReviewBox = styled.div`
     align-items: center;
 `;
 
+const RadioBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    margin: 5px;
+`;
+
 // component
 const BookImage = styled.div`
     background-color: #4659a9;
@@ -184,6 +288,7 @@ const QuoteInput = styled.input`
     padding: 4px;
     font-family: "KOTRA_GOTHIC";
     margin: 3px;
+    padding: 5px 10px;
 `;
 
 const QuotePageInput = styled.input`
@@ -195,6 +300,7 @@ const QuotePageInput = styled.input`
     font-family: "KOTRA_GOTHIC";
     text-align: center;
     margin: 3px;
+    padding: 5px 10px;
 `;
 
 const ReviewInput = styled.textarea`
@@ -218,8 +324,10 @@ const Line = styled.div`
 
 `;
 
-const Button = styled.div`
-    width: 45%;
+const Button = styled.button`
+    display: flex;
+    justify-content: center;
+    width: 50%;
     font-family: "KOTRA_BOLD";
     color: white;
     background-color: #4659A9;
@@ -231,5 +339,20 @@ const Button = styled.div`
     text-align: center;
 `;
 
+const RadioButton = styled.input`
+
+`;
+
+const AddQuoteButton = styled.button`
+    float: right;
+    background: none;
+    border: none;
+`;
+
+const DeleteQuoteButton = styled.button`
+    float: left;
+    background: none;
+    border: none;
+`;
 
 export default WritingReviewPage;
