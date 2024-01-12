@@ -77,10 +77,10 @@ const WritingReviewPage = () => {
                         {/* input date */}
                         <DateInputBox>
                             <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                            <CustomDatePicker setDate='2024-01-01' />
+                            <CustomDatePicker setDate='2024-01-01' page="addreview" />
                             <div style={{height: 20}} />
                             <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                            <CustomDatePicker setDate='2020-01-13' />
+                            <CustomDatePicker setDate='2020-01-13' page="addreview" />
                         </DateInputBox>
                         {/* dashed line */}
                         <Line />

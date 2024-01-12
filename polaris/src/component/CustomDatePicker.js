@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as ArrowRight } from "../assets/arrow-right.svg";
 import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 
-const CustomDatePicker = ({ setDate }) => {
+const CustomDatePicker = ({ setDate, page}) => {
     const [selectedDate, setSelectedDate] = useState(new Date(setDate));
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -13,8 +13,9 @@ const CustomDatePicker = ({ setDate }) => {
         <>
             <DatePicker
                 calendarClassName='datePicker-wrapper'
-                dayClassName={(d) => (d.getDate() === selectedDate.getDate() ? "datePicker-select" : "datePicker-unselect" )}
-                className="datePicker-header"
+                dayClassName={(d) => (d.getDate() === selectedDate.getDate() ? "datePicker-select" : "datePicker-unselect")}
+                className={ page == "addreview" ? "datePicker-header-white" : "datePicker-header-blue" }
+                
                 dateFormat='yyyy.MM.dd'
                 shouldCloseOnSelect
                 minDate={new Date('2000-01-01')}

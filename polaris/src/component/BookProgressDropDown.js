@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import useDetectClose from "./hook/useDetectClose";
 import UnitDropDown from "./UnitDropDown";
 import Modal from 'react-modal';
-import DatePicker from 'react-datepicker';
+import CustomDatePicker from "./CustomDatePicker";
 
 
 const BookProgressDropDown = () => {
@@ -52,15 +52,7 @@ const BookProgressDropDown = () => {
                         <Line />
                     </ModalSubTitleBox>
                     <ModalContentBox>
-                        <DatePicker
-                            dateFormat='yyyy.MM.dd'
-                            shouldCloseOnSelect
-                            minDate={new Date('2000-01-01')}
-                            maxDate={new Date()}
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
-                            withPortal
-                        />
+                        <CustomDatePicker page="info" setDate={'2023-01-13'}/>
                     </ModalContentBox>
                     <div style={{height: 25}} />
                     <ModalButton onClick={() => setIsModal(false)}>확인</ModalButton>

@@ -155,7 +155,7 @@
   background-color: #e6e6e6;
 }
 
-.datePicker-header{
+.datePicker-header-white{
   background-color: transparent;
   font-family: 'KOTRA_BOLD';
   color: white;
@@ -163,6 +163,15 @@
   border-bottom-color: white;
   border-bottom-style: solid;
   text-align: center;
+}
+
+.datePicker-header-blue{
+  background-color: transparent;
+  font-family: 'KOTRA_BOLD';
+  color: #4659A9;
+  border: none;
+  text-align: center;
+  font-size: 18px;
 }
 
 .datePicker-wrapper{
