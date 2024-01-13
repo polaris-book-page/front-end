@@ -1,12 +1,113 @@
 import NavBar from "../component/NavBar";
+import styled from "styled-components";
+import FooterBar from "../component/FooterBar";
 
 const HomePage = () =>{
     return (
         <>
             <NavBar />
-            {"port: " + process.env.REACT_APP_PORT}
+            <Background>
+                <Container>
+                    <div style={{margin: 70}} />
+                    <ContentBox>
+                        <TextBox>
+                            <TitleText color={'white'} size={'24px'}>여행자분들의 책 여행 길잡이,</TitleText>
+                            <br />
+                            <TitleText color={'white'} size={'30px'}>:북극성</TitleText>
+                        </TextBox>
+                        <div style={{margin: 20}} />
+                        <Logo />
+                    </ContentBox>
+                    <div style={{margin: 150}} />
+                    <ContentBox>
+                        <TextBox>
+                            <TitleText color={'white'} size={'24px'}>북극성 탐험</TitleText>
+                            <br />
+                            <TitleText color={'#2C2C60'} size={'16px'}>여러분이 지금까지 읽었던 책을 바탕으로 <br />책을 추천해줍니다. <br />그 책들은 여러분들의 다음 여행할 책 선택에 <br />도움을 드릴 것입니다.</TitleText>
+                        </TextBox>
+                        <img src={require('../assets/graphic/home-graphic-1.png')} style={{width: 300}} />
+                    </ContentBox>
+                    <div style={{margin: 150}} />
+                    <ContentBox>
+                        <img src={require('../assets/graphic/home-graphic-2.png')} style={{width: 150}} />
+                        <div style={{margin: 20}} />
+                        <TextBox style={{textAlign: 'end'}}>
+                            <TitleText color={'white'} size={'24px'} style={{textAlign: 'end'}}>오늘의 문장</TitleText>
+                            <br />
+                            <TitleText color={'#2C2C60'} size={'16px'} >보여지는 문장 중 마음에 드는 문장을 하나 선택하여 <br />책을 추천받을 수 있습니다. <br />오늘의 한 문장이 <br />여러분의 책 여행의 북극성이 되어줄 것입니다.</TitleText>
+                        </TextBox>
+                    </ContentBox>
+                    <div style={{margin: 200}} />
+                    <ContentBox>
+                        <TitleText color={'white'} size={'20px'} >다양한 책을 여행하면서 <br />여러분의 우주를 확장해보아요.</TitleText>
+                        <div style={{margin: 10}} />
+                        <img src={require('../assets/graphic/planet-4.png')} style={{width: 80}} />
+                    </ContentBox>
+                    <br />
+                    <ContentBox>
+                        <img src={require('../assets/graphic/home-graphic-3.png')} style={{width: 80}} />
+                        <div style={{margin: 40}} />
+                        <TitleText color={'white'} size={'20px'}>북극성이 여러분의 여행을 위한<br />길잡이가 되어줄 거예요.</TitleText>
+                    </ContentBox>
+                    <div style={{margin: 50}} />
+                    <Button>
+                        북극성 시작하기
+                    </Button>
+                    <div style={{margin: 50}} />
+                </Container>
+            </Background>
+            <FooterBar />
         </>
     )
 }
+
+// text
+const TitleText = styled.text`
+    color: ${(props) => props.color || 'gray'};
+    font-family: "KOTRA_BOLD";
+    font-size: ${(props) => props.size || '12px'};
+`;
+
+const ContentText = styled.text`
+    color: ${(props) => props.color || 'gray'};
+    font-family: "KOTRA_GOTHIC";
+    font-size: ${(props) => props.size || '12px'};
+`
+
+// container
+const Background = styled.div`
+    background: linear-gradient(#6F61C6, #667BD4, #97A4E8, #C9C6F7, #FACECB);
+`;
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+// box
+const ContentBox = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const TextBox = styled.div`
+    
+`;
+
+// component
+const Button = styled.button`
+    background: linear-gradient(#6F61C6, #4659A9, #D5CFFB);
+    background-clip: text;
+    border: none;
+    color: transparent;
+    font-family: "KOTRA_BOLD";
+    font-size: 25px;
+`;
+
+const Logo = styled.img`
+    width: 80px;
+    height: 80px;
+`;
 
 export default HomePage;
