@@ -12,9 +12,9 @@ const CalendarPage = () => {
     // fetch API
     const fetchReviewList = async () => {
         try {
-            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const response = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
-            console.log("data: ",data);
+            
             return data;
         } catch (err) {
             console.log(err)
@@ -23,7 +23,7 @@ const CalendarPage = () => {
 
     // react-query
     const ReviewQuery = useQuery({
-        queryKey: ['review-list'],
+        queryKey: ["review-list"],
         queryFn: fetchReviewList
     })
 
@@ -33,7 +33,7 @@ const CalendarPage = () => {
     }
 
     return (
-        !ReviewQuery.isLoading && 
+        !ReviewQuery.isLoading && ReviewQuery.data &&
         <>
             <NavBar/>
             <Container>
@@ -49,7 +49,6 @@ const CalendarPage = () => {
                         showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
                         tileContent={({ date }) => {
                             if (ReviewQuery.data.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
-                                console.log(CalIndexFunc(date))
                                 return (
                                     <>
                                         <BookImage src={ReviewQuery.data[CalIndexFunc(date)]['bookImage']} />
