@@ -17,7 +17,7 @@ const WritingReviewPage = () => {
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
     const [selPlanet, setSelPlanet] = useState("")
 
-    const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png')]
+    const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png'), require('../../assets/graphic/planet-5.png'), require('../../assets/graphic/planet-6.png'), require('../../assets/graphic/planet-7.png'), require('../../assets/graphic/planet-8.png'), require('../../assets/graphic/planet-9.png'), require('../../assets/graphic/planet-10.png')]
     // radio func
     const selectRadioFunc = (e) => {
         setSelect(e.target.value)
