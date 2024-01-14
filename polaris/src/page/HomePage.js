@@ -1,12 +1,28 @@
 import NavBar from "../component/NavBar";
 import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
+import VerticalFlowText from "../component/VerticalFlowText";
 
-const HomePage = () =>{
+const RandomFlowTextFuxc = () => {
+    // load random quote array 10 sentence(temporary)
+    const quoteArr = ['write1', '문장2', '문장셋', '문장넷', '문장5', '문장6', '문장7', '문장8', '문장9', '문장10']
+    const ranArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ranArr.sort(() => Math.random() - 0.5);
+    
+    // random width
+    let flowTexts = quoteArr.map( (item, index) => {
+        return <VerticalFlowText key={index} quote={item} width={ranArr[index]*10} />
+    })
+
+    return flowTexts;
+}
+
+const HomePage = () => {
     return (
         <>
             <NavBar />
             <Background>
+                {RandomFlowTextFuxc()}
                 <Container>
                     <div style={{margin: 70}} />
                     <ContentBox>
@@ -16,7 +32,7 @@ const HomePage = () =>{
                             <TitleText color={'white'} size={'30px'}>:북극성</TitleText>
                         </TextBox>
                         <div style={{margin: 20}} />
-                        <Logo />
+                        <Logo src={require('../assets/graphic/app-logo.png')} />
                     </ContentBox>
                     <div style={{margin: 150}} />
                     <ContentBox>
@@ -106,8 +122,8 @@ const Button = styled.button`
 `;
 
 const Logo = styled.img`
-    width: 80px;
-    height: 80px;
+    width: 250px;
+    height: 250px;
 `;
 
 export default HomePage;
