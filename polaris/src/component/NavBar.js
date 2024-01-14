@@ -62,7 +62,7 @@ const NavBar = () => {
     <>
       <NavbarContainer>
         <NavBarMenuBox>
-          <NavLogo />
+          <NavLogo src={require('../assets/graphic/app-logo.png')} />
           <div style={{ width: "10px" }} />
           <NavText>메인 페이지</NavText>
           <NavText>북극성 탐험</NavText>
@@ -97,11 +97,10 @@ const NavBarMenuBox = styled.div`
   align-items: center;
 `;
 
-const NavLogo = styled.div`
+const NavLogo = styled.img`
   border-radius: 50px;
   width: 50px;
   height: 50px;
-  background-color: gray;
 `;
 
 const NavBarIconBox = styled.div`
