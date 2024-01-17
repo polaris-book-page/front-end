@@ -22,6 +22,7 @@ import RegisterPage from "./page/auth/RegisterPage.js"
 import RegisterEvaluatePage from "./page/auth/RegisterEvaluatePage.js"
 import ForgotPasswordPage from "./page/auth/ForgotPasswordPage.js"
 import ResetPasswordPage from './page/auth/ResetPasswordPage';
+import EditProfilePage from './page/mypage/EditProfilePage.js'
 
 const checkUser = async () => {
   const response = await axios.get(`http://localhost:3001/user/check`, {
@@ -61,6 +62,7 @@ function App() {
           <Route path="/auth/register/evaluate" element={<RegisterEvaluatePage />}/>
           <Route path="/auth/forget-password" element={<ForgotPasswordPage />}/>
           <Route path="/auth/reset-password" element={<ResetPasswordPage />}/>
+          <Route path="/mypage/edit-profile" element={<EditProfilePage />} />
         </Routes>
       </Router>
     </>
