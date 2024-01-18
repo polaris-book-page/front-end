@@ -6,14 +6,18 @@ import { ReactComponent as ArrowLeft } from "../../assets/arrow-left.svg";
 import { ReactComponent as IcType } from "../../assets/ic-type.svg";
 import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
+import { useState } from "react";
 
 const MyPage = () => {
+
+  const [flip, setFlip] = useState(false);
+
   return (
     <>
       <NavBar/>
       <BookContainer>
         <Background>
-          <div style={{ height: '30px' }} />
+          <div style={{ height: '20px' }} />
           <TextBox>
             <HighTitleBox>
               <HighTitleText style={{ marginRight: 10 }}>
@@ -31,10 +35,14 @@ const MyPage = () => {
               </HighTitleText>
             </HighTitleBox>
           </TextBox>
-          <div style={{ height: '40px' }} />
+          <div style={{ height: '20px' }} />
           {/* info-card */}
           <CardContainer>
             <CardBox>
+              {!flip ? (
+                <>
+                {/* ticket front */}
+              <ContentContainer>
               {/* profile */}
               <ProfileContainer>
                 <ProfileBox>
@@ -49,7 +57,7 @@ const MyPage = () => {
 
               </ProfileContainer>
               {/* statistics */}
-              <ContentContainer>
+              <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
                   <ProfileSubTitleText>더보기</ProfileSubTitleText>
@@ -57,10 +65,10 @@ const MyPage = () => {
                 <Text color={'#97A4E8'}>통계 살펴보기</Text>
                 <StatisticsBox>
                   <StatisticsContent>
-                    <StatisticIcon color={'#CBCDFA'}>
+                    <StatisticIcon color={'#CBCDFA'} style={{zIndex: 1}}>
                       <IcType />
-                    </StatisticIcon>
-                    <StatisticsBar color={'#CBCDFA'}>56권, 560km</StatisticsBar>
+                    </StatisticIcon >
+                    <StatisticsBar color={'#CBCDFA'} style={{zIndex: 0}}>56권, 560km</StatisticsBar>
                     <Text color={'#97A4E8'}>만큼 탐험했어요!</Text>
                   </StatisticsContent>
                   <StatisticsContent>
@@ -78,13 +86,14 @@ const MyPage = () => {
                     <Text color={'#97A4E8'}>분야를 많이 읽었어요!</Text>
                   </StatisticsContent>
                 </StatisticsBox>
-              </ContentContainer>
+              </ContentBox>
               {/* reading */}
-              <ContentContainer>
+              <ContentBox>
                 <ProfileTitleBox>
-                  <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
+                  <ProfileTitleText>: 나의 우주</ProfileTitleText>
                   <ProfileSubTitleText>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
+                <Text color={'#97A4E8'}>지금까지 읽은 책 탐방하기</Text>
                 <ReadingBox>
                   <img style={{ backgroundColor: '#ddd', width: 50, height: 70}} />
                   <ReadingContent>
@@ -99,27 +108,59 @@ const MyPage = () => {
                     <Text color={'#4659A9'}>2023.07.07 ~ 2023.07.15</Text>
                   </ReadingContent>
                 </ReadingBox>
+              </ContentBox>
               </ContentContainer>
+              </>
+              ) : (
+                <>
+                  {/* Ticket back */}
+                  <TicketContainer>
+                    <ContentText color={'black'} size={'12px'}>북극성 회원인 이 여권 소지인은 아무 지장 없이 다양한 행성을 탐험할 수 있도록 하여 주시고 웹사이트에서 제공하는 서비스를 사용할 수 있도록 한다.</ContentText>
+                    <TicketLogoBox>
+                      <TitleText color={'#4659A9'} size={'20px'} style={{zIndex: 1}}>북 극 성  운 영 자</TitleText>
+                      <TicketLogo src={require('../../assets/graphic/app-logo.png')} style={{zIndex: 0}}/>
+                    </TicketLogoBox>
+                    <ContentText color={'black'} size={'12px'}>As a member of the Polaris, this passport holder will be able to explore to the various planets without any hindrance and use the services provided by the website.</ContentText>
+                    <TicketSignatureBox>
+                      <ContentText color={'#4659A9'} size={'12px'}>소지인의 서명</ContentText>
+                      <TicketNameBox>
+                        <ContentText color={'#4659A9'} size={'12px'}>holder's signature</ContentText>
+                        <ContentText color={'black'} size={'12px'}> &nbsp; 아이디</ContentText>
+                      </TicketNameBox>
+                      <TicketNameLine /> 
+                    </TicketSignatureBox>
+                  </TicketContainer>
+                </>
+              )}
+              <EditInfoBtnBox>
+              <div style={{flex: 1}} />
+              <EditInfoBtn onClick={() => setFlip(!flip)}>
+                  <ContentText color={'#4659A9'} size={'15px'}> &gt;&gt;&gt;&gt;</ContentText>
+              </EditInfoBtn>
+            </EditInfoBtnBox>
             </CardBox>
           </CardContainer>
         </Background>
 
         {/* favorite */}
         <FavoriteContainer>
-          <div style={{ height: '170px' }} />
+          <div style={{ height: '50px' }} />
           <TextBox>
-            <TitleText>otcr의 북킷리스트</TitleText>
+            <TitleText color={'#4659A9'} size={'28px'}>otcr의 북킷리스트</TitleText>
             <div style={{ flex: 1 }} />
             <MoreText>더보기</MoreText>
           </TextBox>
           <div style={{ height: '30px' }} />
           <FavoriteBox>
             <ArrowLeft />
-            <BookItem />
-            <BookItem />
-            <BookItem />
-            <BookItem />
-            <BookItem />
+            <BookListBox>
+              <BookItem />
+              <BookItem />
+              <BookItem />
+              <BookItem />
+              <BookItem />
+              <BookItem />
+            </BookListBox>
             <ArrowRight />
           </FavoriteBox>
         </FavoriteContainer>
@@ -136,14 +177,26 @@ const Text = styled.text`
   font-size: ${(props) => props.size || '12px'};
 `
 
+const ContentText = styled.text`
+    color: ${(props) => props.color || 'gray'};
+    font-family: "KOTRA_GOTHIC";
+    font-size: ${(props) => props.size || '12px'};
+`
+
+const TitleText = styled.text`
+  color: ${(props) => props.color || 'gray'};
+  font-family: "KOTRA_BOLD";
+  font-size: ${(props) => props.size || '12px'};
+`;
+
 const Background = styled.div`
-  position: flex;
+  display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 230px;
-  background: linear-gradient(#c4cef9, #facecb);
+  width: 100vw;
+  background: linear-gradient(#c4cef9, #facecb, #ffffff00);
   justify-content: center;
-  align-items: center;
+  padding-right: 5vw;
+  padding-left: 5vw;
 `;
 
 const BookContainer = styled.div`
@@ -153,18 +206,17 @@ const BookContainer = styled.div`
 
 const CardContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: cetner;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  height: 250px;
 `;
 
 const CardBox = styled.div`
   display: flex;
-  flex-direction: row;
-  flex: 1;
-  margin: 0 20px;
-  padding: 10px;
+  width: 95vw;
+  max-width: 90vw;
+  flex-direction: column;
+  padding: 2vw;
   background-color: white;
   border-style: solid;
   border-color: #4659A9;
@@ -207,14 +259,24 @@ const ProfileContent = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex: 1;
+  margin: 5px;
+  gap: 10px;
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const ContentBox = styled.div`
+  display: flex;
+  flex: 1;
   flex-direction: column;
-  margin: 10px;
-`
+`;
 
 // statistics, My reading book title
 const ProfileTitleBox = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: row;
   align-items: flex-start;
 `
@@ -238,7 +300,7 @@ const ProfileSubTitleText = styled.text`
 // statistics content
 const StatisticsBox = styled.div`
   display: flex;
-  flex: 1;
+  flex: 2;
   flex-direction: column;
   margin-bottom: 10px;
 `
@@ -246,9 +308,12 @@ const StatisticsBox = styled.div`
 const StatisticsContent = styled.div`
   display: flex;
   flex: 1;
-  flex-direction: row;
   align-items: center;
   margin: 7px;
+  @media screen and (max-width: 1200px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 const StatisticIcon = styled.div`
   width: 50px;
@@ -256,7 +321,6 @@ const StatisticIcon = styled.div`
   padding: 5px;
   display: flex;
   justify-content: center;
-  flex-direction: row;
   align-items: center;
   border-radius: 50px;
   border-style: solid;
@@ -266,22 +330,25 @@ const StatisticIcon = styled.div`
 // differ to color
 const StatisticsBar = styled.div`
   position: relative;
-  z-index: 20;
+  left: -10px; 
   display: flex;
-  width: 300px;
+  min-width: 200px;
   text-align: center;
   justify-content: center;
-  flex-direction: row;
   color: #4659A9;
   background-color: ${(props) => props.color};
   font-family: "KOTRA_BOLD";
   border-radius: 50px;
   padding: 15px;
   margin-right: 7px;
+  @media screen and (max-width: 1200px) {
+    left: 0px; 
+  }
 `
 // reading book
 const ReadingBox = styled.div`
   display: flex;
+  flex: 0.6;
   align-items: center;
   border-style: solid;
   border-width: 2px;
@@ -294,7 +361,7 @@ const ReadingBox = styled.div`
 
 const ReadingContent = styled.div`
   display: flex;
-  width: 300px;
+  flex: 1;
   flex-direction: column;
   font-family: "KOTRA_GOTHIC";
   margin-left: 10px;
@@ -313,9 +380,30 @@ const FavoriteBox = styled.div`
   align-items: center;
 `;
 
+const BookListBox = styled.div`
+    display: flex;
+
+    @media screen and (max-width: 1200px) {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media screen and (max-width: 700px) {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (max-width: 380px) {
+      display: flex;
+      flex-dirrection: column;
+    }
+`;
+
 const BookItem = styled.div`
-  width: 270px;
-  height: 400px;
+  width: 200px;
+  height: 320px;
   background-color: #d9d9d9;
   margin: 10px;
   box-shadow: 0px 5px 10px #d9d9d9;
@@ -323,17 +411,6 @@ const BookItem = styled.div`
 
 const TextBox = styled.div`
   display: flex;
-  flex-direction: row;
-  margin: 0 20px;
-`;
-
-// 추후에 수정
-const TitleText = styled.div`
-  display: flex;
-  font-family: "KOTRA_BOLD";
-  font-size: 30px;
-  color: #4659a9;
-  font-weight: 700;
 `;
 
 const MoreText = styled.div`
@@ -355,7 +432,6 @@ const HighTitleText = styled.div`
 
 const HighTitleBox = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
@@ -368,5 +444,58 @@ const HighTitleCircle = styled.div`
   margin: 4px;
 `;
 
+// edit
+const EditInfoBtn = styled.button`
+    background: none;
+    border: none;
+`;
+
+const EditInfoBtnBox = styled.div`
+    display: flex;
+`;
+
+// back card
+const TicketContainer = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 0.5fr 0.5fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 15px;
+`;
+
+const TicketLogoBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    margin-top: 10px;
+`;
+
+const TicketLogo = styled.img`
+    position: relative;
+    top: -25px;
+    left: -25px;
+    width: 80px;
+    height: 80px;
+`;
+
+const TicketSignatureBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-column: 2;
+  grid-row: 3;
+  align-items: center;
+`;
+
+const TicketNameBox = styled.div`
+  display: flex;
+`;
+
+const TicketNameLine = styled.div`
+    width: 250px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+`;
 
 export default MyPage;
