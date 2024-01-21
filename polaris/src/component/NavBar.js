@@ -35,27 +35,33 @@ const NavBar = () => {
       if (error.response && error.response.status === 401) {
         navigate('/main'); 
       }
-  
       throw error;
     }
   };
 
   useEffect(() => {
+    fetchInitialData();
+  }, [queryClient, initialData]);
+
+  const fetchInitialData = async () => {
+    const initialData = await queryClient.getQueryData(['check']);
     if (initialData) {
       setIsLogined(initialData.is_logined);
     }
-  }, [initialData]);
+  };
   
   const handleLogout = async () => {
     console.log("로그아웃 완")
     await logoutquery();
-    navigate('/auth/login');
     setIsLogined(false)
+    queryClient.invalidateQueries(['check']);
+    navigate('/auth/login');
   };
 
   const handleLogin = async () => {
     navigate('/auth/login')
     setIsLogined(true)
+    queryClient.invalidateQueries(['check']);
   }
 
   return (
