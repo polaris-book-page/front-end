@@ -1,27 +1,31 @@
 import styled from "styled-components";
 import FooterBar from "../../component/FooterBar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NavBar from "../../component/NavBar";
+import { createBrowserHistory } from "history";
 
 const LoginPage = () =>{
     const [_id, setUserId] = useState('')
 	const [password, setPassword] = useState('')
     const navigate = useNavigate();
     const queryClient = useQueryClient()
+    const { state } = useLocation();
+    const initialData = queryClient.getQueryData(['check']);
     
     const { mutate } = useMutation({
         mutationFn: async (userInfo) => {
+            var referrer = document.referrer;
             const { data } = await axios.post(`http://localhost:3001/user/login`, userInfo, { withCredentials: true })
             console.log("data", data)
+            console.log('state: ', state)
             return data;
         }, 
         onSuccess: (data) => {
             console.log("login success")
             queryClient.invalidateQueries(['check']);
-            CheckUserAuth()
             goBack()
         },
         onError: () => {
@@ -29,18 +33,21 @@ const LoginPage = () =>{
         }
     });
 
-    let goBack = () => {
-        navigate(-1);
-    };
-
-    const CheckUserAuth = () => {
-        const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
-        console.log("UserAuthInfoCheck", UserAuthInfoCheck);
+    let goBack = async() => {
+        await queryClient.refetchQueries(["check"]);
+        const UserAuthInfoCheck = await queryClient.getQueryData(["check"]);
+        console.log('state in goback: ', state)
+        if (state) {
+            navigate(state, {state : UserAuthInfoCheck.userId });
+        } else {
+        navigate("/");
+        }
     };
 
     const handleLogin = () => {
         mutate({ _id, password });
     }
+
     return (
         <>
             <NavBar/>
