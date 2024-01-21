@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import Auth from './component/Auth';
 import axios from "axios";
 import HomePage from "./page/HomePage.js"
 import MainPage from "./page/MainPage.js"
@@ -44,19 +45,19 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />}/>
           <Route path="/main" element={<MainPage />}/>
-          <Route path="/recommend" element={<RecommendPage />}/>
-          <Route path="/sentence" element={<TodaySentencePage />}/>
-          <Route path="/book/info" element={<BookInfoPage />}/>
-          <Route path="/book/review" element={<ReviewPage />}/>
+          <Route path="/recommend" element={<Auth><RecommendPage /></Auth>}/>
+          <Route path="/sentence" element={<Auth><TodaySentencePage /></Auth>}/>
+          <Route path="/book/info" element={<Auth><BookInfoPage /></Auth>}/>
+          <Route path="/book/review" element={<Auth><ReviewPage /></Auth>}/>
           <Route path="/search" element={<SearchResultPage />}/>
           <Route path="/search/add" element={<AddBookPage />}/>
-          <Route path="/mypage" element={<MyPage />}/>
-          <Route path="/mypage/review" element={<MyReviewPage />}/>
-          <Route path="/mypage/list" element={<BooketListPage />}/>
-          <Route path="/mypage/calendar" element={<CalendarPage />}/>
-          <Route path="/mypage/complete" element={<CompletePage />}/>
-          <Route path="/mypage/statistics" element={<StatisticsPage />}/>
-          <Route path="/mypage/write" element={<WritingReviewPage />}/>
+          <Route path="/mypage" element={<Auth><MyPage /></Auth>}/>
+          <Route path="/mypage/review" element={<Auth><MyReviewPage /></Auth>}/>
+          <Route path="/mypage/list" element={<Auth><BooketListPage /></Auth>}/>
+          <Route path="/mypage/calendar" element={<Auth><CalendarPage /></Auth>}/>
+          <Route path="/mypage/complete" element={<Auth><CompletePage /></Auth>}/>
+          <Route path="/mypage/statistics" element={<Auth><StatisticsPage /></Auth>}/>
+          <Route path="/mypage/write" element={<Auth><WritingReviewPage /></Auth>}/>
           <Route path="/auth/login" element={<LoginPage />}/>
           <Route path="/auth/register" element={<RegisterPage />}/>
           <Route path="/auth/register/evaluate" element={<RegisterEvaluatePage />}/>
@@ -70,3 +71,6 @@ function App() {
 }
 
 export default App;
+
+
+//  <Route path="/mypage" element={<Auth><MyPage /></Auth>} />
