@@ -6,6 +6,7 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import NavBar from "../../component/NavBar";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BooketListPage = () =>{
     const [currentPage, setcurrentPage] = useState(1)
@@ -19,6 +20,8 @@ const BooketListPage = () =>{
     const pageArrayLimit = 5
 
     const queryClient = useQueryClient()
+    const { state } = useLocation();
+    const navigate = useNavigate();
     
     const { isLoading, error, data } = useQuery({
         queryKey: ['likeList'],
@@ -26,16 +29,30 @@ const BooketListPage = () =>{
             const response = await axios.get('http://localhost:3001/mypage/like/list', {
                 withCredentials: true,
             })
+            console.log("state in bookit : ", state)
+            setCurrentUser(state)
             return response.data;
         },
     });
-    const checkUser = queryClient.getQueryData(["check"])
-    if (checkUser) {
-        console.log("checkUser", checkUser.userId)
-        if (currentUser !== checkUser.userId) {
-            setCurrentUser(checkUser.userId)
+
+    const handleUserLogin = async () => {
+        try {
+        const response = await axios.get('http://localhost:3001/mypage/like/list', {
+            withCredentials: true,
+        });
+        queryClient.setQueryData(['likeList'], response.data);
+        setCurrentUser(state);
+
+        } catch (error) {
+        console.error("Error fetching review data after login:", error);
         }
-    }
+    };
+
+    useEffect(() => {
+        if (state) {
+            handleUserLogin();
+        }
+    }, [state]); 
 
     useEffect(() => {
         const newTotalPage = [];
@@ -90,7 +107,7 @@ const BooketListPage = () =>{
         <>
             <NavBar/>
             <MainContainer className="container">
-                <ResultText>{data[0].nickname}님의 북킷리스트({data.length})</ResultText>
+                <ResultText>{state}님의 북킷리스트({data.length})</ResultText>
                 {currentItems && currentItems.map((item, index) => (
                     <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
                 ))}
