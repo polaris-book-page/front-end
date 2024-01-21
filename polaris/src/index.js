@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import LabelPluginProvider from "./component/LabelPluginProvider"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient({
@@ -24,7 +25,9 @@ const queryClient = new QueryClient({
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      {/* <LabelPluginProvider> */}
       <App />
+      {/* </LabelPluginProvider> */}
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   </React.StrictMode>
