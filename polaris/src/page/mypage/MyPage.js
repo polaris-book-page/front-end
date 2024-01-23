@@ -7,10 +7,12 @@ import { ReactComponent as IcType } from "../../assets/ic-type.svg";
 import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 const MyPage = () => {
 
   const [flip, setFlip] = useState(false);
+  let navigate = useNavigate();
 
   return (
     <>
@@ -52,7 +54,9 @@ const MyPage = () => {
                     <Text size={'13px'}>아이디: </Text>
                     <Text size={'13px'}>이메일: </Text>
                     <Text size={'13px'}>가입일자: </Text>
-                  </ProfileContent>
+                        </ProfileContent>
+                        <div style={{margin: 20}} />
+                        <ContentText onClick={() => navigate('/mypage/edit-profile')} color={'#CBCDFA'} size={'12px'} style={{textDecoration: 'underline'}}>프로필 수정하기</ContentText>
                 </ProfileBox>
 
               </ProfileContainer>
