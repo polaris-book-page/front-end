@@ -30,7 +30,6 @@ const GridBox = ({ item }) => {
 const Imgdiv = styled.div`
     width: 228px;
     height: 299px;
-    margin: 25px;
     margin-bottom: 3px;
 `;
 
@@ -51,7 +50,6 @@ const BookText = styled.div`
 `;
 
 const BookAuthor = styled.div`
-    margin-left: 25px;
     line-height: 1.5;
     font-size: 20px;
     color: #4659A9;
@@ -59,7 +57,6 @@ const BookAuthor = styled.div`
 `;
 
 const BookPub = styled.div`
-    margin-left: 25px;
     line-height: 1.5;
     font-size: 20px;
     color: #4659A9;
