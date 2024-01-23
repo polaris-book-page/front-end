@@ -3,11 +3,20 @@ import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
 import VerticalFlowText from "../component/VerticalFlowText";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from "axios";
 
-const RandomFlowTextFuxc = () => {
+const HomePage = () => {
+    // useNavigate
+    const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    const initialData = queryClient.getQueryData(['check']);
+
+    const RandomFlowTextFuxc = () => {
     // load random quote array 10 sentence(temporary)
-    const quoteArr = ['write1', '문장2', '문장셋', '문장넷', '문장5', '문장6', '문장7', '문장8', '문장9', '문장10']
+    
+    const quoteArr = tenQuoteQuery.data.quotes.map((item) => item.quote)
+    console.log("quoteArr: ", quoteArr)
     const ranArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     ranArr.sort(() => Math.random() - 0.5);
     
@@ -17,20 +26,33 @@ const RandomFlowTextFuxc = () => {
     })
 
     return flowTexts;
-}
-
-const HomePage = () => {
-    // useNavigate
-    const navigate = useNavigate();
-    const queryClient = useQueryClient()
-    const initialData = queryClient.getQueryData(['check']);
+    }
 
     const handleLogin = () => {
         if (initialData) navigate('/mypage')   
         else navigate('/auth/login')
     }
 
+    // fetch API
+    const fetchTenQuery = async () => {
+        try {
+            const res = await axios.get(`http://localhost:3001/book/ten-quotes`)
+            const data = res.data;
+
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // react-query
+    const tenQuoteQuery = useQuery({
+        queryKey: ["ten-query"],
+        queryFn: fetchTenQuery
+    })
+
     return (
+        !tenQuoteQuery.isLoading  && tenQuoteQuery.data &&
         <>
             <NavBar />
             <Background>
