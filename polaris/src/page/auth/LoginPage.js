@@ -3,9 +3,8 @@ import FooterBar from "../../component/FooterBar";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar from "../../component/NavBar";
-import { createBrowserHistory } from "history";
 
 const LoginPage = () =>{
     const [_id, setUserId] = useState('')

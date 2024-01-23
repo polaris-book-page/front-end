@@ -2,8 +2,8 @@ import styled from "styled-components";
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import * as helpers from 'chart.js/helpers';
-import LabelPluginProvider from './LabelPluginProvider';
+// import * as helpers from 'chart.js/helpers';
+// import LabelPluginProvider from './LabelPluginProvider';
 
 const DrawChart1 = ({ legendContainerId }) => {
   const chartRef = useRef(null);
