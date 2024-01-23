@@ -3,9 +3,8 @@ import FooterBar from "../../component/FooterBar";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NavBar from "../../component/NavBar";
-import { createBrowserHistory } from "history";
 
 const LoginPage = () =>{
     const [_id, setUserId] = useState('')
@@ -48,6 +47,10 @@ const LoginPage = () =>{
         mutate({ _id, password });
     }
 
+    const navigateRegister = () => {
+        navigate('/auth/register')
+    }
+
     return (
         <>
             <NavBar/>
@@ -68,6 +71,7 @@ const LoginPage = () =>{
                     </InputContainer>
                     <BtnContainer>
                         <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
+                        <RegisterText onClick={navigateRegister}>계정이 없으신가요?</RegisterText>
                         <LoginBtn onClick={handleLogin}> 로그인 </LoginBtn>
                     </BtnContainer>
                 </LoginContainer>
@@ -136,6 +140,21 @@ const FindPwdText = styled.p`
     font-size: 15px;
     color: white;
     font-family: "KOTRA_GOTHIC";
+    margin-top: 2px;
+    margin-bottom: 3px;
+    &:hover {
+        cursor: default;
+    }
+`;
+
+const RegisterText = styled.p`
+    font-size: 15px;
+    color: white;
+    font-family: "KOTRA_GOTHIC";
+    margin-bottom: 0;
+    &:hover {
+        cursor: default;
+    }
 `;
 
 const LoginBtn = styled.button`
@@ -144,7 +163,7 @@ const LoginBtn = styled.button`
     background-color: #4659A9;
     border: none;
     border-radius: 50px;
-    margin-top: 30px;
+    margin-top: 20px;
     color: white;
     font-size: 20px;
     font-family: "KOTRA_GOTHIC";

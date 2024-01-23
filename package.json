@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "chart.js": "^4.4.1",
-    "chart.js-plugin-labels-dv": "^5.0.1-beta",
-    "chartjs-plugin-datalabels": "^2.2.0",
-    "history": "^5.3.0"
-  }
-}
