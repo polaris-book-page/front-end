@@ -2,6 +2,8 @@ import NavBar from "../component/NavBar";
 import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
 import VerticalFlowText from "../component/VerticalFlowText";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from '@tanstack/react-query'
 
 const RandomFlowTextFuxc = () => {
     // load random quote array 10 sentence(temporary)
@@ -18,6 +20,16 @@ const RandomFlowTextFuxc = () => {
 }
 
 const HomePage = () => {
+    // useNavigate
+    const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    const initialData = queryClient.getQueryData(['check']);
+
+    const handleLogin = () => {
+        if (initialData) navigate('/mypage')   
+        else navigate('/auth/login')
+    }
+
     return (
         <>
             <NavBar />
@@ -66,7 +78,7 @@ const HomePage = () => {
                         <TitleText color={'white'} size={'20px'}>북극성이 여러분의 여행을 위한<br />길잡이가 되어줄 거예요.</TitleText>
                     </ContentBox>
                     <div style={{margin: 50}} />
-                    <Button>
+                    <Button onClick={() => handleLogin()}>
                         북극성 시작하기
                     </Button>
                     <div style={{margin: 50}} />
