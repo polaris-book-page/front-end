@@ -1,10 +1,50 @@
 import styled from "styled-components";
 import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useState } from "react";
 
-const EditProfilePage = () =>{
+const EditProfilePage = () => {
+
+    const queryClient = useQueryClient()
+    const [userNickname, onUserNickName] = useState('');
+    
+    const fetchUserProfile = async () => {
+        try {
+            // refetch user auth
+            await queryClient.refetchQueries(["check"]);
+            const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+
+            const res = await axios.get(`http://localhost:3001/user/${UserAuthInfoCheck.userId}`)
+            const data = res.data;
+
+            if(data.success)
+                onUserNickName(data.findUser.nickname)
+
+            return data.findUser;
+        } catch (err) {
+            console.log("get user profile failure.");
+        }
+    }
+
+    const userQuery = useQuery({
+        queryKey: ["profile"],
+        queryFn: fetchUserProfile
+    })
+
+    const DateFormat = (date) => {
+        const dateObj = new Date(date);
+        
+        const year = dateObj.getFullYear();
+        const month = dateObj.getMonth();
+        const day = dateObj.getDate();
+
+        return `${year}.${month + 1}.${day}`
+    }
+
     return(
-        <>
+        !userQuery.isLoading && userQuery.data && <>
             <NavBar />
             <Background>
                 <CardContainer>
@@ -14,24 +54,24 @@ const EditProfilePage = () =>{
                         <ProfileImage />  
                         <div style={{margin: 20}} />
                         <ProfileBox>
-                            <ContentText color={'#4659A9'} size={'18px'}>아이디 : </ContentText>
-                            <InputContent style={{marginLeft: 20}} readOnly/>
+                            <ContentText color={'#4659A9'} size={'18px'}>아이디 :</ContentText>
+                            <InputContent style={{marginLeft: 20, color: '#a1a1a1'}} value={userQuery.data._id || ""} readOnly/>
                         </ProfileBox>
                         <ProfileBox>
-                            <ContentText color={'#4659A9'} size={'18px'}>닉네임 : </ContentText>
-                            <InputContent style={{marginLeft: 20}}/>
+                            <ContentText color={'#4659A9'} size={'18px'}>이메일 :</ContentText>
+                                <InputContent style={{ marginLeft: 20, color: '#a1a1a1' }} value={userQuery.data.email || ""} readOnly/>
                         </ProfileBox>
                         <ProfileBox>
-                            <ContentText color={'#4659A9'} size={'18px'}>이메일 : </ContentText>
-                            <InputContent style={{marginLeft: 20}}/>
+                            <ContentText color={'#4659A9'} size={'18px'}>닉네임 :</ContentText>
+                            <InputContent style={{marginLeft: 20}} value={userNickname || ""} onChange={e => onUserNickName(e.target.value)}/>
                         </ProfileBox>
                         <div style={{margin: 25}} />
                         <InfoTextBox>
                             <ContentText color={'black'} size={'12px'}>본 티켓 소지인의 정보는 웹사이트의 서비스를 사용할 수 있도록 활용됩니다.</ContentText>
                             <ContentText color={'#97A4E8'} size={'12px'}>This ticket holder's information will be used to use the website's services.</ContentText>
                             <RegisteredBox>
-                                <TitleText color={'#4659A9'} size={'15px'}>Registerd: </TitleText>
-                                <TitleText color={'#4659A9'} size={'15px'}>가입 날짜 </TitleText>
+                                <TitleText color={'#4659A9'} size={'15px'}>Registered: </TitleText>
+                                    <TitleText color={'#4659A9'} size={'15px'}>{DateFormat(userQuery.data.createDate)}</TitleText>
                             </RegisteredBox>
                         </InfoTextBox>
                     </ProfileContainer>
@@ -50,14 +90,14 @@ const EditProfilePage = () =>{
 }
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.span`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_BOLD";
     font-size: ${(props) => props.size || '12px'};
     margin-bottom: 20px
 `
 
-const ContentText = styled.text`
+const ContentText = styled.span`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};
