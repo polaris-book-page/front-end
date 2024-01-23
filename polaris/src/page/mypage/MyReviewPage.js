@@ -13,9 +13,9 @@ const MyReviewPage = () => {
     // fetch API
     const fetchReviewList = async () => {
         try {
-            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const response = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
-            console.log("data: ",data);
+            
             return data;
         } catch (err) {
             console.log(err)
@@ -24,15 +24,15 @@ const MyReviewPage = () => {
 
     // react-query
     const ReviewQuery = useQuery({
-        queryKey: ['review-list'],
+        queryKey: ["review-list"],
         queryFn: fetchReviewList
     })
 
     // average a evaluation
     const funcAverage = () => {
         let init = 0;
-        const sum = ReviewQuery.data.reduce((acc, item) => acc + item.evaluation, init);
-        let avg = sum/ReviewQuery.data.length;
+        const sum = ReviewQuery.data.reviewList.reduce((acc, item) => acc + item.evaluation, init);
+        let avg = sum/ReviewQuery.data.reviewList.length;
         return avg;
     }
 
@@ -45,22 +45,24 @@ const MyReviewPage = () => {
                     <StatisticsContainer>
                         <StatisticsBox>
                             <ICStar width={23} style={{marginRight: 5, marginTop: -6}} />
-                            <TitleText color={'#ffffff'} size={'20px'}>{funcAverage()}</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.findMyReview ? funcAverage() : 0}</TitleText>
                             <div style={{width: 20}} />
                             <ICBook width={20} style={{marginRight: 7, marginTop: -4}}/>
-                            <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.length}</TitleText>
+                            <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.findMyReview ? ReviewQuery.data.reviewList.length : 0}</TitleText>
                         </StatisticsBox>
                         {/* statistics lib */}
                         <ReviewRatingChart />
                     </StatisticsContainer>
-                    <div style={{height: 20}} />
-                    <Reviewcontainer>
-                        {
-                            ReviewQuery.data.map((item, index) => {
-                                return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} />
-                            })
-                        }
-                    </Reviewcontainer>
+                    <div style={{ height: 20 }} />
+                    { ReviewQuery.data.findMyReview ?
+                        <Reviewcontainer>
+                            {
+                                ReviewQuery.data.reviewList.map((item, index) => {
+                                    return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} />
+                                })
+                            }
+                        </Reviewcontainer> : <>작성한 리뷰가 없습니다.</>
+                    }
                 </Container>
             </Background>
         </>
