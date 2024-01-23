@@ -17,7 +17,7 @@ const HomePage = () => {
     
     const quoteArr = tenQuoteQuery.data.quotes.map((item) => item.quote)
     console.log("quoteArr: ", quoteArr)
-    const ranArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    const ranArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ranArr.sort(() => Math.random() - 0.5);
     
     // random width
@@ -127,6 +127,8 @@ const ContentText = styled.text`
 // container
 const Background = styled.div`
     background: linear-gradient(#6F61C6, #667BD4, #97A4E8, #C9C6F7, #FACECB);
+    padding-left: 3vw;
+    padding-right: 3vw;
 `;
 
 const Container = styled.div`
