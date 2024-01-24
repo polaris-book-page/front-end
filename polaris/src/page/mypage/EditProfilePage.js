@@ -3,12 +3,16 @@ import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const EditProfilePage = () => {
 
     const queryClient = useQueryClient()
     const [userNickname, onUserNickName] = useState('');
+    const fileInput = useRef(null)
+    const [image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+    const [file, setFile] = useState('');
+    
     
     const fetchUserProfile = async () => {
         try {
@@ -43,6 +47,23 @@ const EditProfilePage = () => {
         return `${year}.${month + 1}.${day}`
     }
 
+    const uploadProfileFunc = (e) => {
+        console.log('upload')
+        if (e.target.files[0])
+            setFile(e.target.files[0])
+        else {
+            setImage('')
+            return
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+            if(reader.readyState === 2){
+                setImage(reader.result)
+            }
+        }
+        reader.readAsDataURL(e.target.files[0])
+    }
+
     return(
         !userQuery.isLoading && userQuery.data && <>
             <NavBar />
@@ -51,8 +72,9 @@ const EditProfilePage = () => {
                     <div style={{margin: 40}} />
                     <CardBox>
                     <ProfileContainer>
-                        <ProfileImage />  
-                        <div style={{margin: 20}} />
+                        <ProfileImage src={image} onClick={() => { fileInput.current.click() }}/>  
+                        <input type='file' style={{ display: 'none' }} accept='image/jpg,image/png,image/jpeg' name='profile_img' onChange={uploadProfileFunc} ref={fileInput} />
+                        <div style={{ margin: 20 }} />
                         <ProfileBox>
                             <ContentText color={'#4659A9'} size={'18px'}>아이디 :</ContentText>
                             <InputContent style={{marginLeft: 20, color: '#a1a1a1'}} value={userQuery.data._id || ""} readOnly/>
@@ -171,7 +193,6 @@ const ProfileImage = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: gray;
 `;
 
 const InputContent = styled.input`
