@@ -4,6 +4,7 @@ import FooterBar from "../../component/FooterBar";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router";
 
 const EditProfilePage = () => {
 
@@ -12,6 +13,7 @@ const EditProfilePage = () => {
     const fileInput = useRef(null)
     const [image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
     const [file, setFile] = useState('');
+    const navigate = useNavigate();
     
     
     const fetchUserProfile = async () => {
@@ -99,7 +101,7 @@ const EditProfilePage = () => {
                     </ProfileContainer>
                     <EditInfoBtnBox>
                         <div style={{flex: 1}} />
-                        <EditInfoBtn>
+                        <EditInfoBtn onClick={() => navigate('/mypage/')}>
                             <ContentText color={'#4659A9'} size={'12px'}>티켓 정보 수정하기 &gt;&gt;&gt;&gt;</ContentText>
                         </EditInfoBtn>
                     </EditInfoBtnBox>
