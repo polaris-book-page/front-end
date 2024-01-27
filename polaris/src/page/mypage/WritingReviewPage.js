@@ -4,6 +4,7 @@ import NavBar from "../../component/NavBar";
 import { useState, useRef } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
 import useDetectClose from "../../component/hook/useDetectClose";
+import MoveStarRating from "../../component/MoveStarRating";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -56,8 +57,8 @@ const WritingReviewPage = () => {
                                 {/* select plenet image */}
                                 <PlanetSelBox>
                                     <PlenetList $isClicked={isOpen} >
-                                        {plenetImgArr.map((item) => {
-                                            return (<PlenetComponents src={item} onClick={() => setSelPlanet(item)} />)
+                                        {plenetImgArr.map((item, index) => {
+                                            return (<PlenetComponents src={item} key={index} onClick={() => setSelPlanet(item)} />)
                                         })}
                                     </PlenetList>
                                     <div style={{margin: 5}} />
@@ -74,7 +75,7 @@ const WritingReviewPage = () => {
                             <div style={{marginBottom: 20}} />
                             <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
                             <ContentText color={'white'} size={'13px'}>저자</ContentText>
-                            <StarRating rating={3.5} size={'20px'} />
+                            <MoveStarRating />
                         </BookImageBox>
                         {/* book type */}
                         <div style={{height: 20}} />
