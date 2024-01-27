@@ -8,14 +8,64 @@ import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useQueries, useQueryClient } from "@tanstack/react-query";
+import axios from 'axios';
 
 const MyPage = () => {
 
   const [flip, setFlip] = useState(false);
   let navigate = useNavigate();
+  const queryClient = useQueryClient()
+
+    const fetchReviewList = async () => {
+      try {
+          const res = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
+          const data = res.data;
+          
+          return data;
+      } catch (err) {
+          console.log(err)
+      }
+  }
+
+  const fetchUserProfile = async () => {
+    try {
+        // refetch user auth
+        await queryClient.refetchQueries(["check"]);
+      const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+
+        const res = await axios.get(`http://localhost:3001/user/${UserAuthInfoCheck.userId}`)
+        const data = res.data;
+
+        return data.findUser;
+    } catch (err) {
+        console.log("get user profile failure.");
+    }
+}
+
+  const queries = useQueries({
+    queries: [{
+      queryKey: ["profile", 1],
+      queryFn: fetchUserProfile
+    },
+    {
+      queryKey: ["review-list", 2],
+      queryFn: fetchReviewList
+    }]
+  })
+
+  const DateFormat = (date) => {
+      const dateObj = new Date(date);
+      
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth();
+      const day = dateObj.getDate();
+
+      return `${year}.${month + 1}.${day}`
+  }
 
   return (
-    <>
+    !queries[0].isLoading && !queries[1].isLoading && <>
       <NavBar/>
       <BookContainer>
         <Background>
@@ -50,11 +100,11 @@ const MyPage = () => {
                 <ProfileBox>
                   <ProfileImage />
                   <ProfileContent>
-                    <Text size={'13px'}>닉네임: </Text>
-                    <Text size={'13px'}>아이디: </Text>
-                    <Text size={'13px'}>이메일: </Text>
-                    <Text size={'13px'}>가입일자: </Text>
-                        </ProfileContent>
+                    <ContentText size={'13px'}>닉네임: {queries[0].data.nickname}</ContentText>
+                    <ContentText size={'13px'}>아이디: {queries[0].data._id}</ContentText>
+                    <ContentText size={'13px'}>이메일: {queries[0].data.email}</ContentText>
+                    <ContentText size={'13px'}>가입일자: {DateFormat(queries[0].data.createDate)}</ContentText>
+                  </ProfileContent>
                         <div style={{margin: 20}} />
                         <ContentText onClick={() => navigate('/mypage/edit-profile')} color={'#CBCDFA'} size={'12px'} style={{textDecoration: 'underline'}}>프로필 수정하기</ContentText>
                 </ProfileBox>
@@ -66,28 +116,28 @@ const MyPage = () => {
                   <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
                   <ProfileSubTitleText>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
-                <Text color={'#97A4E8'}>통계 살펴보기</Text>
+                <ContentText color={'#97A4E8'}>통계 살펴보기</ContentText>
                 <StatisticsBox>
                   <StatisticsContent>
                     <StatisticIcon color={'#CBCDFA'} style={{zIndex: 1}}>
                       <IcType />
                     </StatisticIcon >
                     <StatisticsBar color={'#CBCDFA'} style={{zIndex: 0}}>56권, 560km</StatisticsBar>
-                    <Text color={'#97A4E8'}>만큼 탐험했어요!</Text>
+                    <ContentText color={'#97A4E8'}>만큼 탐험했어요!</ContentText>
                   </StatisticsContent>
                   <StatisticsContent>
                     <StatisticIcon color={'#D5CFFB'}>
                       <IcBook />
                     </StatisticIcon>
                     <StatisticsBar color={'#D5CFFB'}>인문학</StatisticsBar>
-                    <Text color={'#97A4E8'}>카테고리를 많이 읽었어요!</Text>
+                    <ContentText color={'#97A4E8'}>카테고리를 많이 읽었어요!</ContentText>
                   </StatisticsContent>
                   <StatisticsContent>
                     <StatisticIcon color={ '#DDCBFA'}>
                       <IcRocket />
                     </StatisticIcon>
                     <StatisticsBar color={'#DDCBFA'}>과학</StatisticsBar>
-                    <Text color={'#97A4E8'}>분야를 많이 읽었어요!</Text>
+                    <ContentText color={'#97A4E8'}>분야를 많이 읽었어요!</ContentText>
                   </StatisticsContent>
                 </StatisticsBox>
               </ContentBox>
@@ -97,19 +147,19 @@ const MyPage = () => {
                   <ProfileTitleText>: 나의 우주</ProfileTitleText>
                   <ProfileSubTitleText>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
-                <Text color={'#97A4E8'}>지금까지 읽은 책 탐방하기</Text>
+                <ContentText color={'#97A4E8'}>지금까지 읽은 책 탐방하기</ContentText>
                 <ReadingBox>
                   <img style={{ backgroundColor: '#ddd', width: 50, height: 70}} />
                   <ReadingContent>
-                    <Text color={'#4659A9'} size={'16px'}>책 제목</Text>
-                    <Text color={'#4659A9'}>2023.07.07 ~ 2023.07.15</Text>
+                    <ContentText color={'#4659A9'} size={'16px'}>책 제목</ContentText>
+                    <ContentText color={'#4659A9'}>2023.07.07 ~ 2023.07.15</ContentText>
                   </ReadingContent>
                 </ReadingBox>
                 <ReadingBox>
                   <img style={{ backgroundColor: '#ddd', width: 50, height: 70}} />
                   <ReadingContent>
-                    <Text color={'#4659A9'} size={'16px'}>책 제목</Text>
-                    <Text color={'#4659A9'}>2023.07.07 ~ 2023.07.15</Text>
+                    <ContentText color={'#4659A9'} size={'16px'}>책 제목</ContentText>
+                    <ContentText color={'#4659A9'}>2023.07.07 ~ 2023.07.15</ContentText>
                   </ReadingContent>
                 </ReadingBox>
               </ContentBox>
@@ -175,11 +225,6 @@ const MyPage = () => {
   );
 };
 
-const Text = styled.text`
-  color: ${(props) => props.color || 'gray'};
-  font-family: "KOTRA_GOTHIC";
-  font-size: ${(props) => props.size || '12px'};
-`
 
 const ContentText = styled.text`
     color: ${(props) => props.color || 'gray'};
@@ -250,7 +295,7 @@ const ProfileImage = styled.div`
   border-radius: 50px;
   background-color: #fff;
   box-shadow: 0px 4px 8px #ddd;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 `;
 
 const ProfileContent = styled.div`
@@ -258,6 +303,7 @@ const ProfileContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items:center;
+  gap: 5px;
 `;
 
 const ContentContainer = styled.div`
