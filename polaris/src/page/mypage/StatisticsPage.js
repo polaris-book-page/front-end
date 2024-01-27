@@ -33,6 +33,7 @@ const StatisticsPage = () =>{
                             <TextB>140km<br/>14권</TextB>
                             <Line></Line>
                         </Current>
+                        <GoalText>우주로 가기 위한 여정</GoalText>
                     </Goal>
                     <Category>
                         <CategoryText>읽은 카테고리</CategoryText>
@@ -170,6 +171,16 @@ const Current = styled.div`
     position: absolute;
     right: 115px;
     bottom: 200px;
+`;
+
+const GoalText = styled.div`
+    color: #4659A9;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 20px;
+    width: 185px;
+    position: absolute;
+    bottom: 40px;
+    right: 185px;
 `;
 
 const TextB = styled.p`
