@@ -1,11 +1,11 @@
 import NavBar from "../../component/NavBar";
 
-const CompletePage = () =>{
+const UniversePage = () =>{
     return (
         <>
             <NavBar/>
-            CompletePage
+            UniversePage
         </>)
 }
 
-export default CompletePage;
+export default UniversePage;
