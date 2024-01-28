@@ -12,7 +12,7 @@ const textLoop = keyframes`
 
 const FlowContainer = styled.div`
 	width: 175px;
-	margin-left: 25px;
+	margin-right: 10px;
 	overflow: hidden;
 `;
 

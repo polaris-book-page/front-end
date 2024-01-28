@@ -1,14 +1,22 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useQueryClient } from '@tanstack/react-query';
 
-const LikeIcon = () => {
+const LikeIcon = ({ onModalOpen }) => {
 	const [isChecked, setIsChecked] = useState(false);
+    const queryClient = useQueryClient()
     const onClick = () => {
-        if (isChecked) {
-            setIsChecked(false);
+        const initialData = queryClient.getQueryData(['check']);
+        console.log("initialData: ", initialData)
+        if (!initialData.is_logined) {
+            onModalOpen();
         } else {
-            setIsChecked(true);
+            if (isChecked) {
+                setIsChecked(false);
+            } else {
+                setIsChecked(true);
+            }
         }
     };
 	return (

@@ -8,6 +8,7 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
+import { useNavigate } from "react-router-dom";
 
 const SearchResultPage = () => {
     const [currentPage, setcurrentPage] = useState(1)
@@ -27,6 +28,7 @@ const SearchResultPage = () => {
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
     const [searchText, setSearchText] = useState('모순');
+    const navigate = useNavigate();
     
     const searchResultFunc = async () => {
         setLoading(true);
@@ -121,11 +123,16 @@ const SearchResultPage = () => {
 		setSearchText(currentText)
         console.log(e.currentTarget.parentNode.children[0].value)
 	}
+    
+    const navigateAddBook = () => {
+        navigate('/search/add')
+    }
 
     return (
         <>
             <NavBar/>
-            <MainContainer className="container">
+            <MainContainer>
+            <BookContainer className="container">
             <SearchBox>
                 <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
                 <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
@@ -154,6 +161,11 @@ const SearchResultPage = () => {
                     currentPage={currentPage}
                     onPageChange={handlePageChange}
                 />
+            </BookContainer>
+            <TextContainer className='textfield'>
+                <HaveBookText>찾으시는 책이 없으신가요?</HaveBookText>
+                <AddBookText onClick={navigateAddBook}>+ 책 추가하기</AddBookText>
+            </TextContainer>
             </MainContainer>
             <FooterBar/>
         </>
@@ -165,19 +177,24 @@ const FilterContainer = styled.div`
     display: flex;
     justify-self: end;
     margin-right: 20px;
-`
+`;
 
 const MainContainer = styled.div`
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+`;
+
+const BookContainer = styled.div`
     display: grid;
     justify-items: center;
     align-content: center; 
     grid-template-areas:
-        "searchBox searchBox searchBox searchBox searchBox"
-        "resultText resultText resultText resultFilter resultFilter"
-        "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
-        "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
-        ". pagination pagination pagination .";
+    "searchBox searchBox searchBox searchBox searchBox"
+    "resultText resultText resultText resultFilter resultFilter"
+    "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
+    "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
+    ". pagination pagination pagination .";
     grid-template-columns: repeat(5, 1fr);
 `;
 
@@ -213,6 +230,35 @@ const ResultText = styled.div`
     font-family: "KOTRA_BOLD";
     justify-self: start;
     margin-left: 20px;
+`;
+
+const TextContainer = styled.div`
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-top: 60px;
+    margin-bottom: 100px;
+    padding: 50px;
+    border-radius: 30px;
+`;
+
+const HaveBookText = styled.p`
+    font-size: 30px;
+    width: 359px;
+    color: #B7B5B5;
+    font-family: "KOTRA_BOLD";
+`;
+
+const AddBookText = styled.p`
+    font-size: 30px;
+    width: 196px;
+    color: #4659A9;
+    font-family: "KOTRA_BOLD";
+    border-bottom : 3px solid #4659A9;
+    margin-top: 10px;
+    &:hover {
+        cursor: default;
+    }
 `;
 
 export default SearchResultPage;

@@ -51,6 +51,12 @@ const LoginPage = () =>{
         navigate('/auth/register')
     }
 
+    const handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleLogin(); 
+        }
+    };
+
     return (
         <>
             <NavBar/>
@@ -65,7 +71,7 @@ const LoginPage = () =>{
                     </InputContainer>
                     <InputContainer>
                         <FlotingLabelContainer className="has-float-label">
-                            <FlotingLabelInput type="password" placeholder="" onChange={(e) => {setPassword(e.target.value)}}/>
+                            <FlotingLabelInput type="password" placeholder="" onKeyDown={handleOnKeyPress} onChange={(e) => {setPassword(e.target.value)}} />
                             <FlotingLabelTitle>비밀번호</FlotingLabelTitle>
                         </FlotingLabelContainer>
                     </InputContainer>
