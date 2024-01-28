@@ -2,11 +2,22 @@ import NavBar from "../component/NavBar";
 import styled from "styled-components";
 import FooterBar from "../component/FooterBar";
 import VerticalFlowText from "../component/VerticalFlowText";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from "axios";
 
-const RandomFlowTextFuxc = () => {
+const HomePage = () => {
+    // useNavigate
+    const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    const initialData = queryClient.getQueryData(['check']);
+
+    const RandomFlowTextFuxc = () => {
     // load random quote array 10 sentence(temporary)
-    const quoteArr = ['write1', '문장2', '문장셋', '문장넷', '문장5', '문장6', '문장7', '문장8', '문장9', '문장10']
-    const ranArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    
+    const quoteArr = tenQuoteQuery.data.quotes.map((item) => item.quote)
+    console.log("quoteArr: ", quoteArr)
+    const ranArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     ranArr.sort(() => Math.random() - 0.5);
     
     // random width
@@ -15,10 +26,33 @@ const RandomFlowTextFuxc = () => {
     })
 
     return flowTexts;
-}
+    }
 
-const HomePage = () => {
+    const handleLogin = () => {
+        if (initialData) navigate('/mypage')   
+        else navigate('/auth/login')
+    }
+
+    // fetch API
+    const fetchTenQuery = async () => {
+        try {
+            const res = await axios.get(`http://localhost:3001/book/ten-quotes`)
+            const data = res.data;
+
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // react-query
+    const tenQuoteQuery = useQuery({
+        queryKey: ["ten-query"],
+        queryFn: fetchTenQuery
+    })
+
     return (
+        !tenQuoteQuery.isLoading  && tenQuoteQuery.data &&
         <>
             <NavBar />
             <Background>
@@ -66,7 +100,7 @@ const HomePage = () => {
                         <TitleText color={'white'} size={'20px'}>북극성이 여러분의 여행을 위한<br />길잡이가 되어줄 거예요.</TitleText>
                     </ContentBox>
                     <div style={{margin: 50}} />
-                    <Button>
+                    <Button onClick={() => handleLogin()}>
                         북극성 시작하기
                     </Button>
                     <div style={{margin: 50}} />
@@ -93,6 +127,8 @@ const ContentText = styled.text`
 // container
 const Background = styled.div`
     background: linear-gradient(#6F61C6, #667BD4, #97A4E8, #C9C6F7, #FACECB);
+    padding-left: 3vw;
+    padding-right: 3vw;
 `;
 
 const Container = styled.div`

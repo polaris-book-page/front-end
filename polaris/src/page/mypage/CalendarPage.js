@@ -14,6 +14,7 @@ const CalendarPage = () => {
         try {
             const response = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
+            console.log(response.data)
             
             return data;
         } catch (err) {
@@ -29,7 +30,7 @@ const CalendarPage = () => {
 
     // save mark book: start date, end date
     const CalIndexFunc = (date) => {
-        return ReviewQuery.data.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
+        return ReviewQuery.data.reviewList.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
     }
 
     return (
@@ -48,10 +49,10 @@ const CalendarPage = () => {
                         navigationLabel={null}
                         showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
                         tileContent={({ date }) => {
-                            if (ReviewQuery.data.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
+                            if (ReviewQuery.data.findMyReview && ReviewQuery.data.reviewList.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
                                 return (
                                     <>
-                                        <BookImage src={ReviewQuery.data[CalIndexFunc(date)]['bookImage']} />
+                                        <BookImage src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
                                     </>
                                 )
                             }
