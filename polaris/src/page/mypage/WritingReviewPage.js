@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
 import useDetectClose from "../../component/hook/useDetectClose";
 import MoveStarRating from "../../component/MoveStarRating";
+import NightSkyBackground from "../../component/NightSkyBackground";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -43,94 +44,93 @@ const WritingReviewPage = () => {
     return (
         <>
             <NavBar/>
-            <Background>
-                <Container>
-                    {/* scroll */}
-                    <ScrollbarContainer>
-                        <ContentContainer>
-                        {/* book image */}
-                        <BookImageBox>
-                            <PlanetBox>
-                                <BookImage>
-                                    <img style={{ width: 120, height: 200 }} />                            
-                                </BookImage>
-                                {/* select plenet image */}
-                                <PlanetSelBox>
-                                    <PlenetList $isClicked={isOpen} >
-                                        {plenetImgArr.map((item, index) => {
-                                            return (<PlenetComponents src={item} key={index} onClick={() => setSelPlanet(item)} />)
-                                        })}
-                                    </PlenetList>
-                                    <div style={{margin: 5}} />
-                                    {selPlanet === "" ?
-                                        <AddPlanet ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}>
-                                            <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
-                                        </AddPlanet> :  <SelectedPlanetImg src={selPlanet} ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}/>
-                                    }
-
-                                    <div style={{margin: 3}} />
-                                    <ContentText color={'white'} size={'12px'} style={{ textAlign: 'center' }}>통계 페이지에 <br />들어가요!</ContentText>
-                                </PlanetSelBox>
-                            </PlanetBox>
-                            <div style={{marginBottom: 20}} />
-                            <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
-                            <ContentText color={'white'} size={'13px'}>저자</ContentText>
-                            <MoveStarRating />
-                        </BookImageBox>
-                        {/* book type */}
-                        <div style={{height: 20}} />
-                        <RadioContainer>
-                            <RadioBox>
-                                <RadioButton type='radio' value='1' checked={select === '1'} onChange={selectRadioFunc} />
-                                <ContentText color={'white'} size={'13px'}>종이책</ContentText>
-                            </RadioBox>
-                            <RadioBox>
-                                <RadioButton type='radio' value='2' checked={select === '2'} onChange={selectRadioFunc} />
-                                <ContentText color={'white'} size={'13px'} >전자책</ContentText>
-                            </RadioBox>
-                        </RadioContainer>
-
-                        {/* input date */}
-                        <DateInputBox>
-                            <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                            <CustomDatePicker setDate='2024-01-01' page="addreview" />
-                            <div style={{height: 20}} />
-                            <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                            <CustomDatePicker setDate='2020-01-13' page="addreview" />
-                        </DateInputBox>
-                        {/* dashed line */}
-                        <Line />
-                        {/* input quote */}
-                        <QuoteContainer>
-                            <QuoteColumnAlignContainer>
-                                <QuoteInputTitleBox>
-                                    <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
-                                    <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
-                                </QuoteInputTitleBox>
-                                {quote}
-                                <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>{
-                                    quote.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
+            <NightSkyBackground height={'90vh'} />
+            <Container>
+                {/* scroll */}
+                <ScrollbarContainer>
+                    <ContentContainer>
+                    {/* book image */}
+                    <BookImageBox>
+                        <PlanetBox>
+                            <BookImage>
+                                <img style={{ width: 120, height: 200 }} />                            
+                            </BookImage>
+                            {/* select plenet image */}
+                            <PlanetSelBox>
+                                <PlenetList $isClicked={isOpen} >
+                                    {plenetImgArr.map((item, index) => {
+                                        return (<PlenetComponents src={item} key={index} onClick={() => setSelPlanet(item)} />)
+                                    })}
+                                </PlenetList>
+                                <div style={{margin: 5}} />
+                                {selPlanet === "" ?
+                                    <AddPlanet ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}>
+                                        <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
+                                    </AddPlanet> :  <SelectedPlanetImg src={selPlanet} ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}/>
                                 }
-                                </DeleteQuoteButton>
-                                <AddQuoteButton onClick={() => inputQuoteFunc()}>
-                                    <ContentText color={'white'} size={'12px'}>+ 구절 추가하기</ContentText>
-                                </AddQuoteButton>
-                        </QuoteColumnAlignContainer>
-                        </QuoteContainer>
-                        {/* input review */}
+
+                                <div style={{margin: 3}} />
+                                <ContentText color={'white'} size={'12px'} style={{ textAlign: 'center' }}>통계 페이지에 <br />들어가요!</ContentText>
+                            </PlanetSelBox>
+                        </PlanetBox>
+                        <div style={{marginBottom: 20}} />
+                        <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
+                        <ContentText color={'white'} size={'13px'}>저자</ContentText>
+                        <MoveStarRating />
+                    </BookImageBox>
+                    {/* book type */}
+                    <div style={{height: 20}} />
+                    <RadioContainer>
+                        <RadioBox>
+                            <RadioButton type='radio' value='1' checked={select === '1'} onChange={selectRadioFunc} />
+                            <ContentText color={'white'} size={'13px'}>종이책</ContentText>
+                        </RadioBox>
+                        <RadioBox>
+                            <RadioButton type='radio' value='2' checked={select === '2'} onChange={selectRadioFunc} />
+                            <ContentText color={'white'} size={'13px'} >전자책</ContentText>
+                        </RadioBox>
+                    </RadioContainer>
+
+                    {/* input date */}
+                    <DateInputBox>
+                        <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
+                        <CustomDatePicker setDate='2024-01-01' page="addreview" />
                         <div style={{height: 20}} />
-                        <ReviewBox>
-                            <TitleText color='white' size='16px'>리뷰</TitleText>
-                            <ReviewInput />
-                        </ReviewBox>
-                        <div style={{height: 10}} />
-                        <Button>
-                            <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
-                        </Button>
-                        </ContentContainer>
-                    </ScrollbarContainer>
-                </Container>
-            </Background>
+                        <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
+                        <CustomDatePicker setDate='2020-01-13' page="addreview" />
+                    </DateInputBox>
+                    {/* dashed line */}
+                    <Line />
+                    {/* input quote */}
+                    <QuoteContainer>
+                        <QuoteColumnAlignContainer>
+                            <QuoteInputTitleBox>
+                                <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
+                                <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
+                            </QuoteInputTitleBox>
+                            {quote}
+                            <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>{
+                                quote.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
+                            }
+                            </DeleteQuoteButton>
+                            <AddQuoteButton onClick={() => inputQuoteFunc()}>
+                                <ContentText color={'white'} size={'12px'}>+ 구절 추가하기</ContentText>
+                            </AddQuoteButton>
+                    </QuoteColumnAlignContainer>
+                    </QuoteContainer>
+                    {/* input review */}
+                    <div style={{height: 20}} />
+                    <ReviewBox>
+                        <TitleText color='white' size='16px'>리뷰</TitleText>
+                        <ReviewInput />
+                    </ReviewBox>
+                    <div style={{height: 10}} />
+                    <Button>
+                        <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
+                    </Button>
+                    </ContentContainer>
+                </ScrollbarContainer>
+            </Container>
         </>
     )
 }
@@ -149,19 +149,10 @@ const ContentText = styled.span`
 `
 
 // container
-const Background = styled.div`
-    position: flex;
-    justify-content: center;
-    background-color: #4659a9;
-    height: 100vh;
-    padding: 20px 5%;
-    overflow: none;
-`;
-
 const Container = styled.div`
     display: flex;
     position: fixed;
-    top: 0;
+    top: 70px;
     left: 0;
     right: 0;
     bottom: 0;
