@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
@@ -15,6 +15,44 @@ const EditProfilePage = () => {
     const [file, setFile] = useState('');
     const navigate = useNavigate();
     
+    const { mutate } = useMutation({
+        mutationFn: async (profile) => {
+            console.log(profile)
+            const res = await axios.put(`http://localhost:3001/mypage/modify`, profile, {
+                headers: {
+                    "Content-Type": `multipart/form-data`,
+                },
+                withCredentials: true
+            })
+            const data = res.data;
+
+            console.log(data);
+
+            return data;
+        },
+        onSuccess: (data) => {
+            console.log("update profile success.")
+        },
+        onError: (data) => {
+            console.log("update profile failure.")
+        }
+        
+    })
+
+    const handleUpdate = () => {
+        let formData = new FormData();
+
+        const data = {
+            "nickname": userNickname,
+            "dir": "profile",
+        }
+        
+        formData.append("profileImage", image)
+        formData.append("dir", 'profile')
+        formData.append("data", new Blob([JSON.stringify(data), {type: "application/json"}]))
+
+        mutate(formData)
+    }
     
     const fetchUserProfile = async () => {
         try {
@@ -25,8 +63,10 @@ const EditProfilePage = () => {
             const res = await axios.get(`http://localhost:3001/user/${UserAuthInfoCheck.userId}`)
             const data = res.data;
 
-            if(data.success)
+            if (data.success) {
                 onUserNickName(data.findUser.nickname)
+                if (data.findUser.profileImage) setImage(data.findUser.profileImage)
+            }
 
             return data.findUser;
         } catch (err) {
@@ -102,7 +142,7 @@ const EditProfilePage = () => {
                     <EditInfoBtnBox>
                         <div style={{flex: 1}} />
                         <EditInfoBtn onClick={() => navigate('/mypage/')}>
-                            <ContentText color={'#4659A9'} size={'12px'}>티켓 정보 수정하기 &gt;&gt;&gt;&gt;</ContentText>
+                            <ContentText color={'#4659A9'} size={'12px'} onClick={handleUpdate}>티켓 정보 수정하기 &gt;&gt;&gt;&gt;</ContentText>
                         </EditInfoBtn>
                     </EditInfoBtnBox>
                     </CardBox>

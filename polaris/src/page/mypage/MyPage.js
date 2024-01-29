@@ -16,6 +16,7 @@ const MyPage = () => {
   const [flip, setFlip] = useState(false);
   let navigate = useNavigate();
   const queryClient = useQueryClient()
+  const basicImg = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
 
     const fetchReviewList = async () => {
       try {
@@ -97,8 +98,8 @@ const MyPage = () => {
               <ContentContainer>
               {/* profile */}
               <ProfileContainer>
-                <ProfileBox>
-                  <ProfileImage />
+                <ProfileBox> 
+                  {queries[0].data.profileImage ? <ProfileImage src={queries[0].data.profileImage} /> : <ProfileImage src={basicImg} />}
                   <ProfileContent>
                     <ContentText size={'13px'}>닉네임: {queries[0].data.nickname}</ContentText>
                     <ContentText size={'13px'}>아이디: {queries[0].data._id}</ContentText>
@@ -289,11 +290,10 @@ const ProfileBox = styled.div`
   margin: 10px;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50px;
-  background-color: #fff;
   box-shadow: 0px 4px 8px #ddd;
   margin-bottom: 30px;
 `;
