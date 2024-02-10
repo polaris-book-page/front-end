@@ -55,13 +55,13 @@ const MyReviewPage = () => {
                     </StatisticsContainer>
                     <div style={{ height: 20 }} />
                     { ReviewQuery.data.findMyReview ?
-                        <Reviewcontainer>
+                        <ReviewContainer>
                             {
                                 ReviewQuery.data.reviewList.map((item, index) => {
                                     return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} />
                                 })
                             }
-                        </Reviewcontainer> : <>작성한 리뷰가 없습니다.</>
+                        </ReviewContainer> : <>작성한 리뷰가 없습니다.</>
                     }
                 </Container>
             </Background>
@@ -121,7 +121,7 @@ const StatisticsContainer = styled.div`
     margin: 10px;
 `
 
-const Reviewcontainer = styled.div`
+const ReviewContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     overflow-y: scroll;
