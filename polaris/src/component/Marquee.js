@@ -17,11 +17,11 @@ const FlowContainer = styled.div`
 `;
 
 const FlowWrap = styled.div`
-width: 175px;
+	width: 175px;
 	animation: ${textLoop} 6.5s linear infinite;
 	line-height: 1.5;
-	font-size: 24px;
-	color: #4659A9;
+	font-size: ${(props) => props.size || '24px'};
+	color: ${(props) => props.color || '#4659A9' };
 	font-weight: 700;
 	font-family: "KOTRA_GOTHIC";
 	&:hover {
@@ -37,11 +37,11 @@ const FlowText = styled.div`
 	/* overflow: hidden; */
 `;
 
-const Marquee = ({title}) => {
+const Marquee = ({title, color, size}) => {
 	return (
 		<FlowContainer>
 			<FlowText>
-				<FlowWrap>{ title }</FlowWrap>
+				<FlowWrap color={color} size={size}>{ title }</FlowWrap>
 			</FlowText>
 		</FlowContainer>
 	);
