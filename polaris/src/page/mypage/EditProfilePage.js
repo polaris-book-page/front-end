@@ -17,7 +17,6 @@ const EditProfilePage = () => {
     
     const { mutate } = useMutation({
         mutationFn: async (profile) => {
-            console.log(profile)
             const res = await axios.put(`http://localhost:3001/mypage/modify`, profile, {
                 headers: {
                     "Content-Type": `multipart/form-data`,
@@ -26,7 +25,7 @@ const EditProfilePage = () => {
             })
             const data = res.data;
 
-            console.log(data);
+            console.log("data:", data);
 
             return data;
         },
@@ -42,15 +41,10 @@ const EditProfilePage = () => {
     const handleUpdate = () => {
         let formData = new FormData();
 
-        const data = {
-            "nickname": userNickname,
-            "dir": "profile",
-        }
+        formData.append('dir', 'profile')
+        formData.append('profileImage', file)
+        formData.append('nickname', userNickname)
         
-        formData.append("profileImage", image)
-        formData.append("dir", 'profile')
-        formData.append("data", new Blob([JSON.stringify(data), {type: "application/json"}]))
-
         mutate(formData)
     }
     
