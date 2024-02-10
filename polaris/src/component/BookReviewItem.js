@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import StarRatingVertical from "./StarRatingVertical";
 import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
+import Marquee from "./Marquee";
 
-const BookReviewItem = ({rate, image}) => {
+const BookReviewItem = ({rate, image, title}) => {
 
     return (
         <>
@@ -14,7 +15,7 @@ const BookReviewItem = ({rate, image}) => {
                     <StarRatingVertical rating={rate} size={'18px'} />
                     <Image src={image} />
                 </BookContainer>
-                <TitleText>책 이름</TitleText>
+                <Marquee title={title} size={'15px'} color={'white'} />
             </Container>
         </>
     );
@@ -53,7 +54,7 @@ const Image = styled.img`
     position: relative;
     width: 130px;
     height: 200px;
-    top: -20px;
+    top: -15px;
 `;
 
 const Bookmark = styled.div`
