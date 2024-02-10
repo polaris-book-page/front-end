@@ -8,16 +8,18 @@ import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 import BookProgressDropDown from '../component/BookProgressDropDown';
 import { useEffect, useState } from "react";
 import { useMutation } from '@tanstack/react-query';
+import { useLocation } from "react-router-dom";
 
 const BookInfoPage = () => {
   const [book, setBook] = useState(null);
   const [dbbook, setDbook] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
 
-    const bestsellerResult = async () => {
+    const bookSearch = async () => {
       setLoading(true);
       try {
-        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=9791166687204&output=js&Version=20131101`);
+        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101`);
         console.log(result.data.item[0]);
         console.log("itemPage: ", result.data.item[0].subInfo.itemPage);
         setBook(result.data.item[0]);
@@ -43,7 +45,7 @@ const BookInfoPage = () => {
   });
 
   useEffect(() => {
-    bestsellerResult();
+    bookSearch();
   }, []);
   
   useEffect(() => {
