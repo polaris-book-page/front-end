@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useMemo } from "react";
+import NightSkyBackground from "../../component/NightSkyBackground";
 
 const RegisterEvaluatePage = () => {
 
@@ -58,6 +59,7 @@ const RegisterEvaluatePage = () => {
     return (
         <>
             <NavBar/>
+            <NightSkyBackground height={'120vh'} />
             <Background>
                 <div style={{margin:'20px'}} />
                 <TextBox>
@@ -100,13 +102,16 @@ const ContentText = styled.span`
 
 // background
 const Background = styled.div`
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    height: 120vh;
+    margin: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: #123123;
     padding: 20px 5%;
-    overflow: none;
 `;
 
 // container
@@ -114,7 +119,7 @@ const EvaluateContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     overflow-y: scroll;
-    height: 70vh;
+    height: 80vh;
     gap: 30px;
 
     &::-webkit-scrollbar {
@@ -146,7 +151,7 @@ const TextBox = styled.div`
 const Button = styled.button`
     border-radius: 20px;
     border: none;
-    background-color: #4659A9;
+    background: linear-gradient(#7B85B7, #4659A9);
     font-family: "KOTRA_GOTHIC";
     color: white;
     min-width: 250px;
