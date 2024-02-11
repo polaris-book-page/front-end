@@ -15,7 +15,6 @@ const RegisterEvaluatePage = () => {
             const result = await axios.get(`/ttb/api/ItemList.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Cover=Big&QueryType=Bestseller&MaxResults=${maxResults}&start=${start}&SearchTarget=Book&output=js&Version=20131101`);
             const data = result.data;
             
-            //console.log(data.item);
             return data.item;
         }
         catch (e){
@@ -46,17 +45,14 @@ const RegisterEvaluatePage = () => {
     })
 
     const listItem = useMemo(() =>{
-        //console.log(data.pages);
         if(data){
             const items = data.pages.reduce((acc, cur) => 
             acc.concat(cur), []
             )
-            //console.log(items);
+
             return items;
         }
     }, [data])
-
-    console.log(data)
 
     return (
         <>
