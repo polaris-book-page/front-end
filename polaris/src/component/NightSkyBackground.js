@@ -1,12 +1,13 @@
+import { useMemo } from "react";
 import styled, { keyframes } from "styled-components";
 
 
 const NightSkyBackground = ({ height }) => {
     
-    const randomStars = () => {
+    const randomStars = useMemo(() => {
         // window size
         const maxWindowSize = Math.max(window.innerWidth, window.innerHeight);
-        
+
         // dummy data
         const size = Math.floor(maxWindowSize / 2);
 
@@ -21,12 +22,12 @@ const NightSkyBackground = ({ height }) => {
         })
         
         return stars
-    }
+    }, []) 
 
     return (
         <SkyContainer height={height}>
             <StarsContainer>
-                {randomStars()}
+                {randomStars}
             </StarsContainer>
         </SkyContainer>
     )
@@ -57,7 +58,7 @@ const Gradient = keyframes`
 // container
 const SkyContainer = styled.div`
     position: relative;
-    width: 100vw;
+    display: flex;
     height: ${(props) => props.height || '100vh'};
     background-color: #ffffff;
     background: linear-gradient(#9A92C9, #7B85B7, #4659A9, #2C2C60);
@@ -74,7 +75,7 @@ const StarsContainer = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: ${StarsAnimation} 1000s ease infinite;
+    animation: ${StarsAnimation} 300s ease infinite;
     overflow: hidden;
 `;
 
