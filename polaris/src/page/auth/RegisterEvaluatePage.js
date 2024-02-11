@@ -33,7 +33,7 @@ const RegisterEvaluatePage = () => {
         data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage
     } = useInfiniteQuery({
         queryKey:['evaluate-data'],
-        queryFn: (pageParam = 1) => fetchBestSellerFunc(pageParam),
+        queryFn: ({pageParam = 1}) => fetchBestSellerFunc(pageParam),
         select: (data) => ({
             pages: data?.pages,
             pageParams: data.pageParams,
