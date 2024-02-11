@@ -64,21 +64,45 @@ const NavBar = () => {
     queryClient.invalidateQueries(['check']);
   }
 
+  const navigateMypage = async () => {
+    navigate('/mypage')
+  }
+
+  const navigateBooket = async () => {
+    navigate('/mypage/list')
+  }
+
+  const navigateMain = async () => {
+    navigate('/main')
+  }
+
+  const navigateHome = async () => {
+    navigate('/')
+  }
+
+  const navigateExplo = async () => {
+    navigate('/recommend')
+  }
+
+  const navigateToday = async () => {
+    navigate('/sentence')
+  }
+
   return (
     <>
       <NavbarContainer>
         <NavBarMenuBox>
-          <NavLogo src={require('../assets/graphic/app-logo.png')} />
+          <NavLogo src={require('../assets/graphic/app-logo.png')} onClick={navigateHome}/>
           <div style={{ width: "10px" }} />
-          <NavText>메인 페이지</NavText>
-          <NavText>북극성 탐험</NavText>
-          <NavText>오늘의 문장</NavText>
+          <NavText onClick={navigateMain}>메인 페이지</NavText>
+          <NavText onClick={navigateExplo}>북극성 탐험</NavText>
+          <NavText onClick={navigateToday}>오늘의 문장</NavText>
         </NavBarMenuBox>
         <div style={{ flex: 1 }} />
         <NavBarIconBox>
           <Search />
-          <Favorite />
-          <MyPage />
+          <Favorite onClick={navigateBooket}/>
+          <MyPage onClick={navigateMypage}/>
           {isLogined ? (
             <Unlock onClick={handleLogout}/>
           ) : ( 
@@ -122,6 +146,10 @@ const NavText = styled.p`
   color: white;
   margin: 15px;
   font-family: "KOTRA_GOTHIC";
+
+  &:hover {
+    cursor: default;
+  }
 `;
 
 export default NavBar;

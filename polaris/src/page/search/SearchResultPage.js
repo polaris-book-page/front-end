@@ -9,6 +9,7 @@ import Pagination from "../../component/Pagination";
 import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query';
 
 const SearchResultPage = () => {
     const [currentPage, setcurrentPage] = useState(1)
@@ -49,6 +50,28 @@ const SearchResultPage = () => {
         }
         setLoading(false);
     }
+
+    const { mutate } = useMutation({
+        mutationFn: async (bookInfo) => {
+            const { data } = await axios.post(`http://localhost:3001/search/result/save`, bookInfo, { withCredentials: true })
+            console.log("data", data)
+            return data;
+        }, 
+        onSuccess: (data) => {
+            console.log("book save success")
+        },
+        onError: () => {
+            console.log("book save failure")
+        }
+    });
+
+    useEffect(() => {
+        if (data) {
+            // console.log("data item",data.item)
+            mutate({ books: data.item });
+            
+        }
+    }, [data])
 
     const prevBookTypeRef = useRef(bookType);
     const prevOrderRef = useRef(order);

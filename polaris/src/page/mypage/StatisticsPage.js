@@ -3,8 +3,28 @@ import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 import DrawChart1 from "../../component/DrawChart1";
 import DrawChart2 from "../../component/DrawChart2";
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
+import Modal from 'react-modal';
+import React, { useState } from "react";
+import { HiMiniXMark } from "react-icons/hi2";
 
-const StatisticsPage = () =>{
+const StatisticsPage = () => {
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const { mutate } = useMutation({
+        mutationFn: async (goal) => {
+            const { data } = await axios.post(`http://localhost:3001/mypage/goal`, goal, { withCredentials: true })
+            console.log("data", data)
+            return data;
+        }, 
+        onSuccess: (data) => {
+            console.log("set goal success")
+        },
+        onError: () => {
+            console.log("set goal failure")
+        }
+    });
 
     return (
         <>
@@ -16,6 +36,27 @@ const StatisticsPage = () =>{
                 <StatisticsGrid className="container">
                     <Goal>
                         {/* <Chartex/> */}
+                        {!modalIsOpen && (
+                            <ContainerRocketBlind>
+                                <GoalBtn onClick={() => setModalIsOpen(true)}>2024년<br/>목표 설정하기</GoalBtn>
+                            </ContainerRocketBlind>
+                        )}
+                        <GoalModal
+                                isOpen={modalIsOpen}
+                                onRequestClose={() => setModalIsOpen(false)}
+                                style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
+                            >
+                            <Content>
+                                <Text>
+                                    몇 권 완독을<br/>목표로 하시겠어요?
+                                </Text>
+                                <InputBox type='text' placeholder='권 수를 입력하세요'></InputBox>
+                                <BtnContainer>
+                                    <Btn>설정 완료</Btn>
+                                </BtnContainer>
+                                    <CloseBtn size="45" onClick={() => setModalIsOpen(false)}></CloseBtn>
+                            </Content>
+                        </GoalModal>
                         <ContainerRocket>
                             <Ground/>
                         </ContainerRocket>
@@ -34,17 +75,18 @@ const StatisticsPage = () =>{
                             <Line></Line>
                         </Current>
                         <GoalText>우주로 가기 위한 여정</GoalText>
+                        
                     </Goal>
                     <Category>
-                        <CategoryText>읽은 카테고리</CategoryText>
                         <CategoryContainer/>
+                        <CategoryText>읽은 카테고리</CategoryText>
                         <DrawChartContainer>
                             <DrawChart11 legendContainerId="1" />
                         </DrawChartContainer>
                     </Category>
                     <Type>
-                        <TypeText>책 타입</TypeText>
                         <TypeContainer/>
+                        <TypeText>책 타입</TypeText>
                         <DrawChartContainer>
                             <DrawChart22 legendContainerId="2" />
                         </DrawChartContainer>
@@ -54,10 +96,12 @@ const StatisticsPage = () =>{
                         {/* <ReviewContainer></ReviewContainer> */}
                     </Review>
                     <Calendar>
+                        <CalendarContainer/>
                         <CalendarText>월별 달력</CalendarText>
-                        <CalendarContainer></CalendarContainer>
+
                     </Calendar>
                 </StatisticsGrid>
+                
             <FooterBar />
             {/* </Background> */}
         </>
@@ -93,6 +137,33 @@ const Goal = styled.div`
     position: relative;  
 `;
 
+const ContainerRocketBlind = styled.div`
+    position: absolute;
+    right: 0px;
+    width: 373px;
+    height: 727px;
+    border-radius: 61px;
+    background-color: rgba(0.88, 0.88, 0.88, 0.64);;
+    float: right;
+    margin-right: 100px;
+    z-index: 2;
+    display: flex;
+`;
+
+const GoalBtn = styled.button`
+    position: absolute;
+    right: 95px;
+    bottom: 340px;
+    width: 165px;
+    height: 63px;
+    border: none;
+    border-radius: 50px;
+    font-size: 15px;
+    font-family: "KOTRA_GOTHIC";
+    font-weight: 1000;
+    /* z-index: 3; */
+`;
+
 const ContainerRocket = styled.div`
     width: 373px;
     height: 727px;
@@ -106,13 +177,14 @@ const ContainerRocket = styled.div`
     margin-right: 100px;
 `;
 
+
 const Ground = styled.div`
     position:absolute; 
     bottom: 79px;
     background-color: #CFBB9C;
     width: 373px;
     height: 101px;
-    border-radius: 0 0 30px 30px;
+    border-radius: 0 0 61px 61px;
     vertical-align: bottom;
 `;
 
@@ -131,6 +203,7 @@ const Icon = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* z-index: 1; */
 `;
 
 const LevelHeightContainer = styled.div`
@@ -208,7 +281,6 @@ const CategoryText = styled.p`
     position: absolute;
     left: 195px;
     bottom: 330px;
-    z-index: 2;
 `;
 
 const CategoryContainer = styled.div`
@@ -218,7 +290,6 @@ const CategoryContainer = styled.div`
     background: #4659A9;
     opacity: 0.3;
     margin-bottom: 50px;
-    z-index: 1;
 `;
 
 const DrawChart11 = styled(DrawChart1)`
@@ -244,7 +315,6 @@ const TypeText = styled.p`
     position: absolute;
     left: 230px;
     bottom: 330px;
-    z-index: 2;
 `;
 
 const DrawChart22 = styled(DrawChart2)`
@@ -257,7 +327,6 @@ const TypeContainer = styled.div`
     background: #97A4E8;
     opacity: 0.3;
     margin-bottom: 50px;
-    z-index: 1;
 `;
 
 const Review = styled.div`
@@ -273,7 +342,6 @@ const ReviewText = styled.p`
     position: absolute;
     left: 205px;
     bottom: 330px;
-    z-index: 2;
 `;
 
 const ReviewContainer = styled.div`
@@ -284,7 +352,6 @@ const ReviewContainer = styled.div`
     opacity: 0.3;
     margin-bottom: 50px;
     /* margin-right: 30px; */
-    z-index: 1;
 `;
 
 const Calendar = styled.div`
@@ -300,7 +367,6 @@ const CalendarText = styled.p`
     position: absolute;
     left: 210px;
     bottom: 330px;
-    z-index: 2;
 `;
 
 const CalendarContainer = styled.div`
@@ -310,7 +376,76 @@ const CalendarContainer = styled.div`
     background: #6F61C6;
     opacity: 0.3;
     margin-bottom: 50px;
-    z-index: 1;
+`;
+
+const Content = styled.div`
+    width: 316px;
+    height: 357px;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding-top: 70px;
+`;
+
+const GoalModal = styled(Modal)`
+`;
+
+const Text = styled.p`
+    width: 234px;
+    height: 87px;
+    margin-left: 40px;
+    font-size: 25px;
+    font-family: "KOTRA_BOLD";
+    color: #4659A9;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid #4659A9;
+`;
+
+const InputBox = styled.input`
+    width: 208px;
+    font-size: 20px;
+    font-family: "KOTRA_BOLD";
+    border: 0;
+    margin-left: 55px;
+    margin-top: 30px;
+    text-align:center;
+    color: #4659A9;
+    &::placeholder{
+		color: #B7B5B5;
+	}
+    &:focus{
+        outline: none;
+    }
+`;
+
+const BtnContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+`;
+
+const Btn = styled.button`
+    width: 136px;
+    height: 53px;
+    background-color: #4659A9;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-family: "KOTRA_GOTHIC";
+`;
+
+const CloseBtn = styled(HiMiniXMark)`
+    fill: #D9D9D9;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 `;
 
 export default StatisticsPage;

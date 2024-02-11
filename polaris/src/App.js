@@ -14,7 +14,7 @@ import SearchResultPage from "./page/search/SearchResultPage.js"
 import MyReviewPage from "./page/mypage/MyReviewPage.js"
 import BooketListPage from "./page/mypage/BooketListPage.js"
 import CalendarPage from "./page/mypage/CalendarPage.js"
-import CompletePage from "./page/mypage/CompletePage.js"
+import UniversePage from "./page/mypage/UniversePage.js"
 import MyPage from "./page/mypage/MyPage.js"
 import StatisticsPage from "./page/mypage/StatisticsPage.js"
 import WritingReviewPage from "./page/mypage/WritingReviewPage.js"
@@ -55,7 +55,7 @@ function App() {
           <Route path="/mypage/review" element={<Auth><MyReviewPage /></Auth>}/>
           <Route path="/mypage/list" element={<Auth><BooketListPage /></Auth>}/>
           <Route path="/mypage/calendar" element={<Auth><CalendarPage /></Auth>}/>
-          <Route path="/mypage/complete" element={<Auth><CompletePage /></Auth>}/>
+          <Route path="/mypage/universe" element={<Auth><UniversePage /></Auth>}/>
           <Route path="/mypage/statistics" element={<Auth><StatisticsPage /></Auth>}/>
           <Route path="/mypage/write" element={<Auth><WritingReviewPage /></Auth>}/>
           <Route path="/auth/login" element={<LoginPage />}/>

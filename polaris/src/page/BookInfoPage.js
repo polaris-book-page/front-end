@@ -1,23 +1,74 @@
 import styled from "styled-components";
+import axios from 'axios';
 import FooterBar from "../component/FooterBar";
 import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
 import StarRating from '../component/StarRating.js'
 import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 import BookProgressDropDown from '../component/BookProgressDropDown';
+import { useEffect, useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { useLocation } from "react-router-dom";
 
 const BookInfoPage = () => {
+  const [book, setBook] = useState(null);
+  const [dbbook, setDbook] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
+
+    const bookSearch = async () => {
+      setLoading(true);
+      try {
+        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101`);
+        console.log(result.data.item[0]);
+        console.log("itemPage: ", result.data.item[0].subInfo.itemPage);
+        setBook(result.data.item[0]);
+      } catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    }
+
+  const { mutate } = useMutation({
+    mutationFn: async (bookInfo) => {
+        const { data } = await axios.post(`http://localhost:3001/book/info`, bookInfo, { withCredentials: true })
+        console.log("data", data)
+        return data;
+    }, 
+    onSuccess: (data) => {
+      console.log("book info save success")
+      setDbook(data);
+    },
+    onError: () => {
+      console.log("book info save failure")
+    }
+  });
+
+  useEffect(() => {
+    bookSearch();
+  }, []);
+  
+  useEffect(() => {
+    if (book) {
+      mutate({ isbn: book.isbn13, page: book.subInfo.itemPage });
+    }
+  }, [book])
+  
+  if (!(book)) {
+    return null;
+  }
+
   return (
     <>
       <NavBar />
       <Container>
         {/* book info */}
-        <TitleText style={{ justifySelf: 'center' }}  color={'#4659A9'} size={'24px'}>도서 제목</TitleText>
+        <TitleText style={{ justifySelf: 'center' }}  color={'#4659A9'} size={'24px'}>{book.title}</TitleText>
         <InfoContainer>
           <InfoBookBox>
             {/* book image */}
             <BookImageBox>
-              <img style={{ width: '150px', height: '200px' }} />
+            <img style={{ width: '150px', height: '200px' }} src={book.cover} alt="Book cover" />
               <StarRating rating={3.5} size={'25px'} />
               <LikeBox>
                 <ICLike />
@@ -28,24 +79,25 @@ const BookInfoPage = () => {
             <InfoContentBox>
               <InfoContentTextBox>
                 <InfoTitleText>지은이: </InfoTitleText>
-                <InfoContentText>롸롸롸</InfoContentText>
+                <InfoContentText>{book.author.substring(0, book.author.indexOf('(지은이)') - 1)}</InfoContentText>
               </InfoContentTextBox>
               <InfoContentTextBox>
                 <InfoTitleText>출판사: </InfoTitleText>
-                <InfoContentText>롸롸롸</InfoContentText>
+                <InfoContentText>{book.publisher}</InfoContentText>
               </InfoContentTextBox>
               <InfoContentTextBox>
                 <InfoTitleText>쪽수: </InfoTitleText>
-                <InfoContentText>롸롸롸</InfoContentText>
+                <InfoContentText>{book.subInfo.itemPage}</InfoContentText>
               </InfoContentTextBox>
               <InfoContentTextBox>
                 <InfoTitleText>isbn: </InfoTitleText>
-                <InfoContentText>롸롸롸</InfoContentText>
+                <InfoContentText>{book.isbn13}</InfoContentText>
               </InfoContentTextBox>
             </InfoContentBox>
             <InfoContentDetailBox>
               <InfoTitleText>책정보: </InfoTitleText>
-              <InfoContentText>이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 </InfoContentText>
+              <InfoContentText>{book.description}</InfoContentText>
+              {/* <InfoContentText>이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 </InfoContentText> */}
             </InfoContentDetailBox>
           </InfoBookBox>
           <ButtonBox>

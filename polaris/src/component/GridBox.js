@@ -4,11 +4,15 @@ import LikeIcon from "./LikeIcon";
 import Marquee from "./Marquee";
 import Modal from 'react-modal';
 import { HiMiniXMark } from "react-icons/hi2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useQueryClient } from '@tanstack/react-query'
 
 const GridBox = ({ item }) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const navigate = useNavigate();
+    const queryClient = useQueryClient()
+    const initialData = queryClient.getQueryData(['check']);
+    const { state } = useLocation();
     var author = '';
 
     if (item.author.indexOf('(') !== -1) {
@@ -22,7 +26,16 @@ const GridBox = ({ item }) => {
     };
 
     const openModal = () => {
-        setModalIsOpen(true);
+        const somebodyIn = queryClient.getQueryData(['check']);
+        console.log("is anyone in? after logout: ", somebodyIn);
+        if (!somebodyIn.is_logined) {
+            setModalIsOpen(true);
+        } else {
+            console.log("in gird: ", item.isbn13)
+            navigate('/book/info', {state : item.isbn13 });
+            console.log(state)
+            // navigate('/book/info'); 
+        }
     };
 
     return (
