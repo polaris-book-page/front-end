@@ -8,7 +8,7 @@ import { useEffect, useMemo } from "react";
 
 const RegisterEvaluatePage = () => {
 
-    const maxResults = 12;
+    const maxResults = 42;
 
     const fetchBestSellerFunc = async(start) => {
         try{
@@ -49,6 +49,7 @@ const RegisterEvaluatePage = () => {
             const items = data.pages.reduce((acc, cur) => 
             acc.concat(cur), []
             )
+            // shuffle
 
             return items;
         }
@@ -58,6 +59,7 @@ const RegisterEvaluatePage = () => {
         <>
             <NavBar/>
             <Background>
+                <div style={{margin:'20px'}} />
                 <TextBox>
                     <TitleText color={'white'} size={'20px'}>책에 별점 남기기</TitleText> <br/>
                     <ContentText color={'white'}>이 별점을 기반으로 책을 추천해드립니다.</ContentText> <br />
@@ -65,6 +67,7 @@ const RegisterEvaluatePage = () => {
                     <ContentText color={'white'}>하지만 5권 이상의 별점을 남기기 어려우시면 평소에 읽고 싶었던 책을 기준으로 평가하셔도 돼요!</ContentText> <br />
                     <ContentText color={'white'}>남기신 별점은 마이페이지의 '지금까지 남긴 별점' 부분에서 확인하실 수 있습니다.</ContentText> <br />
                 </TextBox>
+                <div style={{margin:'20px'}} />
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
@@ -73,7 +76,10 @@ const RegisterEvaluatePage = () => {
                     ) : <ContentText color={'white'} size={'15px'}>로딩 중입니다...</ContentText>
                     }
                     {!isFetchingNextPage && <div ref={ref} />}
-                </EvaluateContainer> 
+                </EvaluateContainer>
+                <div style={{margin:'20px'}} />
+                <Button>완료!</Button>
+                <div style={{margin:'20px'}} />
             </Background>
         </>
     )
@@ -94,10 +100,11 @@ const ContentText = styled.span`
 
 // background
 const Background = styled.div`
-    position: flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    height: 90vh;
-    background-color: #4659a9;
+    background-color: #123123;
     padding: 20px 5%;
     overflow: none;
 `;
@@ -108,6 +115,7 @@ const EvaluateContainer = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
     overflow-y: scroll;
     height: 70vh;
+    gap: 30px;
 
     &::-webkit-scrollbar {
         width: 6px;
@@ -132,6 +140,18 @@ const EvaluateContainer = styled.div`
 // box
 const TextBox = styled.div`
     text-align: center;
+`;
+
+// component
+const Button = styled.button`
+    border-radius: 20px;
+    border: none;
+    background-color: #4659A9;
+    font-family: "KOTRA_GOTHIC";
+    color: white;
+    min-width: 250px;
+    padding: 5px;
+    width: 10%;
 `;
 
 export default RegisterEvaluatePage;
