@@ -44,15 +44,14 @@ const neon_flicker = keyframes`
 const Background = styled.div`
     background: #2C2C60;
     padding-top: 100px;
-    display: flex;
 `;
 
 const TitleText = styled.p`
     color: #D5CFFB;
     font-family: "KOTRA_BOLD";
     font-size: 48px;
-    align-items: center;
-    justify-content: center;
+    text-align: center; 
+    width: 100%;
 `;
 
 const Solar = styled.div`
