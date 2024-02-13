@@ -5,12 +5,14 @@ import FooterBar from "../component/FooterBar";
 import Modal from 'react-modal';
 import LikeIcon from "../component/LikeIcon"; 
 import EachSentence from "../component/EachSentence"; 
+import NightSkyBackground from '../../src/component/NightSkyBackground';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     return (
         <>
             <NavBar />
+            <NightSkyBackground height={'80vh'} />
             <Background>
                 <TitleText>오늘의 문장</TitleText>
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
@@ -56,7 +58,9 @@ const SentencesContainer = styled.div`
 `;
 
 const Background = styled.div`
-    background-color: #373747;
+    position: absolute;
+    top: 7px;
+    margin: auto;
     padding-top: 10%;
 `;
 

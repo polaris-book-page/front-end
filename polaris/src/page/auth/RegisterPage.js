@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from '@tanstack/react-query'
 import NavBar from "../../component/NavBar";
+import NightSkyBackground from "../../component/NightSkyBackground";
 
 const RegisterPage = () =>{
     const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
@@ -170,7 +171,8 @@ const RegisterPage = () =>{
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
+            <NightSkyBackground height={'100vh'} />
             <Background>
                 <RegisterContainer >
                     <TitleText>REGISTER</TitleText>
@@ -243,10 +245,13 @@ const ValidCheckMsg = styled.p`
 `;
 
 const Background = styled.div`
-    position: relative;
-    background-size: cover;
-    background-color: #4659a9;
-    padding: 10% 20%;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 5%;
 `;
 
 const RegisterContainer = styled.div`
@@ -317,7 +322,7 @@ const BtnContainer = styled.div`
 
 const NextBtn = styled.button`
     width: 75%;
-    height: 60px;
+    padding: 10px;
     background-color: #4659A9;
     border: none;
     border-radius: 50px;

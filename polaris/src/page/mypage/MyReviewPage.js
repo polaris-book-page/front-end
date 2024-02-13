@@ -6,6 +6,7 @@ import { ReactComponent as ICStar } from "../../assets/ic-star-white.svg";
 import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg";
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import NightSkyBackground from '../../component/NightSkyBackground';
 
 const MyReviewPage = () => {
 
@@ -38,7 +39,8 @@ const MyReviewPage = () => {
 
     return (
         !ReviewQuery.isLoading && <>
-            <NavBar/>
+            <NavBar />
+            <NightSkyBackground height={'100vh'}/>
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
@@ -78,12 +80,12 @@ const TitleText = styled.text`
 
 // background
 const Background = styled.div`
-    position: flex;
+    position: absolute;
+    top: 10px;
+    margin: auto;
+    display: flex;
     justify-content: center;
-    height: 90vh;
-    background-color: #4659a9;
     padding: 20px 5%;
-    overflow: none;
 `;
 
 // container

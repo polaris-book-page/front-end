@@ -41,7 +41,7 @@ const CheckboxLabel = styled.span`
     margin-left: 8px;
     margin-bottom: 1px;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
 `;
 
 export default Checkbox;
