@@ -93,12 +93,12 @@ const BookInfoPage = () => {
                 <InfoTitleText>isbn: </InfoTitleText>
                 <InfoContentText>{book.isbn13}</InfoContentText>
               </InfoContentTextBox>
-            </InfoContentBox>
-            <InfoContentDetailBox>
+              <InfoContentDetailBox>
               <InfoTitleText>책정보: </InfoTitleText>
               <InfoContentText>{book.description}</InfoContentText>
               {/* <InfoContentText>이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 </InfoContentText> */}
             </InfoContentDetailBox>
+            </InfoContentBox>
           </InfoBookBox>
           <ButtonBox>
             <Button>북킷리스트에 추가</Button>
@@ -212,9 +212,8 @@ const InfoContentTextBox = styled.div`
 const InfoContentDetailBox = styled.div`
   display: flex;
   gap: 7px;
-  margin-left: 40px;
-  grid-column: 2;
-  grid-row: 3;
+  grid-column: 1;
+  grid-row: 5;
 `;
 
 const BookImageBox = styled.div`
