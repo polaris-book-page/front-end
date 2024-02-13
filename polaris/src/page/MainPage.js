@@ -83,18 +83,13 @@ const MainPage = () => {
       {/* banner */}
       <Carousel>
         <Carousel.Item>
-          <Banner />
-          <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </Carousel.Caption>
+          <Banner src={require('../assets/graphic/main-cover-1.png')} />
         </Carousel.Item>
         <Carousel.Item>
-          <Banner />
-          <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </Carousel.Caption>
+          <Banner src={require('../assets/graphic/main-cover-2.png')} />
+        </Carousel.Item>
+        <Carousel.Item>
+          <Banner src={require('../assets/graphic/main-cover-3.png')} />
         </Carousel.Item>
       </Carousel>
       <div style={{ height: "50px" }} />
@@ -146,9 +141,10 @@ const MainPage = () => {
   );
 };
 
-const Banner = styled.div`
+const Banner = styled.img`
+  display: flex;
   width: 100%;
-  height: 400px;
+  max-height: 500px;
   background-color: #d9d9d9;
 `;
 
