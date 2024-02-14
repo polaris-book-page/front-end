@@ -51,8 +51,8 @@ const cloudOrbit = (initialX, degree) => keyframes`
     100% {
         transform: 
             rotate(360deg) 
-            translateX(${Math.cos((degree * 10 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
-            translateY(${Math.sin((degree * 10 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
             rotate(-360deg);
     }
 `;
