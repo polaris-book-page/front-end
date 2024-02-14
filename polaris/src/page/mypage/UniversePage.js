@@ -21,10 +21,37 @@ const UniversePage = () =>{
                     <Orbit10></Orbit10>
                     <Orbit11></Orbit11>
                     <Orbit12></Orbit12>
+                    <Planet3 src={require("../../assets/graphic/planet-1.png")} m={3} n={1}></Planet3>
+                    <Planet3_1 src={require("../../assets/graphic/planet-4.png")} m={3} n={2}></Planet3_1>
+                    <Planet3_2 src={require("../../assets/graphic/planet-5.png")} m={3} n={3}></Planet3_2>
+                    <Planet3_3 src={require("../../assets/graphic/planet-6.png")} m={3} n={4}></Planet3_3>
+                    <Planet7 src={require("../../assets/graphic/planet-2.png")} m={7} n={2}></Planet7>
+                    <Planet10 src={require("../../assets/graphic/planet-3.png")} m={10} n={3}></Planet10>
                 </Solar>
             </Background>
         </>)
 }
+
+// 행성의 시작점은 translateX(-85px), translateX(85px), translateY(85px), translateY(-85px)
+// initialX는 0 ~ 11 사이의 값
+// degree를 360 * 행성 개수로 해야 조금 더 조화로울듯?
+const cloudOrbit = (initialX, degree) => keyframes`
+    0% {
+        transform: 
+            rotate(0deg) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            rotate(0deg);
+
+    }
+    100% {
+        transform: 
+            rotate(360deg) 
+            translateX(${Math.cos((degree * 10 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateY(${Math.sin((degree * 10 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            rotate(-360deg);
+    }
+`;
 
 const neon_flicker = keyframes`
     0% {
@@ -66,6 +93,60 @@ const Sun = styled.img`
     position: absolute;
     left: calc(50% - 43px);
     top: calc(50% - 43px);
+`;
+
+const Planet3 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+`;
+
+const Planet3_1 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+`;
+
+const Planet3_2 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+`;
+
+const Planet3_3 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+`;
+
+const Planet7 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
+`;
+
+const Planet10 = styled.img`
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: calc(50% - 20px);
+    top: calc(50% - 20px);
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
 `;
 
 const Orbit1 = styled.div`
