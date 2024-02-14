@@ -21,12 +21,16 @@ const UniversePage = () =>{
                     <Orbit10></Orbit10>
                     <Orbit11></Orbit11>
                     <Orbit12></Orbit12>
-                    <Planet3 src={require("../../assets/graphic/planet-1.png")} m={3} n={1}></Planet3>
-                    <Planet3_1 src={require("../../assets/graphic/planet-4.png")} m={3} n={2}></Planet3_1>
-                    <Planet3_2 src={require("../../assets/graphic/planet-5.png")} m={3} n={3}></Planet3_2>
-                    <Planet3_3 src={require("../../assets/graphic/planet-6.png")} m={3} n={4}></Planet3_3>
-                    <Planet7 src={require("../../assets/graphic/planet-2.png")} m={7} n={2}></Planet7>
-                    <Planet10 src={require("../../assets/graphic/planet-3.png")} m={10} n={3}></Planet10>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={2}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={3}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={4}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-2.png")} m={7} n={2}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-3.png")} m={10} n={1}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-7.png")} m={10} n={3}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-8.png")} m={10} n={5}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-9.png")} m={10} n={7}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={10} n={10}/>
                 </Solar>
             </Background>
         </>)
@@ -95,7 +99,11 @@ const Sun = styled.img`
     top: calc(50% - 43px);
 `;
 
-const Planet3 = styled.img`
+const PlanetWrapper = ({ src, m, n }) => (
+    <Planet src={src} m={m} n={n} />
+);
+
+const Planet = styled.img`
     width: 40px;
     height: 40px;
     position: absolute;
@@ -103,51 +111,59 @@ const Planet3 = styled.img`
     top: calc(50% - 20px);
     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
 `;
+// const Planet3 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+// `;
 
-const Planet3_1 = styled.img`
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-`;
+// const Planet3_1 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+// `;
 
-const Planet3_2 = styled.img`
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-`;
+// const Planet3_2 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+// `;
 
-const Planet3_3 = styled.img`
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-`;
+// const Planet3_3 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+// `;
 
-const Planet7 = styled.img`
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
-`;
+// const Planet7 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
+// `;
 
-const Planet10 = styled.img`
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
-`;
+// const Planet10 = styled.img`
+//     width: 40px;
+//     height: 40px;
+//     position: absolute;
+//     left: calc(50% - 20px);
+//     top: calc(50% - 20px);
+//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
+// `;
 
 const Orbit1 = styled.div`
     width: 170px;
