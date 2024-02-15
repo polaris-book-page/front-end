@@ -111,9 +111,9 @@ const MyPage = () => {
       return items;
     }
     else {
-      for (let cnt = 0; cnt >= 2; cnt++) {
-        let items;
-        if (data > 0) {
+      let items = new Array();
+      for (let cnt = 0; cnt >= 1; cnt++) {
+        if (data.length - cnt > 0) {
           items = data.map((item, index) => {
           const res = fetchInfoBook();
           cnt++;
@@ -127,7 +127,7 @@ const MyPage = () => {
             </ReadingBox>
           )
         })}
-        items.append(
+        items.push(
             <ReadingBox>
               <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
               <ReadingContent>
@@ -135,9 +135,8 @@ const MyPage = () => {
               </ReadingContent>
             </ReadingBox>
         )
-
-        return items;
       }
+      return items;
     }
   }
 
