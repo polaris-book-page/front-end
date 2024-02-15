@@ -141,6 +141,37 @@ const MyPage = () => {
     }
   }
 
+  const BooketList = (data) => {
+    if (data.length >= 6) {
+      const newData = data.slice(0, 6);
+      const items = newData.map((item, index) => {
+        return (
+          <BookItem key={index} src={item.bookImage} />
+        )
+      })
+
+      return items;
+    }
+    else {
+      let items = new Array();
+      for (let cnt = 0; cnt <= 5; cnt++) {
+        if (data.length - cnt > 0) {
+          items = data.map((item, index) => {
+            cnt++;
+            return (
+              <BookItem key={index} src={item.bookImage} />
+            )
+          })
+        }
+
+        items.push(
+          <BookItem />
+        )       
+      }
+      return items;
+    }
+  }
+
   return (
     !queries[0].isLoading && !queries[1].isLoading && <>
       <NavBar/>
@@ -272,12 +303,7 @@ const MyPage = () => {
           <FavoriteBox>
             <ArrowLeft />
             <BookListBox>
-              <BookItem />
-              <BookItem />
-              <BookItem />
-              <BookItem />
-              <BookItem />
-              <BookItem />
+              {BooketList(queries[2].data)}
             </BookListBox>
             <ArrowRight />
           </FavoriteBox>
@@ -515,7 +541,7 @@ const BookListBox = styled.div`
     }
 `;
 
-const BookItem = styled.div`
+const BookItem = styled.img`
   width: 200px;
   height: 320px;
   background-color: #d9d9d9;
