@@ -42,7 +42,29 @@ const MyPage = () => {
     } catch (err) {
         console.log("get user profile failure.");
     }
-}
+  }
+
+  const fetchLikeList = async () => {
+    try {
+        const res = await axios.get(`http://localhost:3001/mypage/like/list`, { withCredentials: 'true'});
+        const data = res.data;
+      
+        return data;
+    } catch (err) {
+      console.log("get user like list failure.", err);
+    }
+  }
+
+  const fetchInfoBook = async (isbn) => {
+    try {
+      const res = await axios.post(`http://localhost:3001/book/info`, { isbn: isbn });
+      const data = res.data;
+      
+      return data;
+    } catch (err) {
+      console.log("get book info failure.", err);
+    }
+  }
 
   const queries = useQueries({
     queries: [{
@@ -52,6 +74,10 @@ const MyPage = () => {
     {
       queryKey: ["review-list", 2],
       queryFn: fetchReviewList
+    },
+    {
+      queryKey: ["like-list", 3],
+      queryFn: fetchLikeList
     }]
   })
 
@@ -63,6 +89,56 @@ const MyPage = () => {
       const day = dateObj.getDate();
 
       return `${year}.${month + 1}.${day}`
+  }
+
+  const reviewList = (data) => {
+    if (data.length >= 2) {
+      const newData = data.slice(-2)
+      const items = newData.map((item, index) => {
+        const res = fetchInfoBook(item.isbn);
+        
+        return (
+          <ReadingBox key={index}>
+            <img src={item.cover} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+            <ReadingContent>
+              <ContentText color={'#4659A9'} size={'16px'}>{res.title}</ContentText>
+              <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
+            </ReadingContent>
+          </ReadingBox>
+        )
+      })
+
+      return items;
+    }
+    else {
+      for (let cnt = 0; cnt >= 2; cnt++) {
+        let items;
+        if (data > 0) {
+          items = data.map((item, index) => {
+          const res = fetchInfoBook();
+          cnt++;
+          return (
+            <ReadingBox key={index}>
+              <img src={item.cover} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+              <ReadingContent>
+                <ContentText color={'#4659A9'} size={'16px'}>{res.title}</ContentText>
+                <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
+              </ReadingContent>
+            </ReadingBox>
+          )
+        })}
+        items.append(
+            <ReadingBox>
+              <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+              <ReadingContent>
+                <ContentText color={'#4659A9'} size={'16px'}>작성한 리뷰가 없습니다.</ContentText>
+              </ReadingContent>
+            </ReadingBox>
+        )
+
+        return items;
+      }
+    }
   }
 
   return (
@@ -115,7 +191,7 @@ const MyPage = () => {
               <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
-                  <ProfileSubTitleText>더보기</ProfileSubTitleText>
+                  <ProfileSubTitleText onClick={() => navigate('/mypage/statistics')}>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>통계 살펴보기</ContentText>
                 <StatisticsBox>
@@ -146,23 +222,10 @@ const MyPage = () => {
               <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 나의 우주</ProfileTitleText>
-                  <ProfileSubTitleText>더보기</ProfileSubTitleText>
+                  <ProfileSubTitleText onClick={() => navigate('/mypage/universe')}>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>지금까지 읽은 책 탐방하기</ContentText>
-                <ReadingBox>
-                  <img style={{ backgroundColor: '#ddd', width: 50, height: 70}} />
-                  <ReadingContent>
-                    <ContentText color={'#4659A9'} size={'16px'}>책 제목</ContentText>
-                    <ContentText color={'#4659A9'}>2023.07.07 ~ 2023.07.15</ContentText>
-                  </ReadingContent>
-                </ReadingBox>
-                <ReadingBox>
-                  <img style={{ backgroundColor: '#ddd', width: 50, height: 70}} />
-                  <ReadingContent>
-                    <ContentText color={'#4659A9'} size={'16px'}>책 제목</ContentText>
-                    <ContentText color={'#4659A9'}>2023.07.07 ~ 2023.07.15</ContentText>
-                  </ReadingContent>
-                </ReadingBox>
+                {reviewList(queries[1].data.reviewList)}
               </ContentBox>
               </ContentContainer>
               </>
@@ -180,7 +243,7 @@ const MyPage = () => {
                       <ContentText color={'#4659A9'} size={'12px'}>소지인의 서명</ContentText>
                       <TicketNameBox>
                         <ContentText color={'#4659A9'} size={'12px'}>holder's signature</ContentText>
-                        <ContentText color={'black'} size={'12px'}> &nbsp; 아이디</ContentText>
+                          <ContentText color={'black'} size={'12px'}> &nbsp; {queries[0].data._id}</ContentText>
                       </TicketNameBox>
                       <TicketNameLine /> 
                     </TicketSignatureBox>
@@ -203,7 +266,7 @@ const MyPage = () => {
           <TextBox>
             <TitleText color={'#4659A9'} size={'28px'}>otcr의 북킷리스트</TitleText>
             <div style={{ flex: 1 }} />
-            <MoreText>더보기</MoreText>
+            <MoreText onClick={() => navigate('/mypage/list')}>더보기</MoreText>
           </TextBox>
           <div style={{ height: '30px' }} />
           <FavoriteBox>
@@ -420,7 +483,8 @@ const ReadingContent = styled.div`
 const FavoriteContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 50px;
+  padding-right: 5vw;
+  padding-left: 5vw;
 `;
 
 const FavoriteBox = styled.div`
