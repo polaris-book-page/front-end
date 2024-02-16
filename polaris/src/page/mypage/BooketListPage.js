@@ -136,7 +136,7 @@ const MainContainer = styled.div`
 
 const ResultText = styled.div`
     margin-top: 50px;
-    margin-left: 25px;
+    margin-bottom: 10px;
     grid-area: resultText;
     color: #4659A9;
     font-size: 36px;
