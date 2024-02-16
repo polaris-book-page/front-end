@@ -10,6 +10,7 @@ const LikeIcon = ({ item, onModalOpen }) => {
 
     const { mutate } = useMutation({
         mutationFn: async (isbn) => {
+            console.log(isbn)
             const response = await axios.post('http://localhost:3001/mypage/check/like', { isbn }, { withCredentials: true });
             return response.data.is_liked;
         }, 
@@ -28,12 +29,15 @@ const LikeIcon = ({ item, onModalOpen }) => {
         if (!initialData.is_logined) {
             onModalOpen();
         } else {
-            // mutate(item.isbn13);
         }
     };
 
     useEffect(() => {
+    if (item.isbn13) {
         mutate(item.isbn13);
+    } else if (item.isbn) {
+        mutate(item.isbn);
+    } 
     }, []);
 
 	return (
