@@ -142,6 +142,7 @@ const SearchResultPage = () => {
     };
 
     const handleSearchText = (e) => {
+        console.log(e)
         const currentText = e.currentTarget.parentNode.children[0].value;
 		setSearchText(currentText)
         console.log(e.currentTarget.parentNode.children[0].value)
@@ -151,13 +152,20 @@ const SearchResultPage = () => {
         navigate('/search/add')
     }
 
+    const handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            const currentText = e.currentTarget.parentNode.children[0].value;
+            setSearchText(currentText)
+        }
+    };
+
     return (
         <>
             <NavBar/>
             <MainContainer>
             <BookContainer className="container">
             <SearchBox>
-                <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요."/>
+                <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요." onKeyDown={handleOnKeyPress}/>
                 <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
             </SearchBox>
                 <ResultText>&lsquo;{data.query}&rsquo;에 대한 검색 결과({data.totalResults})</ResultText>
