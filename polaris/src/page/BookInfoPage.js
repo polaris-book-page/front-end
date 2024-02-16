@@ -95,7 +95,7 @@ const BookInfoPage = () => {
               </InfoContentTextBox>
               <InfoContentDetailBox>
               <InfoTitleText>책정보: </InfoTitleText>
-              <InfoContentText>{book.description}</InfoContentText>
+              <InfoContentDetailText>{book.description}</InfoContentDetailText>
               {/* <InfoContentText>이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 </InfoContentText> */}
             </InfoContentDetailBox>
             </InfoContentBox>
@@ -169,6 +169,28 @@ const InfoContentText = styled.text`
   justify-self: flex-start;
 `;
 
+const InfoContentDetailText = styled.div`
+  flex: 1; 
+  color: #4659A9;
+  font-family: "KOTRA_GOTHIC";
+  font-size: 16px;
+  justify-self: flex-start;
+
+    overflow-y: scroll;
+  padding-right: 10px;
+
+  &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 6px;
+      background: #D4D0EE;
+  }
+  &::-webkit-scrollbar-thumb {
+      background: #6F61C6AA;
+      border-radius: 6px;
+  }
+`;
+
 // sub container
 const InfoContainer = styled.div`
   display: grid;
@@ -210,10 +232,12 @@ const InfoContentTextBox = styled.div`
 `;
 
 const InfoContentDetailBox = styled.div`
+  height: 100px;
   display: flex;
   gap: 7px;
   grid-column: 1;
   grid-row: 5;
+
 `;
 
 const BookImageBox = styled.div`
