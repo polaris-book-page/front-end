@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from "react";
 import NavBar from "../../component/NavBar";
+import NightSkyBackground from '../../component/NightSkyBackground';
 
 const LoginPage = () =>{
     const [_id, setUserId] = useState('')
@@ -59,7 +60,8 @@ const LoginPage = () =>{
 
     return (
         <>
-            <NavBar/>
+            <NavBar />
+            <NightSkyBackground height={'90vh'} />
             <Background>
                 <LoginContainer >
                     <TitleText>LOGIN</TitleText>
@@ -88,10 +90,13 @@ const LoginPage = () =>{
 }
 
 const Background = styled.div`
-    position: relative;
-    background-size: cover;
-    background-color: #4659a9;
-    padding: 10% 20%;
+    position: absolute;
+    top: 200px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    padding: 5%;
 `;
 
 const LoginContainer = styled.div`
@@ -99,9 +104,7 @@ const LoginContainer = styled.div`
     border-radius: 50px;
     padding: 60px 80px;
     margin: 0 auto;
-    @media (min-width: 978px) {
-        width: 530px;
-    }
+    max-width: 530px;
 `;
 
 const TitleText = styled.h1`
