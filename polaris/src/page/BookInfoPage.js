@@ -59,6 +59,10 @@ const BookInfoPage = () => {
     return null;
   }
 
+  const handleNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  }
+
   return (
     <>
       <NavBar />
@@ -104,7 +108,7 @@ const BookInfoPage = () => {
           </InfoBookBox>
           <ButtonBox>
             <Button>북킷리스트에 추가</Button>
-            <Button><LinkText href={`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`}>알라딘에서 책 구매하기</LinkText></Button>
+            <Button onClick={() => handleNewTab(`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`)}>알라딘에서 책 구매하기</Button>
             <BookProgressDropDown />
           </ButtonBox>
         </InfoContainer>
