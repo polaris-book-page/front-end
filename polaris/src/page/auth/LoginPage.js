@@ -96,7 +96,7 @@ const Background = styled.div`
     right: 0;
     bottom: 0;
     margin: auto;
-    padding: 5%;
+    padding: 0 5%;
 `;
 
 const LoginContainer = styled.div`
