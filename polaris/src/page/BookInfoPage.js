@@ -63,7 +63,8 @@ const BookInfoPage = () => {
       <NavBar />
       <Container>
         {/* book info */}
-        <TitleText style={{ justifySelf: 'center' }}  color={'#4659A9'} size={'24px'}>{book.title}</TitleText>
+        <TitleText style={{ justifySelf: 'center' }} color={'#4659A9'} size={'24px'}>{book.title}</TitleText>
+        <div style={{height: '20px'}} />
         <InfoContainer>
           <InfoBookBox>
             {/* book image */}
@@ -139,11 +140,12 @@ const BookInfoPage = () => {
 
 // main container
 const Container = styled.div`
-  display: grid;
-  grid-template-rows: 40px 1fr;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   background: linear-gradient(#c4cef9, #facecb, #ffffff);
-  padding: 40px 20px;
+  padding: 40px 5%;
 `;
 
 // text
@@ -193,6 +195,7 @@ const InfoContentDetailText = styled.div`
 
 // sub container
 const InfoContainer = styled.div`
+  max-width: 1200px;
   display: grid;
   grid-template-rows: 1fr 50px;
   background-color: white;
@@ -202,6 +205,7 @@ const InfoContainer = styled.div`
 `;
 
 const ReviewContainer = styled.div`
+  max-width: 1200px;
   display: grid;
   grid-template-rows: 50px 5fr;
   background-color: white;
