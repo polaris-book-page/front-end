@@ -8,13 +8,14 @@ import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 import BookProgressDropDown from '../component/BookProgressDropDown';
 import { useEffect, useState } from "react";
 import { useMutation } from '@tanstack/react-query';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BookInfoPage = () => {
   const [book, setBook] = useState(null);
   const [dbbook, setDbook] = useState(null);
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
+  const navigate = useNavigate();
 
     const bookSearch = async () => {
       setLoading(true);
@@ -103,7 +104,7 @@ const BookInfoPage = () => {
           </InfoBookBox>
           <ButtonBox>
             <Button>북킷리스트에 추가</Button>
-            <Button>알라딘에서 책 구매하기</Button>
+            <Button><LinkText href={`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`}>알라딘에서 책 구매하기</LinkText></Button>
             <BookProgressDropDown />
           </ButtonBox>
         </InfoContainer>
@@ -191,6 +192,12 @@ const InfoContentDetailText = styled.div`
       background: #6F61C6AA;
       border-radius: 6px;
   }
+`;
+
+const LinkText = styled.a`
+  color: #ffffff;
+  font-family: "KOTRA_GOTHIC";
+  text-decoration: none;
 `;
 
 // sub container
