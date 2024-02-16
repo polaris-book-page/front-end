@@ -1,24 +1,41 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useQueryClient } from '@tanstack/react-query';
+import axios from 'axios'; // axios import 추가
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const LikeIcon = ({ onModalOpen }) => {
+const LikeIcon = ({ item, onModalOpen }) => {
 	const [isChecked, setIsChecked] = useState(false);
     const queryClient = useQueryClient()
+
+    const { mutate } = useMutation({
+        mutationFn: async (isbn) => {
+            const response = await axios.post('http://localhost:3001/mypage/check/like', { isbn }, { withCredentials: true });
+            return response.data.is_liked;
+        }, 
+        onSuccess: (data) => {
+            console.log(data)
+            setIsChecked(data);
+        },
+        onError: (error) => {
+            console.error('check liked:', error);
+        }
+    });
+
     const onClick = () => {
         const initialData = queryClient.getQueryData(['check']);
         console.log("initialData: ", initialData)
         if (!initialData.is_logined) {
             onModalOpen();
         } else {
-            if (isChecked) {
-                setIsChecked(false);
-            } else {
-                setIsChecked(true);
-            }
+            // mutate(item.isbn13);
         }
     };
+
+    useEffect(() => {
+        mutate(item.isbn13);
+    }, []);
+
 	return (
 		<Icon>
 			<svg width="0" height="0">

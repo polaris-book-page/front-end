@@ -6,7 +6,6 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import NavBar from "../../component/NavBar";
-import { useNavigate, useLocation } from "react-router-dom";
 
 const BooketListPage = () =>{
     const [currentPage, setcurrentPage] = useState(1)
@@ -20,8 +19,6 @@ const BooketListPage = () =>{
     const pageArrayLimit = 5
 
     const queryClient = useQueryClient()
-    const { state } = useLocation();
-    const navigate = useNavigate();
     
     const { isLoading, error, data } = useQuery({
         queryKey: ['likeList'],
@@ -29,8 +26,9 @@ const BooketListPage = () =>{
             const response = await axios.get('http://localhost:3001/mypage/like/list', {
                 withCredentials: true,
             })
-            console.log("state in bookit : ", state)
-            setCurrentUser(state)
+            const userInfo = await queryClient.getQueryData(['check']);
+            console.log("userindfo", userInfo)
+            setCurrentUser(userInfo.nickname)
             return response.data;
         },
     });
@@ -41,18 +39,18 @@ const BooketListPage = () =>{
             withCredentials: true,
         });
         queryClient.setQueryData(['likeList'], response.data);
-        setCurrentUser(state);
-
+        const userInfo = await queryClient.getQueryData(['check']);
+        setCurrentUser(userInfo.nickname)        
         } catch (error) {
         console.error("Error fetching review data after login:", error);
         }
     };
 
     useEffect(() => {
-        if (state) {
+        if (currentUser) {
             handleUserLogin();
         }
-    }, [state]); 
+    }, [currentUser]); 
 
     useEffect(() => {
         const newTotalPage = [];
@@ -91,7 +89,7 @@ const BooketListPage = () =>{
         }
     }, [currentPage, itemsPerPage, currentItems])
     
-    if (!(data)) {
+    if (!(data) || !(currentUser)) {
         return null;
     }
 
@@ -107,7 +105,7 @@ const BooketListPage = () =>{
         <>
             <NavBar/>
             <MainContainer className="container">
-                <ResultText>{state}님의 북킷리스트({data.length})</ResultText>
+                <ResultText>{currentUser}님의 북킷리스트({data.length})</ResultText>
                 {currentItems && currentItems.map((item, index) => (
                     <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
                 ))}
@@ -138,7 +136,7 @@ const MainContainer = styled.div`
 
 const ResultText = styled.div`
     margin-top: 50px;
-    margin-left: 25px;
+    margin-bottom: 10px;
     grid-area: resultText;
     color: #4659A9;
     font-size: 36px;

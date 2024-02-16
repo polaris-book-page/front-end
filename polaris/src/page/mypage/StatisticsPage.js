@@ -8,6 +8,9 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import React, { useState } from "react";
 import { HiMiniXMark } from "react-icons/hi2";
+import StarChart from "../../component/StarChart";
+import { FaStar } from "react-icons/fa";
+import { BiSolidBook } from "react-icons/bi";
 
 const StatisticsPage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -92,8 +95,19 @@ const StatisticsPage = () => {
                         </DrawChartContainer>
                     </Type>
                     <Review>
+                        <ReviewContainer>
                         <ReviewText>지금까지 남긴 별점</ReviewText>
-                        {/* <ReviewContainer></ReviewContainer> */}
+                        <StarText>
+                            <FaStar style={{marginRight: '10px'}}/>
+                            3.85
+                        </StarText>
+                        <BookText>
+                            <BiSolidBook style={{marginRight: '10px'}}/>
+                            56
+                        </BookText>
+                        <StarChart/>
+
+                        </ReviewContainer>
                     </Review>
                     <Calendar>
                         <CalendarContainer/>
@@ -103,7 +117,6 @@ const StatisticsPage = () => {
                 </StatisticsGrid>
                 
             <FooterBar />
-            {/* </Background> */}
         </>
     )
 }
@@ -144,7 +157,6 @@ const ContainerRocketBlind = styled.div`
     height: 727px;
     border-radius: 61px;
     background-color: rgba(0.88, 0.88, 0.88, 0.64);;
-    float: right;
     margin-right: 100px;
     z-index: 2;
     display: flex;
@@ -161,7 +173,6 @@ const GoalBtn = styled.button`
     font-size: 15px;
     font-family: "KOTRA_GOTHIC";
     font-weight: 1000;
-    /* z-index: 3; */
 `;
 
 const ContainerRocket = styled.div`
@@ -336,22 +347,33 @@ const Review = styled.div`
 
 const ReviewText = styled.p`
     text-align: center;
+    width: 310px;
     font-size: 30px;
     font-family: "KOTRA_BOLD";
     color: #4659A9;
-    position: absolute;
-    left: 205px;
-    bottom: 330px;
+    margin-bottom: 0;
 `;
 
+const StarText = styled.div`
+    font-family: "KOTRA_BOLD";
+    color: #4659A9;
+    font-size: 32px;
+`
+const BookText = styled.div`
+    font-family: "KOTRA_BOLD";
+    color: #4659A9;
+    font-size: 32px;
+`
+
 const ReviewContainer = styled.div`
-    width: 540px;
     height: 323px;
-    border-radius: 61px;
-    background: #4659A9;
-    opacity: 0.3;
-    margin-bottom: 50px;
-    /* margin-right: 30px; */
+    width: 400px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    float: right;
+    margin-right: 80px;
 `;
 
 const Calendar = styled.div`

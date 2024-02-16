@@ -49,7 +49,7 @@ const GridBox = ({ item }) => {
                     <BookAuthor>{author}</BookAuthor>
                     <BookPub>{item.publisher}</BookPub>
                 </BookText>
-                <LikeIcon onModalOpen={openModal} />
+                <LikeIcon item={item} onModalOpen={openModal} />
             </BookInfo>
             <LoginModal
                 isOpen={modalIsOpen}
