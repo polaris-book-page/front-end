@@ -2,7 +2,21 @@ import styled from "styled-components";
 import StarRating from '../component/StarRating.js'
 import { ReactComponent as IcBookCovered } from "../assets/ic-book-covered.svg";
 
-const ReviewComment = () => { 
+const ReviewComment = ({ review }) => { 
+
+    const DateFormat = (date) => {
+    const dateObj = new Date(date);
+    
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth();
+    const day = dateObj.getDate();
+    const hour = dateObj.getHours();    
+    const minute = dateObj.getMinutes();    
+
+    return `${year}.${month + 1}.${day} ${hour}:${minute}`
+        
+    }
+
     return (
         <Container>
             {/* user info */}
@@ -10,19 +24,19 @@ const ReviewComment = () => {
             <UserInfoBox>
                 <UserInfoTextBox>
                     <UserNameEvalBox>
-                        <UserNameText  style={{marginTop: 5}} size={'14px'} color={'#4659A9'}>넹글넹글 돌아가는</UserNameText>
-                        <StarRating rating={3.5} size={'15px'} />
+                        <UserNameText  style={{marginTop: 5}} size={'14px'} color={'#4659A9'}>{review.userId}</UserNameText>
+                        <StarRating rating={review.evaluation} size={'15px'} />
                     </UserNameEvalBox>
                     <UserInfoDetailBox>
                         <IcBookCovered />
-                        <ContentText color={'#4659A9'}>22권 탐험</ContentText>
-                        <ContentText color={'#4659A9'}>23.05.14</ContentText>
+                        <ContentText color={'#4659A9'}>{review.finRead}권 탐험</ContentText>
+                        <ContentText color={'#4659A9'}>{DateFormat(review.createDate)}</ContentText>
                     </UserInfoDetailBox>
                 </UserInfoTextBox>
             </UserInfoBox>
             {/* review content */}
             <ContentBox>
-                이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 이 책은 아주 작가 자전적인 소설이구요 블라블라 어쩌구 저쩌구 웅냥 
+                {review.content}
             </ContentBox>
         </Container>
     );

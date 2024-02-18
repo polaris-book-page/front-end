@@ -3,13 +3,46 @@ import FooterBar from "../component/FooterBar";
 import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
 import StarRating from '../component/StarRating.js'
+import axios from "axios";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ReviewPage = () => {
+
+    const { state } = useLocation();
+
+    const fetchBookReviewList = async () => {
+    try {
+      const res = await axios.post('http://localhost:3001/book/info/review/list', { isbn: state }, { withCredentials: true });
+      const data = res.data;
+
+      console.log(data)
+
+      return data;
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const reviewQuery = useQuery({
+      queryKey: ["book-review-list"],
+      queryFn: fetchBookReviewList
+  })
+
+  const handleReviewList = (review) => {
+    const list = review.map((item, index) => {
+        return <ReviewComment index={index} review={item} />
+      })
+
+    return list;
+  }
+
   return (
     <>
       <NavBar />
       <Container>
         <ReviewContainer>
+          {!reviewQuery.isFetching && reviewQuery.data && <>
           {/* review title */}
           <ReviewTitleBox>
             <ReviewTitle>
@@ -23,12 +56,9 @@ const ReviewPage = () => {
           </ReviewTitleBox>
           {/* review content */}
           <ReviewContentBox>
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-          </ReviewContentBox>
+              {handleReviewList(reviewQuery.data)}
+            </ReviewContentBox>
+          </>}
         </ReviewContainer>
         <div style={{ height: 30 }} />
       </Container>
@@ -77,7 +107,6 @@ const ReviewContentBox = styled.div`
 const EvaluateBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: -5px;
 `;
 
 // conetnt

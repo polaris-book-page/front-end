@@ -7,7 +7,7 @@ import StarRating from '../component/StarRating.js'
 import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 import BookProgressDropDown from '../component/BookProgressDropDown';
 import { useEffect, useState } from "react";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from "react-router-dom";
 
 const BookInfoPage = () => {
@@ -33,7 +33,7 @@ const BookInfoPage = () => {
   const { mutate } = useMutation({
     mutationFn: async (bookInfo) => {
         const { data } = await axios.post(`http://localhost:3001/book/info`, bookInfo, { withCredentials: true })
-        console.log("data", data)
+        //console.log("data", data)
         return data;
     }, 
     onSuccess: (data) => {
@@ -44,6 +44,24 @@ const BookInfoPage = () => {
       console.log("book info save failure")
     }
   });
+
+  const fetchBookReviewList = async () => {
+    try {
+      const res = await axios.post('http://localhost:3001/book/info/review/list', { isbn: state }, { withCredentials: true });
+      const data = res.data;
+
+      console.log(data)
+
+      return data;
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const reviewQuery = useQuery({
+      queryKey: ["book-review-list"],
+      queryFn: fetchBookReviewList
+  })
 
   useEffect(() => {
     bookSearch();
@@ -61,6 +79,16 @@ const BookInfoPage = () => {
 
   const handleNewTab = (url) => {
     window.open(url, "_blank", "noopener, noreferrer");
+  }
+
+  const handleReviewList = (review) => {
+    const cnt = 5;
+    const list = new Array(cnt)
+    for (let i=0; i < 5; i++){
+      list.push(<ReviewComment index={i} review={review[i]} />)
+    }
+
+    return list;
   }
 
   return (
@@ -116,25 +144,23 @@ const BookInfoPage = () => {
         {/* review info */}
         <ReviewContainer>
           {/* review title */}
-          <ReviewTitleBox>
-            <ReviewTitle>
-              <TitleText color={'#4659A9'} size={'17px'}>다른 탐험자들의 리뷰</TitleText>
-              <TitleText color={'#97A4E8'} size={'17px'}>30</TitleText>
-            </ReviewTitle>
-            <EvaluateBox>
-              <StarRating rating={3.8} size={'20px'} />
-              <TitleText style={{marginTop: 4, marginLeft: 5}} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
-            </EvaluateBox>
-            <TitleText onClick={() => navigate('/book/review')} style={{justifySelf: 'flex-end', gridRow: 1, gridColumn: 3}} color={'#4659A9'} size={'13px'}>더보기</TitleText>
-          </ReviewTitleBox>
+          {!reviewQuery.isFetching && reviewQuery.data && <>
+            <ReviewTitleBox>
+              <ReviewTitle>
+                <TitleText color={'#4659A9'} size={'17px'}>다른 탐험자들의 리뷰</TitleText>
+              <TitleText color={'#97A4E8'} size={'17px'}>{reviewQuery.data.length}</TitleText>
+              </ReviewTitle>
+              <EvaluateBox>
+                <StarRating rating={3.8} size={'20px'} />
+                <TitleText style={{ marginTop: 4, marginLeft: 5 }} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
+              </EvaluateBox>
+              <TitleText onClick={() => navigate('/book/review', {state : state })} style={{ justifySelf: 'flex-end', gridRow: 1, gridColumn: 3 }} color={'#4659A9'} size={'13px'}>더보기</TitleText>
+            </ReviewTitleBox>
           {/* review content */}
-          <ReviewContentBox>
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-            <ReviewComment />
-          </ReviewContentBox>
+            <ReviewContentBox>
+              {handleReviewList(reviewQuery.data)}              
+            </ReviewContentBox>
+          </>}
         </ReviewContainer>
         <div style={{ height: 30 }} />
       </Container>
