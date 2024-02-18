@@ -42,7 +42,7 @@ const EditProfilePage = () => {
         let formData = new FormData();
 
         formData.append('dir', 'profile')
-        formData.append('profileImage', file)
+        if (file !== '') formData.append('profileImage', file)
         formData.append('nickname', userNickname)
         
         mutate(formData)
@@ -88,7 +88,6 @@ const EditProfilePage = () => {
         if (e.target.files[0])
             setFile(e.target.files[0])
         else {
-            setImage('')
             return
         }
         const reader = new FileReader();
