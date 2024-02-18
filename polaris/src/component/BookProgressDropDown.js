@@ -161,6 +161,7 @@ const ProgressInput = styled.input`
 // container
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
     position: relative;
 `;
 
@@ -170,7 +171,7 @@ const Button = styled.button`
     color: white;
     border-style: none;
     font-size: 14px;
-    padding: 3px 20px;
+    padding: 7px 24px;
     margin: 8px;
     border-radius: 50px;
     background: linear-gradient(#facecb, #c4cef9);

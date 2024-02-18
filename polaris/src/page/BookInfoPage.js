@@ -118,14 +118,14 @@ const BookInfoPage = () => {
           {/* review title */}
           <ReviewTitleBox>
             <ReviewTitle>
-              <TitleText color={'#4659A9'} size={'18px'}>다른 탐험자들의 리뷰</TitleText>
-              <TitleText color={'#97A4E8'} size={'18px'}>30</TitleText>
+              <TitleText color={'#4659A9'} size={'17px'}>다른 탐험자들의 리뷰</TitleText>
+              <TitleText color={'#97A4E8'} size={'17px'}>30</TitleText>
             </ReviewTitle>
             <EvaluateBox>
               <StarRating rating={3.8} size={'20px'} />
               <TitleText style={{marginTop: 4, marginLeft: 5}} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
             </EvaluateBox>
-            <TitleText style={{justifySelf: 'flex-end'}} color={'#4659A9'} size={'15px'}>더보기</TitleText>
+            <TitleText onClick={() => navigate('/book/review')} style={{justifySelf: 'flex-end', gridRow: 1, gridColumn: 3}} color={'#4659A9'} size={'13px'}>더보기</TitleText>
           </ReviewTitleBox>
           {/* review content */}
           <ReviewContentBox>
@@ -213,12 +213,16 @@ const InfoContainer = styled.div`
   border-radius: 30px;
   padding: 30px;
   box-shadow: 0px 2px 7px #00000022;
+
+  @media screen and (max-width: 587px) {
+    grid-template-rows: 1fr 0.5fr;
+  }
 `;
 
 const ReviewContainer = styled.div`
   max-width: 1200px;
   display: grid;
-  grid-template-rows: 50px 5fr;
+  grid-template-rows: 70px 5fr;
   background-color: white;
   border-radius: 30px;
   padding: 20px;
@@ -229,7 +233,7 @@ const ReviewContainer = styled.div`
 const InfoBookBox = styled.div`
   display: grid;
   grid-template-columns: 150px 1fr;
-  grid-template-rows: 200px 30px 1fr;
+  grid-template-rows: 200px 60px 1fr;
   gap: 5px;
 `;
 
@@ -273,12 +277,23 @@ const LikeBox = styled.div`
 const ButtonBox = styled.div`
   display: flex;
   justify-content: flex-end;
+
+  @media screen and (max-width: 587px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const ReviewTitleBox = styled.div`
   display: grid;
   grid-template-columns: 220px 150px 1.5fr;
   align-items: center;
+  text-align: left;
+
+  @media screen and (max-width: 587px) {
+    grid-template-rows: 1fr 50px;
+    grid-template-columns: 220px 1fr;
+  }
 `;
 
 const ReviewContentBox = styled.div`
@@ -289,13 +304,18 @@ const ReviewContentBox = styled.div`
 const EvaluateBox = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 7px;
+
+  @media screen and (max-width: 587px) {
+    grid-column: 1;
+    grid-row: 2;
+  }
 `;
 
 // content
 const ReviewTitle = styled.div`
-  display: grid;
-  grid-template-columns: 175px 1fr;
+  display: flex;
+  flex-direction: flex-start;
+  gap: 6px;
 `;
 
 const Button = styled.button`
