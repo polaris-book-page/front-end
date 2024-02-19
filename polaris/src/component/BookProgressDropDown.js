@@ -4,6 +4,7 @@ import useDetectClose from "./hook/useDetectClose";
 import UnitDropDown from "./UnitDropDown";
 import Modal from 'react-modal';
 import CustomDatePicker from "./CustomDatePicker";
+import { useNavigate } from "react-router-dom";
 
 
 const BookProgressDropDown = () => {
@@ -11,6 +12,7 @@ const BookProgressDropDown = () => {
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
     const [isModal, setIsModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const navigate = useNavigate();
 
     return (
         <>
@@ -22,7 +24,7 @@ const BookProgressDropDown = () => {
                     <Li color={'#FACECBd4'} onClick={() => setIsModal(!isModal)}>
                         읽는 중이에요.
                     </Li>
-                    <Li color={'#D5CFFBd4'}>
+                    <Li color={'#D5CFFBd4'} onClick={() => navigate('/mypage/write')}>
                         다 읽었어요!
                     </Li>
                 </Menu>
