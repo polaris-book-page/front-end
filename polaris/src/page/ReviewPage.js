@@ -4,19 +4,20 @@ import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
 import StarRating from '../component/StarRating.js'
 import axios from "axios";
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useInView } from 'react-intersection-observer';
 
 const ReviewPage = () => {
 
     const { state } = useLocation();
+    const { ref, inView } = useInView();
 
-    const fetchBookReviewList = async () => {
+    const fetchBookReviewList = async (page) => {
     try {
-      const res = await axios.post('http://localhost:3001/book/info/review/list', { isbn: state }, { withCredentials: true });
+      const res = await axios.get(`http://localhost:3001/book/info/review/list?isbn=${state}&page=${page}`, { withCredentials: true });
       const data = res.data;
-
-      console.log(data)
 
       return data;
     } catch (err) {
@@ -24,14 +25,41 @@ const ReviewPage = () => {
     }
   }
 
-  const reviewQuery = useQuery({
-      queryKey: ["book-review-list"],
-      queryFn: fetchBookReviewList
+  useEffect(()=>{
+      if(inView && reviewQuery.hasNextPage) reviewQuery.fetchNextPage();
+  }, [inView]);
+
+  const reviewQuery = useInfiniteQuery({
+    queryKey: ["book-review-list-pagenation"],
+    queryFn: ({ pageParam = 1 }) => fetchBookReviewList(pageParam),
+    select: (data) => ({
+      pages: data.pages,
+      pageParams: data.pageParams,
+    }),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length + 1;
+
+      return !lastPage.findBookReview ? undefined : nextPage;
+    }
   })
 
-  const handleReviewList = (review) => {
-    const list = review.map((item, index) => {
-        return <ReviewComment index={index} review={item} />
+  
+
+  const listItem = useMemo(() => {
+    if (reviewQuery.data) {
+      const items = reviewQuery.data.pages.reduce((acc, cur) => 
+        acc.concat(cur.result), []
+      
+        )
+
+      return items;
+    }
+}, [reviewQuery.data])
+
+  const handleReviewList = () => {
+    const list = listItem.map((item, index) => {
+        if(item === undefined) return <NoMoreText key={index}>더이상 리뷰가 없습니다.</NoMoreText>
+        else return <ReviewComment key={index} review={item} />
       })
 
     return list;
@@ -42,7 +70,7 @@ const ReviewPage = () => {
       <NavBar />
       <Container>
         <ReviewContainer>
-          {!reviewQuery.isFetching && reviewQuery.data && <>
+          {!reviewQuery.isLoading && reviewQuery.data && <>
           {/* review title */}
           <ReviewTitleBox>
             <ReviewTitle>
@@ -56,8 +84,9 @@ const ReviewPage = () => {
           </ReviewTitleBox>
           {/* review content */}
           <ReviewContentBox>
-              {handleReviewList(reviewQuery.data)}
-            </ReviewContentBox>
+              {handleReviewList()}
+              {!reviewQuery.isFetchingNextPage && <div ref={ref}/>}
+          </ReviewContentBox>
           </>}
         </ReviewContainer>
         <div style={{ height: 30 }} />
@@ -73,7 +102,7 @@ const Container = styled.div`
   grid-template-rows: 1fr;
   justify-content: center;
   background: linear-gradient(#c4cef9, #facecb, #ffffff);
-  padding: 40px 20px;
+  padding: 50px 5%;
 `;
 
 // sub container
@@ -87,7 +116,7 @@ const ReviewContainer = styled.div`
 `;
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.span`
   color: ${(props) => props.color || 'gray'};
   font-family: "KOTRA_BOLD";
   font-size: ${(props) => props.size || '12px'};
@@ -101,7 +130,20 @@ const ReviewTitleBox = styled.div`
 
 const ReviewContentBox = styled.div`
   display: flex;
+  height: 66vh;
   flex-direction: column;
+  overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 6px;
+    }
 `; 
 
 const EvaluateBox = styled.div`
@@ -114,6 +156,12 @@ const ReviewTitle = styled.div`
   display: grid;
   grid-template-columns: 175px 1fr;
 `;
+
+const NoMoreText = styled.div`
+  color: #4659A9;
+  font-family: "KOTRA_GOTHIC";
+  text-align: center;
+`
 
 
 export default ReviewPage;
