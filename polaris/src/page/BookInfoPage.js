@@ -47,7 +47,7 @@ const BookInfoPage = () => {
 
   const fetchBookReviewList = async () => {
     try {
-      const res = await axios.post('http://localhost:3001/book/info/review/list', { isbn: state }, { withCredentials: true });
+      const res = await axios.get(`http://localhost:3001/book/info/review/list?isbn=${state}`, { withCredentials: true });
       const data = res.data;
 
       console.log(data)
@@ -85,7 +85,7 @@ const BookInfoPage = () => {
     const cnt = 5;
     const list = new Array(cnt)
     for (let i=0; i < 5; i++){
-      list.push(<ReviewComment index={i} review={review[i]} />)
+      list.push(<ReviewComment index={i} review={review.result[i]} />)
     }
 
     return list;
