@@ -8,7 +8,7 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 
 const SearchResultPage = () => {
@@ -28,9 +28,10 @@ const SearchResultPage = () => {
     const [categories, setCategories] = useState('');
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
-    const [searchText, setSearchText] = useState('모순');
+    const [searchText, setSearchText] = useState('');
     const navigate = useNavigate();
-    
+    const location = useLocation();
+
     const searchResultFunc = async () => {
         setLoading(true);
         try {
@@ -45,6 +46,9 @@ const SearchResultPage = () => {
                 newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));
             }
             setItemsPerPage(newItemSlice)
+            if (data) {
+                mutate({ books: data.item });
+            }
         } catch (e) {
             console.log(e);
         }
@@ -53,6 +57,7 @@ const SearchResultPage = () => {
 
     const { mutate } = useMutation({
         mutationFn: async (bookInfo) => {
+            console.log("bookInfo", bookInfo)
             const { data } = await axios.post(`http://localhost:3001/search/result/save`, bookInfo, { withCredentials: true })
             console.log("data", data)
             return data;
@@ -65,16 +70,12 @@ const SearchResultPage = () => {
         }
     });
 
-    useEffect(() => {
-        if (data) {
-            // console.log("data item",data.item)
-            mutate({ books: data.item });
-            
-        }
-    }, [data])
-
     const prevBookTypeRef = useRef(bookType);
     const prevOrderRef = useRef(order);
+
+    useEffect(() => {
+        setSearchText(location.state.value);
+    }, [])
 
     useEffect(() => {
         searchResultFunc();
@@ -165,7 +166,7 @@ const SearchResultPage = () => {
             <MainContainer>
             <BookContainer className="container">
             <SearchBox>
-                <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요." onKeyDown={handleOnKeyPress}/>
+                <SearchInput className='searchInput' placeholder={searchText} onKeyDown={handleOnKeyPress}/>
                 <SearchBtn className='butn' size="54" onClick={handleSearchText}/>
             </SearchBox>
                 <ResultText>&lsquo;{data.query}&rsquo;에 대한 검색 결과({data.totalResults})</ResultText>
