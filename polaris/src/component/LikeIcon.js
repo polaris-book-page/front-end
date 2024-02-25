@@ -6,10 +6,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const LikeIcon = ({ item, onModalOpen }) => {
 	const [isChecked, setIsChecked] = useState(false);
+	const [currUser, setCurrUser] = useState('');
     const queryClient = useQueryClient()
 
     const { mutate } = useMutation({
         mutationFn: async (isbn) => {
+            // console.log(isbn)
             const response = await axios.post('http://localhost:3001/mypage/check/like', { isbn }, { withCredentials: true });
             return response.data.is_liked;
         }, 
@@ -22,19 +24,63 @@ const LikeIcon = ({ item, onModalOpen }) => {
         }
     });
 
+    const addlike = useMutation({
+        mutationFn: async (isbn) => {
+            const response = await axios.post('http://localhost:3001/mypage/like', { isbn }, { withCredentials: true });
+            return response;
+        }, 
+        onSuccess: (data) => {
+            console.log(data)
+            setIsChecked(true);
+        },
+        onError: (error) => {
+            console.error('add like list:', error);
+        }
+    });
+
+    const dellike = useMutation({
+        mutationFn: async (isbn) => {
+            const response = await axios.delete('http://localhost:3001/mypage/unlike', { data:{ isbn: isbn, userId: currUser }}, { withCredentials: true });
+            return response;
+        }, 
+        onSuccess: (data) => {
+            setIsChecked(false);
+        },
+        onError: (error) => {
+            console.error('del like list:', error);
+        }
+    });
+
     const onClick = () => {
         const initialData = queryClient.getQueryData(['check']);
-        console.log("initialData: ", initialData)
+        console.log("initialData: ", initialData.userId)
+        setCurrUser(initialData.userId)
         if (!initialData.is_logined) {
             onModalOpen();
         } else {
-            // mutate(item.isbn13);
+            if (!isChecked) {
+                if (item.isbn13) {
+                    addlike.mutate(item.isbn13);
+                } else if (item.isbn) {
+                    addlike.mutate(item.isbn);
+                } 
+            } else if (isChecked) {
+                if (item.isbn13) {
+                    dellike.mutate(item.isbn13);
+                } else if (item.isbn) {
+                    dellike.mutate(item.isbn);
+                } 
+            }
         }
     };
 
     useEffect(() => {
-        mutate(item.isbn13);
-    }, []);
+        if (item.isbn13) {
+            mutate(item.isbn13);
+        } else if (item.isbn) {
+            mutate(item.isbn);
+        } 
+    }, [item]);
 
 	return (
 		<Icon>
