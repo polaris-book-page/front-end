@@ -5,7 +5,7 @@ import { FiLock } from "react-icons/fi";
 import { ReactComponent as MyPage } from "../assets/ic-person.svg";
 import { ReactComponent as Favorite } from "../assets/ic-heart.svg";
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -88,6 +88,24 @@ const NavBar = () => {
     navigate('/sentence')
   }
 
+  const handleOnKeyPress = e => {
+    if (e.key === 'Enter') {
+        const currentText = e.currentTarget.parentNode.children[0].value;
+        if (currentText !== '') {
+          navigate("/search", { state: { value: currentText } });
+        }
+      }
+    };
+
+  const handleSearchText = (e) => {
+    console.log(e)
+    const currentText = e.currentTarget.parentNode.children[0].value;
+    console.log(e.currentTarget.parentNode.children[0].value)
+    if (currentText !== '') {
+      navigate("/search", { state: { value: currentText } });
+    }
+  }
+
   return (
     <>
       <NavbarContainer>
@@ -100,7 +118,10 @@ const NavBar = () => {
         </NavBarMenuBox>
         <div style={{ flex: 1 }} />
         <NavBarIconBox>
-          <Search />
+          <SearchBox>
+            <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요." onKeyDown={handleOnKeyPress}/>
+            <SearchBtn size="33" onClick={handleSearchText}/>
+          </SearchBox>
           <Favorite onClick={navigateBooket}/>
           <MyPage onClick={navigateMypage}/>
           {isLogined ? (
@@ -151,5 +172,46 @@ const NavText = styled.p`
     cursor: default;
   }
 `;
+
+const SearchBox = styled.div`
+  position: relative;
+  display: flex; 
+  align-items: center; 
+  padding: 10px 0 10px 10px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 30px;
+  transition: 0.4s;
+  width: 50px;
+  &:hover {
+    background-color: #fff;
+    width: 300px;
+  }
+`;
+
+const SearchInput = styled.input`
+  width: 0px;
+  border:none;
+  outline: none;
+  float: left;
+  font-size: 1rem;
+  line-height: 30px;
+  transition: .4s;
+  font-family: "KOTRA_BOLD";
+  color: #4659A9;
+  background-color: transparent;
+  ${SearchBox}:hover &{
+    width: 240px;
+    padding: 0 6px;
+  }
+  
+  `;
+const SearchBtn = styled(Search)`    
+    stroke: #fff;
+    ${SearchBox}:hover &{
+      stroke: #4659A9;
+  }
+`;
+
 
 export default NavBar;
