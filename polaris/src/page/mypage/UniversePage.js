@@ -6,7 +6,6 @@ const UniversePage = () =>{
         <>
             <NavBar/>
             <Background>
-                <TitleText>MY BOOK UNIVERSE</TitleText>
                 <Solar>
                     <Sun src={require("../../assets/graphic/sun.png")}></Sun>
                     <Orbit1></Orbit1>
@@ -74,7 +73,6 @@ const neon_flicker = keyframes`
 
 const Background = styled.div`
     background: #2C2C60;
-    padding-top: 100px;
 `;
 
 const TitleText = styled.p`
