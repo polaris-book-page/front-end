@@ -8,7 +8,7 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 
 const SearchResultPage = () => {
@@ -29,9 +29,9 @@ const SearchResultPage = () => {
     const [order, setOrder] = useState('정확도순');
     const [bookType, setBookType] = useState('종이책');
     const [searchText, setSearchText] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-    const location = useLocation();
-
+    
     const searchResultFunc = async () => {
         setLoading(true);
         try {
@@ -72,10 +72,11 @@ const SearchResultPage = () => {
 
     const prevBookTypeRef = useRef(bookType);
     const prevOrderRef = useRef(order);
+    const searchQuery = searchParams.get("query");
 
     useEffect(() => {
-        setSearchText(location.state.value);
-    }, [])
+        setSearchText(searchParams.get("query"));
+    }, [searchQuery])
 
     useEffect(() => {
         searchResultFunc();
@@ -143,23 +144,24 @@ const SearchResultPage = () => {
     };
 
     const handleSearchText = (e) => {
-        console.log(e)
         const currentText = e.currentTarget.parentNode.children[0].value;
+        searchParams.set("query", currentText)
+        setSearchParams(searchParams);
 		setSearchText(currentText)
-        console.log(e.currentTarget.parentNode.children[0].value)
 	}
+    
+    const handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            const currentText = e.currentTarget.parentNode.children[0].value;
+            searchParams.set("query", currentText)
+            setSearchParams(searchParams);
+            setSearchText(currentText)
+        }
+    };
     
     const navigateAddBook = () => {
         navigate('/search/add')
     }
-
-    const handleOnKeyPress = e => {
-        if (e.key === 'Enter') {
-            const currentText = e.currentTarget.parentNode.children[0].value;
-            setSearchText(currentText)
-        }
-    };
-
     return (
         <>
             <NavBar/>
