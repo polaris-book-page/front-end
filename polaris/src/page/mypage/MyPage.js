@@ -141,11 +141,12 @@ const MyPage = () => {
   }
 
   const BooketList = (data) => {
+    console.log("data: ", data);
     if (data.length >= 6) {
       const newData = data.slice(0, 6);
       const items = newData.map((item, index) => {
         return (
-          <BookItem key={index} src={item.bookImage} />
+          <BookItem key={index} src={item.cover} />
         )
       })
 
@@ -158,11 +159,11 @@ const MyPage = () => {
           items = data.map((item, index) => {
             cnt++;
             return (
-              <BookItem key={index} src={item.bookImage} />
+              <BookItem key={index} src={item.cover} />
             )
           })
         }
-
+        console.log("나머했니")
         items.push(
           <BookItem />
         )       
