@@ -40,6 +40,9 @@ const FooterbarContainer = styled.div`
 const FooterInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  @media all and (max-width: 450px) {
+    flex-direction: column;
+  }
 `;
 
 const TeamInfoBox = styled.div`
@@ -55,6 +58,9 @@ const ContentDevInfoBox = styled.div`
 
 const ContactInfoBox = styled.div`
   margin-bottom: 50px;
+  @media all and (max-width: 450px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const DeveloperInfoBox = styled.div``;
@@ -70,6 +76,9 @@ const TitleText = styled.div`
   font-size: 30px;
   font-weight: 700;
   font-family: "KOTRA_BOLD";
+  @media all and (max-width: 450px) {
+    font-size: 25px;
+  }
 `;
 
 const ContentText = styled.div`

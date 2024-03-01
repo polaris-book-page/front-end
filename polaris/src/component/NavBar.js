@@ -4,10 +4,14 @@ import { ReactComponent as Unlock } from "../assets/ic-unlock.svg";
 import { FiLock } from "react-icons/fi";
 import { ReactComponent as MyPage } from "../assets/ic-person.svg";
 import { ReactComponent as Favorite } from "../assets/ic-heart.svg";
+import { ReactComponent as MainPage } from "../assets/ic-main-star.svg";
+import { ReactComponent as Travel } from "../assets/ic-rocket-travel.svg";
+import { ReactComponent as Sentence } from "../assets/ic-sentence.svg";
 import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import NavMenuList from "../component/NavMenuList"
 
 const NavBar = () => {
   const [isLogined, setIsLogined] = useState(false)
@@ -106,30 +110,45 @@ const NavBar = () => {
     }
   }
 
+  console.log("window.innerWidth: ", window.innerWidth)
+
   return (
     <>
       <NavbarContainer>
         <NavBarMenuBox>
           <NavLogo src={require('../assets/graphic/app-logo.png')} onClick={navigateHome}/>
           <div style={{ width: "10px" }} />
-          <NavText onClick={navigateMain}>메인 페이지</NavText>
-          <NavText onClick={navigateExplo}>북극성 탐험</NavText>
-          <NavText onClick={navigateToday}>오늘의 문장</NavText>
+            <NavScreenListBox>
+              <NavText onClick={navigateMain}>메인 페이지</NavText>
+              <NavText onClick={navigateExplo}>북극성 탐험</NavText>
+              <NavText onClick={navigateToday}>오늘의 문장</NavText>
+            </NavScreenListBox>
+          <NavMobileListBox>
+            <MainPage onClick={navigateMain} />
+            <Travel onClick={navigateExplo} />
+            <Sentence onClick={navigateToday} />
+            </NavMobileListBox>
         </NavBarMenuBox>
         <div style={{ flex: 1 }} />
-        <NavBarIconBox>
+        <NavBarIconContainer>
           <SearchBox>
             <SearchInput className='searchInput' placeholder="책 이름을 입력해주세요." onKeyDown={handleOnKeyPress}/>
             <SearchBtn size="33" onClick={handleSearchText}/>
           </SearchBox>
-          <Favorite onClick={navigateBooket}/>
-          <MyPage onClick={navigateMypage}/>
-          {isLogined ? (
-            <Unlock onClick={handleLogout}/>
-          ) : ( 
-            <FiLock size={35} color="white" onClick={handleLogin}/>
-          )}
-        </NavBarIconBox>
+          <NavBarScreenIconBox>
+            <Favorite fill='white' onClick={navigateBooket}/>
+            <MyPage fill='white' onClick={navigateMypage}/>
+            {isLogined ? (
+              <Unlock onClick={handleLogout}/>
+            ) : ( 
+              <FiLock size={35} color="white" onClick={handleLogin}/>
+              )}
+            </NavBarScreenIconBox>
+          <NavBarMobileIconBox>
+            <NavMenuList />
+          </NavBarMobileIconBox>
+        </NavBarIconContainer>
+
       </NavbarContainer>
     </>
   );
@@ -154,16 +173,54 @@ const NavLogo = styled.img`
   height: 50px;
 `;
 
-const NavBarIconBox = styled.div`
+const NavScreenListBox = styled.div`
+  display: flex;
+  
+  @media all and (max-width: 540px) {
+    display: none;
+  }
+`;
+
+const NavMobileListBox = styled.div`
+  display: flex;
+  gap: 10px;
+  
+  @media all and (min-width: 540px) {
+    display: none;
+  }
+`;
+
+const NavBarIconContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 5px;
+`;
+
+const NavBarScreenIconBox = styled.div`
   display: flex;
   flex: 0.3;
   justify-content: space-around;
   align-items: center;
   float: left;
+  gap: 7px;
+
+  @media all and (max-width: 540px) {
+    display: none;
+  }
+`;
+
+const NavBarMobileIconBox = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media all and (min-width: 540px) {
+    display: none;
+  }
 `;
 
 const NavText = styled.p`
-  font-size: 20px;
+  font-size: 16px;
   color: white;
   margin: 15px;
   font-family: "KOTRA_GOTHIC";
