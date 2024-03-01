@@ -99,6 +99,7 @@ const Menu = styled.div`
     list-style: none;
     box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    z-index: 1;
 
     &:after {
         display: flex;
