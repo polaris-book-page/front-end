@@ -139,7 +139,7 @@ const NavBar = () => {
             <Favorite fill='white' onClick={navigateBooket}/>
             <MyPage fill='white' onClick={navigateMypage}/>
             {isLogined ? (
-              <Unlock onClick={handleLogout}/>
+              <Unlock fill="white" onClick={handleLogout}/>
             ) : ( 
               <FiLock size={35} color="white" onClick={handleLogin}/>
               )}
