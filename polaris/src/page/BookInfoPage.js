@@ -7,15 +7,17 @@ import StarRating from '../component/StarRating.js'
 import { ReactComponent as ICLike } from "../assets/ic-like-sel.svg";
 import BookProgressDropDown from '../component/BookProgressDropDown';
 import { useEffect, useState } from "react";
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from "react-router-dom";
 
 const BookInfoPage = () => {
   const [book, setBook] = useState(null);
   const [dbbook, setDbook] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [checkLike, setCheckLike] = useState(null);
   const { state } = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
     const bookSearch = async () => {
       setLoading(true);
@@ -50,11 +52,47 @@ const BookInfoPage = () => {
       const res = await axios.get(`http://localhost:3001/book/info/review/list?isbn=${state}`, { withCredentials: true });
       const data = res.data;
 
-      console.log(data)
-
       return data;
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const fetchCheckLike = async () => {
+    try {
+      const res = await axios.post(`http://localhost:3001/mypage/check/like`, { isbn: state }, { withCredentials: true });
+      const data = res.data;
+
+      return data.is_liked;
+    } catch (err) {
+      
+    }
+  }
+
+  const fetchAddLike = async () => {
+    try {
+      const res = await axios.post(`http://localhost:3001/mypage/like`, {isbn: state}, { withCredentials: true });
+      const data = res.data;
+      setCheckLike(true);
+
+      return data;
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  const fetchDeleteLike = async () => {
+    try {
+      const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+      const res = await axios.delete(`http://localhost:3001/mypage/unlike`, { isbn: state, userId: UserAuthInfoCheck.userId }, { withCredentials: true });
+      const data = res.data;
+      setCheckLike(false);
+
+      return data;
+    }
+    catch (err) {
+      console.log(err);
     }
   }
 
@@ -66,6 +104,10 @@ const BookInfoPage = () => {
   useEffect(() => {
     bookSearch();
   }, []);
+
+  useEffect(() => {
+    fetchCheckLike();
+  }, [])
   
   useEffect(() => {
     if (book) {
@@ -89,6 +131,18 @@ const BookInfoPage = () => {
     }
 
     return list;
+  }
+
+  const handleLikeBook = () => {
+    if (!checkLike) {
+      fetchAddLike();
+      alert(`${book.title}이(가) 북킷리스트에 추가되었습니다.`);
+    }
+    else {
+      fetchDeleteLike();
+      alert(`${book.title}이(가) 북킷리스트에서 삭제되었습니다.`);
+    }
+
   }
 
   return (
@@ -135,7 +189,7 @@ const BookInfoPage = () => {
             </InfoContentBox>
           </InfoBookBox>
           <ButtonBox>
-            <Button>북킷리스트에 추가</Button>
+            <Button onClick={() => handleLikeBook()}>{!checkLike ? <>북킷리스트에 추가</> : <>북킷리스트에 삭제</>}</Button>
             <Button onClick={() => handleNewTab(`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`)}>알라딘에서 책 구매하기</Button>
             <BookProgressDropDown />
           </ButtonBox>
