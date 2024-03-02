@@ -7,12 +7,23 @@ import CustomDatePicker from "./CustomDatePicker";
 import { useNavigate } from "react-router-dom";
 
 
-const BookProgressDropDown = () => {
+const BookProgressDropDown = ({handleAddReview}) => {
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
     const [isModal, setIsModal] = useState(false);
+    const [progress, setProgress] = useState("");
+    const [pageType, setPageType] = useState("쪽(p)");
     const [selectedDate, setSelectedDate] = useState(new Date());
     const navigate = useNavigate();
+
+    const handlePageType = (type) => {
+        setPageType(type)
+    }
+
+    const handleAddBookPage = () => {
+        handleAddReview(progress, selectedDate, pageType)
+        setIsModal(false)
+    }
 
     return (
         <>
@@ -32,10 +43,11 @@ const BookProgressDropDown = () => {
 
             {/* modal */}
             <Modal
+                ariaHideApp={false}
                 style={customStyle}
                 isOpen={isModal}
                 onRequestClose={() => setIsModal(false)}
-                shouldCloseOnOverlayClick={false}>
+                shouldCloseOnOverlayClick={true}>
                 <ModalTitleContainer>
                     <ModalTitleText color={'#ffffff'}>책을 얼마나 읽으셨나요?</ModalTitleText>
                 </ModalTitleContainer>
@@ -45,8 +57,8 @@ const BookProgressDropDown = () => {
                         <Line />
                     </ModalSubTitleBox>
                     <ModalContentBox>
-                        <ProgressInput placeholder="페이지를 입력하세요." />
-                        <UnitDropDown />
+                        <ProgressInput placeholder="페이지를 입력하세요." onChange={(e) => setProgress(e.target.value)} />
+                        <UnitDropDown handlePageType={handlePageType} />
                     </ModalContentBox>
                     <div style={{height: 20}} />
                     <ModalSubTitleBox>
@@ -54,10 +66,10 @@ const BookProgressDropDown = () => {
                         <Line />
                     </ModalSubTitleBox>
                     <ModalContentBox>
-                        <CustomDatePicker page="info" setDate={'2023-01-13'}/>
+                        <CustomDatePicker page="info" setDate={"2023-01-13"} current={setSelectedDate} />
                     </ModalContentBox>
                     <div style={{height: 25}} />
-                    <ModalButton onClick={() => setIsModal(false)}>확인</ModalButton>
+                    <ModalButton onClick={handleAddBookPage}>확인</ModalButton>
                 </ModalContentContainer>
             </Modal>
         </>
@@ -69,6 +81,7 @@ const customStyle = {
         backgroundColor: '#00000040',
     },
     content: {
+        maxWidth: '800px',
         position: 'fixed',
         top: 0,
         bottom: 0,

@@ -15,6 +15,8 @@ const BookInfoPage = () => {
   const [dbbook, setDbook] = useState(null);
   const [loading, setLoading] = useState(false);
   const [checkLike, setCheckLike] = useState(null);
+  const [progress, setProgress] = useState(null);
+  const [startDate, setStartDate] = useState(null);
   const { state } = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -96,6 +98,39 @@ const BookInfoPage = () => {
     }
   }
 
+  const fetchAddBook = async (review) => {
+    try {
+      const res = await axios.put(`http://localhost:3001/book/add-review`, review, { withCredentials: true });
+      const data = res.data;
+
+      console.log(data)
+
+      return data;
+    } catch (err) {
+      console.log(err)
+    }
+
+  }
+
+  const handleAddReview = (progress, startDate, pageType) => {
+    setProgress(progress);
+    setStartDate(startDate);
+    console.log(pageType)
+    
+    const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+
+    let formData = new FormData();
+
+    formData.append('userId', UserAuthInfoCheck.userId)
+    formData.append('isbn', state)
+    if (pageType == "쪽(p)") formData.append('progressPage', progress);
+    else formData.append('progressPercent', progress);
+    formData.append('startDate', startDate);
+    //formData.append('category', null);
+
+    fetchAddBook(formData)
+  }
+
   const reviewQuery = useQuery({
       queryKey: ["book-review-list"],
       queryFn: fetchBookReviewList
@@ -124,11 +159,16 @@ const BookInfoPage = () => {
   }
 
   const handleReviewList = (review) => {
+    console.log(review)
     const cnt = 5;
     const list = new Array(cnt)
-    for (let i=0; i < 5; i++){
+    if (!review.findBookReview) list.push(<>리뷰가 없어요.</>)
+    else {
+      for (let i=0; i < 5; i++){
       list.push(<ReviewComment index={i} review={review.result[i]} />)
+      }
     }
+
 
     return list;
   }
@@ -191,7 +231,7 @@ const BookInfoPage = () => {
           <ButtonBox>
             <Button onClick={() => handleLikeBook()}>{!checkLike ? <>북킷리스트에 추가</> : <>북킷리스트에 삭제</>}</Button>
             <Button onClick={() => handleNewTab(`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`)}>알라딘에서 책 구매하기</Button>
-            <BookProgressDropDown />
+            <BookProgressDropDown handleAddReview={handleAddReview}  />
           </ButtonBox>
         </InfoContainer>
         <div style={{ height: 30 }} />

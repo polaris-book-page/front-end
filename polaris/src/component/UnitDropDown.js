@@ -1,11 +1,15 @@
 import styled, { css } from "styled-components";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useDetectClose from "./hook/useDetectClose";
 
-const UnitDropDown = () => { 
+const UnitDropDown = ({handlePageType}) => { 
     const dropDownRef = useRef(null);
     const [unit, setunit] = useState('쪽(p)');
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
+
+    useEffect(() => {
+        handlePageType(unit)
+    }, [unit])
 
     return (
         <>
@@ -14,7 +18,7 @@ const UnitDropDown = () => {
                     {unit} ▼
                 </Selected>
                 <Menu $isdropped={isOpen}>
-                    <Li onClick={() => setunit('쪽')}>
+                    <Li onClick={() => setunit('쪽(p)')}>
                         쪽(p)
                     </Li>
                     <Li onClick={() => setunit('퍼센트(%)')}>

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as ArrowRight } from "../assets/arrow-right.svg";
 import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 
-const CustomDatePicker = ({ setDate, page}) => {
+const CustomDatePicker = ({ setDate, page, current}) => {
     const [selectedDate, setSelectedDate] = useState(new Date(setDate));
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -21,7 +21,11 @@ const CustomDatePicker = ({ setDate, page}) => {
                 minDate={new Date('2000-01-01')}
                 maxDate={new Date()}
                 selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
+                onChange={(date) => {
+                    setSelectedDate(date)
+                    current(date)
+                }
+                }
                 withPortal
                 formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 3)}
                 renderCustomHeader={
