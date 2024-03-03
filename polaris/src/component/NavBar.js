@@ -8,7 +8,7 @@ import { ReactComponent as MainPage } from "../assets/ic-main-star.svg";
 import { ReactComponent as Travel } from "../assets/ic-rocket-travel.svg";
 import { ReactComponent as Sentence } from "../assets/ic-sentence.svg";
 import { useQueryClient } from '@tanstack/react-query'
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import NavMenuList from "../component/NavMenuList"
@@ -18,6 +18,7 @@ const NavBar = () => {
   const queryClient = useQueryClient()
   let navigate = useNavigate();
   const initialData = queryClient.getQueryData(['check']);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const logoutquery = async () => {
     try {
@@ -96,17 +97,15 @@ const NavBar = () => {
     if (e.key === 'Enter') {
         const currentText = e.currentTarget.parentNode.children[0].value;
         if (currentText !== '') {
-          navigate("/search", { state: { value: currentText } });
+          navigate(`/search?query=${encodeURIComponent(currentText)}`);
         }
       }
     };
 
   const handleSearchText = (e) => {
-    console.log(e)
     const currentText = e.currentTarget.parentNode.children[0].value;
-    console.log(e.currentTarget.parentNode.children[0].value)
     if (currentText !== '') {
-      navigate("/search", { state: { value: currentText } });
+      navigate(`/search?query=${encodeURIComponent(currentText)}`);
     }
   }
 

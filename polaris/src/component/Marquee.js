@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 
 const textLoop = keyframes`
 	0% {
-		transform: translate3d(40%, 0, 0);
+		transform: translate3d(0%, 0, 0);
 	}
 	100% {
 		transform: translate3d(-130%, 0, 0);
@@ -18,15 +18,13 @@ const FlowContainer = styled.div`
 
 const FlowWrap = styled.div`
 	width: 175px;
-	animation: ${textLoop} 6.5s linear infinite;
 	line-height: 1.5;
 	font-size: ${(props) => props.size || '24px'};
 	color: ${(props) => props.color || '#4659A9' };
 	font-weight: 700;
 	font-family: "KOTRA_GOTHIC";
 	&:hover {
-		animation-play-state: paused;
-		cursor: pointer;
+		animation: ${textLoop} 6.5s linear infinite;
 	}
 `;
 
@@ -34,7 +32,6 @@ const FlowText = styled.div`
 	display: flex;
 	flex: 0 0 auto;
 	white-space: nowrap;
-	/* overflow: hidden; */
 `;
 
 const Marquee = ({title, color, size}) => {

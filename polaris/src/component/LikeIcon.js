@@ -8,6 +8,7 @@ const LikeIcon = ({ item, onModalOpen }) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [currUser, setCurrUser] = useState('');
     const queryClient = useQueryClient()
+    console.log("!!!!!!!!!!!!!!", item)
 
     const { mutate } = useMutation({
         mutationFn: async (isbn) => {
@@ -41,6 +42,11 @@ const LikeIcon = ({ item, onModalOpen }) => {
     const dellike = useMutation({
         mutationFn: async (isbn) => {
             const response = await axios.delete('http://localhost:3001/mypage/unlike', { data:{ isbn: isbn, userId: currUser }}, { withCredentials: true });
+            if (item.title.length < 15) {
+                alert(item.title + "에 대한 좋아요를 취소하시겠습니까?")
+            } else {
+                alert(item.title.substr(0, 15) + "...에 대한 좋아요를 취소하시겠습니까?")
+            }
             return response;
         }, 
         onSuccess: (data) => {
