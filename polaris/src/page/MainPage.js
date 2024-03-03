@@ -7,6 +7,7 @@ import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 import NavBar from "../component/NavBar";
 import FooterBar from "../component/FooterBar";
 import GridBox from "../component/GridBox"
+import { useMutation } from '@tanstack/react-query';
 
 const MainPage = () => {
   const pagePerLimit = 5;
@@ -22,8 +23,11 @@ const MainPage = () => {
       setLoading(true);
       try {
         const result = await axios.get(`ttb/api/ItemList.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Cover=Big&QueryType=Bestseller&MaxResults=${maxResults}&start=${start}&SearchTarget=Book&output=js&Version=20131101`);
-        console.log(result.data);
+        console.log(result.data.item);
         setData(result.data.item);
+        if (result.data.item) {
+          mutate({ books: result.data.item });
+        }
         const newItemSlice = [];
             for (let i = 0; i < maxResults; i += pagePerLimit) {
                 newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));
@@ -35,6 +39,21 @@ const MainPage = () => {
       }
       setLoading(false);
     }
+
+    const { mutate } = useMutation({
+      mutationFn: async (bookInfo) => {
+          console.log("bookInfo", bookInfo)
+          const { data } = await axios.post(`http://localhost:3001/search/result/save`, bookInfo, { withCredentials: true })
+          console.log("data", data)
+          return data;
+      }, 
+      onSuccess: (data) => {
+          console.log("book save success")
+      },
+      onError: () => {
+          console.log("book save failure")
+      }
+  });
 
     useEffect(() => {
       setCurrentItems(itemsPerPage[(currentPage - 1) % 10])
