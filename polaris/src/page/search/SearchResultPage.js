@@ -40,15 +40,15 @@ const SearchResultPage = () => {
             &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
+            if (data) {
+                mutate({ books: result.data.item });
+            }
             // divide books to show 10 per page
             const newItemSlice = [];
             for (let i = 0; i < maxResults; i += pagePerLimit) {
                 newItemSlice.push(result.data.item.slice(i, i + pagePerLimit));
             }
             setItemsPerPage(newItemSlice)
-            if (data) {
-                mutate({ books: data.item });
-            }
         } catch (e) {
             console.log(e);
         }
@@ -59,7 +59,6 @@ const SearchResultPage = () => {
         mutationFn: async (bookInfo) => {
             console.log("bookInfo", bookInfo)
             const { data } = await axios.post(`http://localhost:3001/search/result/save`, bookInfo, { withCredentials: true })
-            console.log("data", data)
             return data;
         }, 
         onSuccess: (data) => {
