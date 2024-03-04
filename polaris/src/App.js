@@ -26,7 +26,7 @@ import ResetPasswordPage from './page/auth/ResetPasswordPage';
 import EditProfilePage from './page/mypage/EditProfilePage.js'
 
 const checkUser = async () => {
-  const response = await axios.get(`http://localhost:3001/user/check`, {
+  const response = await axios.get(`/api/user/check`, {
     withCredentials: true,
   });
   console.log("checkuser data: ", response.data)

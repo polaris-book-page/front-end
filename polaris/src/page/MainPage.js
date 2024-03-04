@@ -43,7 +43,7 @@ const MainPage = () => {
     const { mutate } = useMutation({
       mutationFn: async (bookInfo) => {
           console.log("bookInfo", bookInfo)
-          const { data } = await axios.post(`http://localhost:3001/search/result/save`, bookInfo, { withCredentials: true })
+          const { data } = await axios.post(`/api/search/result/save`, bookInfo, { withCredentials: true })
           console.log("data", data)
           return data;
       }, 

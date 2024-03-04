@@ -17,7 +17,7 @@ const EditProfilePage = () => {
     
     const { mutate } = useMutation({
         mutationFn: async (profile) => {
-            const res = await axios.put(`http://localhost:3001/mypage/modify`, profile, {
+            const res = await axios.put(`/api/mypage/modify`, profile, {
                 headers: {
                     "Content-Type": `multipart/form-data`,
                 },
@@ -54,7 +54,7 @@ const EditProfilePage = () => {
             await queryClient.refetchQueries(["check"]);
             const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
 
-            const res = await axios.get(`http://localhost:3001/user/${UserAuthInfoCheck.userId}`)
+            const res = await axios.get(`/api/user/${UserAuthInfoCheck.userId}`)
             const data = res.data;
 
             if (data.success) {

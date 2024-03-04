@@ -13,7 +13,7 @@ const LikeIcon = ({ item, onModalOpen }) => {
     const { mutate } = useMutation({
         mutationFn: async (isbn) => {
             // console.log(isbn)
-            const response = await axios.post('http://localhost:3001/mypage/check/like', { isbn }, { withCredentials: true });
+            const response = await axios.post('/api/mypage/check/like', { isbn }, { withCredentials: true });
             return response.data.is_liked;
         }, 
         onSuccess: (data) => {

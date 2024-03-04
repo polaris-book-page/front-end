@@ -16,7 +16,7 @@ const ReviewPage = () => {
 
     const fetchBookReviewList = async (page) => {
     try {
-      const res = await axios.get(`http://localhost:3001/book/info/review/list?isbn=${state}&page=${page}`, { withCredentials: true });
+      const res = await axios.get(`/api/book/info/review/list?isbn=${state}&page=${page}`, { withCredentials: true });
       const data = res.data;
 
       return data;

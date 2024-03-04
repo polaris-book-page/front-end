@@ -33,7 +33,7 @@ const RegisterPage = () =>{
 
     const { mutate } = useMutation({
         mutationFn: async (userInfo) => {
-            const { data } = await axios.post(`http://localhost:3001/user/join`, userInfo, { withCredentials: true })
+            const { data } = await axios.post(`/api/user/join`, userInfo, { withCredentials: true })
             return data;
         }, 
         onSuccess: () => {
@@ -49,7 +49,7 @@ const RegisterPage = () =>{
         queryKey:  ['idCheck', _id],
         queryFn: async () => {
             const response = await fetch(
-                `http://localhost:3001/user/join/id-check/${_id}`,
+                `/api/user/join/id-check/${_id}`,
                 );
             const idCheckQuery = await response.json();
             return idCheckQuery;
@@ -67,7 +67,7 @@ const RegisterPage = () =>{
         queryKey:  ['nicknameCheck', nickname],
         queryFn: async () => {
             const response = await fetch(
-                `http://localhost:3001/user/join/id-check/${nickname}`,
+                `/api/user/join/id-check/${nickname}`,
                 );
             const nicknameCheckQuey = await response.json();
             return nicknameCheckQuey;

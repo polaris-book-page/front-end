@@ -83,7 +83,7 @@ const HomePage = () => {
     // fetch API
     const fetchTenQuery = async () => {
         try {
-            const res = await axios.get(`http://localhost:3001/book/ten-quotes`)
+            const res = await axios.get(`/api/book/ten-quotes`)
             const data = res.data;
 
             return data;

@@ -20,7 +20,7 @@ const MyPage = () => {
 
     const fetchReviewList = async () => {
       try {
-          const res = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
+          const res = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
           const data = res.data;
           
           return data;
@@ -35,7 +35,7 @@ const MyPage = () => {
         await queryClient.refetchQueries(["check"]);
       const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
 
-        const res = await axios.get(`http://localhost:3001/user/${UserAuthInfoCheck.userId}`)
+        const res = await axios.get(`/api/user/${UserAuthInfoCheck.userId}`)
         const data = res.data;
 
         return data.findUser;
@@ -46,7 +46,7 @@ const MyPage = () => {
 
   const fetchLikeList = async () => {
     try {
-        const res = await axios.get(`http://localhost:3001/mypage/like/list`, { withCredentials: 'true'});
+        const res = await axios.get(`/api/mypage/like/list`, { withCredentials: 'true'});
         const data = res.data;
       
         return data;
@@ -57,7 +57,7 @@ const MyPage = () => {
 
   const fetchInfoBook = async (isbn) => {
     try {
-      const res = await axios.post(`http://localhost:3001/book/info`, { isbn: isbn });
+      const res = await axios.post(`/api/book/info`, { isbn: isbn });
       const data = res.data;
       
       return data;

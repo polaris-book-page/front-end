@@ -36,7 +36,7 @@ const BookInfoPage = () => {
 
   const { mutate } = useMutation({
     mutationFn: async (bookInfo) => {
-        const { data } = await axios.post(`http://localhost:3001/book/info`, bookInfo, { withCredentials: true })
+        const { data } = await axios.post(`/api/book/info`, bookInfo, { withCredentials: true })
         //console.log("data", data)
         return data;
     }, 
@@ -51,7 +51,7 @@ const BookInfoPage = () => {
 
   const fetchBookReviewList = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/book/info/review/list?isbn=${state}`, { withCredentials: true });
+      const res = await axios.get(`/api/book/info/review/list?isbn=${state}`, { withCredentials: true });
       const data = res.data;
 
       return data;
@@ -62,7 +62,7 @@ const BookInfoPage = () => {
 
   const fetchCheckLike = async () => {
     try {
-      const res = await axios.post(`http://localhost:3001/mypage/check/like`, { isbn: state }, { withCredentials: true });
+      const res = await axios.post(`/api/mypage/check/like`, { isbn: state }, { withCredentials: true });
       const data = res.data;
 
       return data.is_liked;
@@ -73,7 +73,7 @@ const BookInfoPage = () => {
 
   const fetchAddLike = async () => {
     try {
-      const res = await axios.post(`http://localhost:3001/mypage/like`, {isbn: state}, { withCredentials: true });
+      const res = await axios.post(`/api/mypage/like`, {isbn: state}, { withCredentials: true });
       const data = res.data;
       setCheckLike(true);
 
@@ -87,7 +87,7 @@ const BookInfoPage = () => {
   const fetchDeleteLike = async () => {
     try {
       const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
-      const res = await axios.delete(`http://localhost:3001/mypage/unlike`, { isbn: state, userId: UserAuthInfoCheck.userId }, { withCredentials: true });
+      const res = await axios.delete(`/api/mypage/unlike`, { isbn: state, userId: UserAuthInfoCheck.userId }, { withCredentials: true });
       const data = res.data;
       setCheckLike(false);
 
@@ -100,7 +100,7 @@ const BookInfoPage = () => {
 
   const fetchAddBook = async (review) => {
     try {
-      const res = await axios.put(`http://localhost:3001/book/add-review`, review, { withCredentials: true });
+      const res = await axios.put(`/api/book/add-review`, review, { withCredentials: true });
       const data = res.data;
 
       console.log(data)

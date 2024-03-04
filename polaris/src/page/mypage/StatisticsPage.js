@@ -17,7 +17,7 @@ const StatisticsPage = () => {
 
     const { mutate } = useMutation({
         mutationFn: async (goal) => {
-            const { data } = await axios.post(`http://localhost:3001/mypage/goal`, goal, { withCredentials: true })
+            const { data } = await axios.post(`/api/mypage/goal`, goal, { withCredentials: true })
             console.log("data", data)
             return data;
         }, 

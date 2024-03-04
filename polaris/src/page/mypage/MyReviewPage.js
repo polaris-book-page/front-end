@@ -14,7 +14,7 @@ const MyReviewPage = () => {
     // fetch API
     const fetchReviewList = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/mypage/star-review`, { withCredentials: 'true'});
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
             
             return data;

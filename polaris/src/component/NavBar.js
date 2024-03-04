@@ -22,12 +22,12 @@ const NavBar = () => {
 
   const logoutquery = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/user/logout`, {
+      const response = await axios.get(`/api/user/logout`, {
         withCredentials: true,
       });
       console.log("response: ", response);
   
-      await axios.get(`http://localhost:3001/user/check`, {
+      await axios.get(`/api/user/check`, {
         withCredentials: true,
       });
   

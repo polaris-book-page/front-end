@@ -23,7 +23,7 @@ const BooketListPage = () =>{
     const { isLoading, error, data } = useQuery({
         queryKey: ['likeList'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3001/mypage/like/list', {
+            const response = await axios.get('/api/mypage/like/list', {
                 withCredentials: true,
             })
             const userInfo = await queryClient.getQueryData(['check']);
@@ -35,7 +35,7 @@ const BooketListPage = () =>{
 
     const handleUserLogin = async () => {
         try {
-        const response = await axios.get('http://localhost:3001/mypage/like/list', {
+        const response = await axios.get('/api/mypage/like/list', {
             withCredentials: true,
         });
         queryClient.setQueryData(['likeList'], response.data);

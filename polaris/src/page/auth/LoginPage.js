@@ -18,7 +18,7 @@ const LoginPage = () =>{
     const { mutate } = useMutation({
         mutationFn: async (userInfo) => {
             var referrer = document.referrer;
-            const { data } = await axios.post(`http://localhost:3001/user/login`, userInfo, { withCredentials: true })
+            const { data } = await axios.post(`/api/user/login`, userInfo, { withCredentials: true })
             console.log("data", data)
             console.log('state: ', state)
             return data;
