@@ -27,7 +27,7 @@ const LikeIcon = ({ item, onModalOpen }) => {
 
     const addlike = useMutation({
         mutationFn: async (isbn) => {
-            const response = await axios.post('http://localhost:3001/mypage/like', { isbn }, { withCredentials: true });
+            const response = await axios.post('/api/mypage/like', { isbn }, { withCredentials: true });
             return response;
         }, 
         onSuccess: (data) => {
@@ -41,7 +41,7 @@ const LikeIcon = ({ item, onModalOpen }) => {
 
     const dellike = useMutation({
         mutationFn: async (isbn) => {
-            const response = await axios.delete('http://localhost:3001/mypage/unlike', { data:{ isbn: isbn, userId: currUser }}, { withCredentials: true });
+            const response = await axios.delete('/api/mypage/unlike', { data:{ isbn: isbn, userId: currUser }}, { withCredentials: true });
             if (item.title.length < 15) {
                 alert(item.title + "에 대한 좋아요를 취소하시겠습니까?")
             } else {
