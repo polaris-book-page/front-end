@@ -12,12 +12,12 @@ const TodaySentencePage = () => {
     return (
         <>
             <NavBar />
-            <NightSkyBackground height={'80vh'} />
+            <NightSkyBackground height={'90vh'} />
             <Background>
                 <TitleText>오늘의 문장</TitleText>
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
                 <ExplainationText>※ 하루에 한 문장만 선택해서 책을 추천받을 수 있습니다.</ExplainationText>
-                <SentencesContainer className="container-fluid row">
+                <SentencesContainer className="container">
                     <EachSentence onClick={()=>setModalIsOpen(true)} quote="고독을 배설한 자리에서 내려앉는 환희. 이 달콤함을 위해 그는 예술을 표방한다." bookCategory="#카테고리" bookColor="#97A4E8" />
                     <EachSentence onClick={()=>setModalIsOpen(true)} quote="전부 바다에 밀어버리자. 더 이상 내가 나를 미워하지 않고 싫어하지 않을 때까지." bookCategory="#카테고리" bookColor="#4659A9" />
                     <EachSentence onClick={()=>setModalIsOpen(true)} quote="타인의 언어는 결코, 나의 정답이 될 수 없음을 알기에, 홀로 밤을 읽지 않기로 한다." bookCategory="#카테고리" bookColor="#6F61C6" />
@@ -32,7 +32,7 @@ const TodaySentencePage = () => {
                             <BookImage/>
                             <BookInfo>
                                 <BookTitleBox>
-                                    <LikeIcon/>
+                                    {/* <LikeIcon/> */}
                                     <BookTitle>뼈가 자라는 여름</BookTitle>
                                 </BookTitleBox>
                                 <BookTextBox>
@@ -54,14 +54,18 @@ const TodaySentencePage = () => {
 }
 
 const SentencesContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     justify-content: center;
+    margin-bottom: 10%;
 `;
 
 const Background = styled.div`
     position: absolute;
-    top: 7px;
-    margin: auto;
-    padding-top: 10%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 20%;
 `;
 
 const TitleText = styled.p`
