@@ -129,13 +129,13 @@ const MainPage = () => {
           북극성 사용자가 많이 완독한 책을 살펴볼까요?
         </SubTitleText>
         <BookContainer>
-          <ArrowLeft />
+          <ArrowL />
           <BookItem />
           <BookItem />
           <BookItem />
           <BookItem />
           <BookItem />
-          <ArrowRight />
+          <ArrowR />
         </BookContainer>
         <div style={{ height: "50px" }} />
         <TitleText>북극성 구독하기:</TitleText>
@@ -203,8 +203,8 @@ const ArrowR = styled(ArrowRight)`
 `;
 
 const BookItem = styled.div`
-  width: 270px;
-  height: 400px;
+  width: 228px;
+  height: 299px;
   background-color: #d9d9d9;
   margin: 10px;
   box-shadow: 0px 5px 10px #d9d9d9;

@@ -6,13 +6,20 @@ import { ReactComponent as ArrowLeft } from "../../assets/arrow-left.svg";
 import { ReactComponent as IcType } from "../../assets/ic-type.svg";
 import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
 
 const MyPage = () => {
-
+  // pagination
+  const pagePerLimit = 6;
+  const [itemsPerPage, setItemsPerPage] = useState([]);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [maxResults, setMaxResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentArray, setCurrentArray] = useState(1);
+  
   const [flip, setFlip] = useState(false);
   let navigate = useNavigate();
   const queryClient = useQueryClient()
@@ -22,6 +29,8 @@ const MyPage = () => {
       try {
           const res = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
           const data = res.data;
+        
+          data.reviewList.length > 50 ? setMaxResults(50) : setMaxResults(data.length)
           
           return data;
       } catch (err) {
@@ -115,7 +124,7 @@ const MyPage = () => {
       for (let cnt = 0; cnt >= 1; cnt++) {
         if (data.length - cnt > 0) {
           items = data.map((item, index) => {
-          const res = fetchInfoBook();
+          const res = fetchInfoBook(item.isbn);
           cnt++;
           return (
             <ReadingBox key={index}>
@@ -140,12 +149,51 @@ const MyPage = () => {
     }
   }
 
+    const handleNextPage = () => {
+    const nextPage = currentPage + 1;
+    const totalPages = Math.ceil(maxResults / pagePerLimit);
+    console.log("nextpage ", nextPage)
+    if (nextPage <= totalPages) {
+      setCurrentPage(nextPage);
+    }
+    if (nextPage % 10 === 1) {
+      setCurrentArray(Math.floor((nextPage) / 10 + 1))
+      setCurrentPage(1)
+    }
+  };
+  
+  const handlePrevPage = () => {
+    const prevPage = currentPage - 1;
+    
+    if (prevPage >= 1) {
+      setCurrentPage(prevPage);
+    }
+    console.log('prepage ', prevPage)
+    console.log('curr ', currentPage)
+    if ((prevPage) % 10 === 0) {
+      if (currentArray !== 1) {
+        setCurrentArray(currentArray - 1)
+        setCurrentPage(10)
+      }
+    }
+  };
+  
+  useEffect(() => {
+    if (currentArray !== 0) {
+      fetchInfoBook(currentArray);
+    }
+  }, [currentArray]);
+
+  useEffect(() => {
+      setCurrentItems(itemsPerPage[(currentPage - 1) % 10])
+  }, [currentPage, itemsPerPage, currentItems])
+
   const BooketList = (data) => {
     if (data.length >= 6) {
       const newData = data.slice(0, 6);
       const items = newData.map((item, index) => {
         return (
-          <BookItem key={index} src={item.cover} />
+          <BookItem onClick={()=>navigate('/book/info')} key={index} src={item.cover} />
         )
       })
 
@@ -172,7 +220,7 @@ const MyPage = () => {
   }
 
   return (
-    !queries[0].isLoading && !queries[1].isLoading && <>
+    !queries[0].isLoading && !queries[1].isLoading && !queries[2].data.isLoading && <>
       <NavBar/>
       <BookContainer>
         <Background>
@@ -186,7 +234,7 @@ const MyPage = () => {
               <HighTitleCircle />
             </HighTitleBox>
             <div style={{ flex: 1 }} />
-            <HighTitleBox>
+            <HighTitleBox style={{textAlign: 'right'}}>
               <HighTitleCircle />
               <HighTitleCircle />
               <HighTitleText style={{ marginLeft: 10 }}>
@@ -300,11 +348,13 @@ const MyPage = () => {
           </TextBox>
           <div style={{ height: '30px' }} />
           <FavoriteBox>
-            <ArrowLeft />
+            {currentPage !== 1 && <ArrowLeft onClick={handlePrevPage} />}
+            <div style={{flex: 1}} />
             <BookListBox>
               {BooketList(queries[2].data)}
             </BookListBox>
-            <ArrowRight />
+            <div style={{flex: 1}} />
+            {currentPage !== parseInt(queries[1].data.reviewList.length / pagePerLimit) + 1 && <ArrowRight onClick={handleNextPage} />}
           </FavoriteBox>
         </FavoriteContainer>
       </BookContainer>
@@ -402,7 +452,7 @@ const ContentContainer = styled.div`
   @media screen and (max-width: 600px) {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    
   }
 `;
 
@@ -500,6 +550,7 @@ const ReadingBox = styled.div`
 const ReadingContent = styled.div`
   display: flex;
   flex: 1;
+  
   flex-direction: column;
   font-family: "KOTRA_GOTHIC";
   margin-left: 10px;
@@ -528,7 +579,7 @@ const BookListBox = styled.div`
       grid-template-columns: 1fr 1fr 1fr;
     }
 
-    @media screen and (max-width: 700px) {
+    @media screen and (max-width: 900px) {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr;
@@ -542,10 +593,24 @@ const BookListBox = styled.div`
 
 const BookItem = styled.img`
   width: 200px;
-  height: 320px;
+  height: 300px;
   background-color: #d9d9d9;
   margin: 10px;
   box-shadow: 0px 5px 10px #d9d9d9;
+  @media screen and (max-width: 1200px) {
+    width: 200px;
+    height: 300px;
+  }
+
+  @media screen and (max-width: 800px) {
+    width: 200px;
+    height: 300px;
+  }
+
+  @media screen and (max-width: 380px) {
+    width: 120px;
+    height: 170px;
+  }
 `;
 
 const TextBox = styled.div`
@@ -581,6 +646,9 @@ const HighTitleCircle = styled.div`
   width: 10px;
   height: 10px;
   margin: 4px;
+  @media screen and (max-width: 700px) {
+  display: none;
+  }
 `;
 
 // edit
