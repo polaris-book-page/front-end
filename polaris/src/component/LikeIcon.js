@@ -8,7 +8,6 @@ const LikeIcon = ({ item, onModalOpen }) => {
 	const [isChecked, setIsChecked] = useState(false);
 	const [currUser, setCurrUser] = useState('');
     const queryClient = useQueryClient()
-    console.log("!!!!!!!!!!!!!!", item)
 
     const { mutate } = useMutation({
         mutationFn: async (isbn) => {
