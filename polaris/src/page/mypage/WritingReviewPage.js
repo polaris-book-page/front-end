@@ -171,17 +171,18 @@ const Container = styled.div`
     box-shadow: 0px 2px 7px #00000022;
 
     @media screen and (max-width: 900px) {
-        width: 60vh;
+        width: 70vh;
     }
 
     @media screen and (max-width: 500px) {  
-        width: 50vh;
+        width: 60vh;
     }
 `;
 
 const ScrollbarContainer = styled.div`
     display: flex;
     overflow-y: scroll;
+    overflow-x: hidden;
     width: 100%;
     justify-content: center;
 
@@ -324,7 +325,7 @@ const QuotePageInput = styled.input`
 `;
 
 const ReviewInput = styled.textarea`
-    width: 450px;
+    width: 370px;
     font-size: 14px;
     flex: 1;
     border: none;
