@@ -68,6 +68,7 @@ const ReviewPage = () => {
   return (
     <>
       <NavBar />
+      <CenterContainer>
       <Container>
         <ReviewContainer>
           {!reviewQuery.isLoading && reviewQuery.data && <>
@@ -91,6 +92,7 @@ const ReviewPage = () => {
         </ReviewContainer>
         <div style={{ height: 30 }} />
       </Container>
+      </CenterContainer>
       <FooterBar />
     </>
   );
@@ -98,11 +100,14 @@ const ReviewPage = () => {
 
 // main container
 const Container = styled.div`
-  display: grid;
-  grid-template-rows: 1fr;
-  justify-content: center;
-  background: linear-gradient(#c4cef9, #facecb, #ffffff);
+  flex: 1;
   padding: 50px 5%;
+`;
+
+const CenterContainer = styled.div`
+  display: flex;
+  background: linear-gradient(#c4cef9, #facecb, #ffffff);
+  justify-content: center;
 `;
 
 // sub container
