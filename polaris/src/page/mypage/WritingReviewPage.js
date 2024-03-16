@@ -6,6 +6,7 @@ import CustomDatePicker from "../../component/CustomDatePicker";
 import useDetectClose from "../../component/hook/useDetectClose";
 import MoveStarRating from "../../component/MoveStarRating";
 import NightSkyBackground from "../../component/NightSkyBackground";
+import { useLocation } from "react-router-dom";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -18,6 +19,9 @@ const WritingReviewPage = () => {
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
     const [selPlanet, setSelPlanet] = useState("")
+
+    const {state} = useLocation();
+    console.log("state: ", state)
 
     const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png'), require('../../assets/graphic/planet-5.png'), require('../../assets/graphic/planet-6.png'), require('../../assets/graphic/planet-7.png'), require('../../assets/graphic/planet-8.png'), require('../../assets/graphic/planet-9.png'), require('../../assets/graphic/planet-10.png')]
     // radio func
@@ -53,7 +57,7 @@ const WritingReviewPage = () => {
                     <BookImageBox>
                         <PlanetBox>
                             <BookImage>
-                                <img style={{ width: 120, height: 200 }} />                            
+                                <img src={state.cover} style={{ width: 120, height: 200 }} />                            
                             </BookImage>
                             {/* select plenet image */}
                             <PlanetSelBox>
@@ -74,8 +78,8 @@ const WritingReviewPage = () => {
                             </PlanetSelBox>
                         </PlanetBox>
                         <div style={{marginBottom: 20}} />
-                        <TitleText color={'white'} size={'16px'}>책 제목</TitleText>
-                        <ContentText color={'white'} size={'13px'}>저자</ContentText>
+                        <TitleText color={'white'} size={'16px'}>{state.title}</TitleText>
+                        <ContentText color={'white'} size={'13px'}>{state.author}</ContentText>
                         <MoveStarRating />
                     </BookImageBox>
                     {/* book type */}

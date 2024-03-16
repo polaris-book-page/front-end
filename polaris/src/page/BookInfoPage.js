@@ -232,7 +232,7 @@ const BookInfoPage = () => {
           <ButtonBox>
             <Button onClick={() => handleLikeBook()}>{!checkLike ? <>북킷리스트에 추가</> : <>북킷리스트에 삭제</>}</Button>
             <Button onClick={() => handleNewTab(`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`)}>알라딘에서 책 구매하기</Button>
-            <BookProgressDropDown handleAddReview={handleAddReview}  />
+            <BookProgressDropDown handleAddReview={handleAddReview} book={book}  />
           </ButtonBox>
         </InfoContainer>
         <div style={{ height: 30 }} />
