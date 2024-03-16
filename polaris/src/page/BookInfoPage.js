@@ -64,6 +64,7 @@ const BookInfoPage = () => {
     try {
       const res = await axios.post(`/api/mypage/check/like`, { isbn: state }, { withCredentials: true });
       const data = res.data;
+      setCheckLike(data.is_liked);
 
       return data.is_liked;
     } catch (err) {
@@ -141,7 +142,7 @@ const BookInfoPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchCheckLike();
+    fetchCheckLike(); 
   }, [])
   
   useEffect(() => {
