@@ -64,9 +64,12 @@ const NavBar = () => {
   };
 
   const handleLogin = async () => {
-    navigate('/auth/login')
-    setIsLogined(true)
     queryClient.invalidateQueries(['check']);
+    const somebodyIn = queryClient.getQueryData(['check']);
+    if (somebodyIn.is_logined === false && window.location.pathname !== '/auth/login') {
+      navigate('/auth/login')
+      setIsLogined(true)
+    }
   }
 
   const navigateMypage = async () => {
@@ -138,9 +141,9 @@ const NavBar = () => {
             <Favorite fill='white' onClick={navigateBooket}/>
             <MyPage fill='white' onClick={navigateMypage}/>
             {isLogined ? (
-              <Unlock fill="white" onClick={handleLogout}/>
+              <Unlock id="log_btn" fill="white" onClick={handleLogout}/>
             ) : ( 
-              <FiLock size={35} color="white" onClick={handleLogin}/>
+              <FiLock id="log_btn" size={35} color="white" onClick={handleLogin}/>
               )}
             </NavBarScreenIconBox>
           <NavBarMobileIconBox>
