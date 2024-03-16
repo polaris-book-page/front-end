@@ -18,12 +18,13 @@ const MainPage = () => {
   const [itemsPerPage, setItemsPerPage] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
   const [currentArray, setCurrentArray] = useState(1);
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
 
     const bestsellerResult = async (start) => {
       setLoading(true);
       try {
         const result = await axios.get(`ttb/api/ItemList.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Cover=Big&QueryType=Bestseller&MaxResults=${maxResults}&start=${start}&SearchTarget=Book&output=js&Version=20131101`);
-        console.log(result.data.item);
         setData(result.data.item);
         if (result.data.item) {
           mutate({ books: result.data.item });
@@ -42,9 +43,7 @@ const MainPage = () => {
 
     const { mutate } = useMutation({
       mutationFn: async (bookInfo) => {
-          console.log("bookInfo", bookInfo)
           const { data } = await axios.post(`/api/search/result/save`, bookInfo, { withCredentials: true })
-          console.log("data", data)
           return data;
       }, 
       onSuccess: (data) => {
@@ -54,6 +53,21 @@ const MainPage = () => {
           console.log("book save failure")
       }
   });
+
+  const subscribe = useMutation({
+    mutationFn: async (subInfo) => {
+      console.log("subInfo", subInfo)
+      const { data } = await axios.post(`api/user/subscribe`, subInfo, { withCredentials: true })
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log("subscribe success")
+    },
+    onError: () => {
+        console.log("subscribe failure")
+    }
+  })
+
 
     useEffect(() => {
       setCurrentItems(itemsPerPage[(currentPage - 1) % 10])
@@ -94,6 +108,10 @@ const MainPage = () => {
       bestsellerResult(currentArray);
     }
   }, [currentArray]);
+
+  const handleSubscribe = () => {
+    subscribe.mutate({ nickname, email });
+  }
         
 
   return (
@@ -144,14 +162,14 @@ const MainPage = () => {
           북극성 운영자가 북극성의 소식과 글조각을 간간이 전해드립니다.
         </SubTitleText>
         <SubscribeContainer>
-          <TextInput placeholder="여러분의 닉네임을 입력하세요." />
-          <TextInput placeholder="여러분의 이메일을 입력하세요." />
+          <TextInput placeholder="여러분의 닉네임을 입력하세요." onChange={(e) => {setNickname(e.target.value)}}/>
+          <TextInput placeholder="여러분의 이메일을 입력하세요." onChange={(e) => {setEmail(e.target.value)}}/>
           <PersonalInfoBox>
             <PersonalInfoCheck type="checkbox" />
             <PersonalInfoText>개인정보처리방침에 동의합니다.</PersonalInfoText>
           </PersonalInfoBox>
           <div style={{ height: "50px" }} />
-          <SubscribeBtn>구독하기</SubscribeBtn>
+          <SubscribeBtn onClick={handleSubscribe}>구독하기</SubscribeBtn>
         </SubscribeContainer>
         <div style={{ height: "100px" }} />
       </MainContainer>

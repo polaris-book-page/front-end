@@ -75,14 +75,6 @@ const Background = styled.div`
     background: #2C2C60;
 `;
 
-const TitleText = styled.p`
-    color: #D5CFFB;
-    font-family: "KOTRA_BOLD";
-    font-size: 48px;
-    text-align: center; 
-    width: 100%;
-`;
-
 const Solar = styled.div`
     position: relative;
     height: 140vh;
@@ -98,70 +90,59 @@ const Sun = styled.img`
 `;
 
 const PlanetWrapper = ({ src, m, n }) => (
-    <Planet src={src} m={m} n={n} />
+    <BookInfo m={m} n={n}>
+        <Planet src={src} />
+        <ReadingBox>
+            <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+            <ReadingContent>
+                <ContentText color={'#4659A9'} size={'16px'}>종의 기원담</ContentText>
+                <ContentText color={'#4659A9'}>2024.01.26 ~ 2024.02.15</ContentText>
+            </ReadingContent>
+        </ReadingBox>
+    </BookInfo>
 );
 
-const Planet = styled.img`
-    width: 40px;
-    height: 40px;
+const BookInfo = styled.div`
     position: absolute;
     left: calc(50% - 20px);
     top: calc(50% - 20px);
     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
 `;
-// const Planet3 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-// `;
 
-// const Planet3_1 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-// `;
+const Planet = styled.img`
+    width: 40px;
+    height: 40px;
+`;
 
-// const Planet3_2 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-// `;
+const ReadingBox = styled.div`
+    display: none;
+    background-color: #fff;
+    align-items: center;
+    border: solid 2px #D5CFFB;
+    border-radius: 20px;
+    padding: 10px;
+    width: 200px;
+    ${Planet}:hover ~ & {
+        display: flex;
+    }
+    position: absolute;
+    left: calc(50% + 30px);
+    top: calc(50% - 110px);
+`;
 
-// const Planet3_3 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
-// `;
+const ReadingContent = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    font-family: "KOTRA_GOTHIC";
+    margin-left: 10px;
+`;
 
-// const Planet7 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
-// `;
-
-// const Planet10 = styled.img`
-//     width: 40px;
-//     height: 40px;
-//     position: absolute;
-//     left: calc(50% - 20px);
-//     top: calc(50% - 20px);
-//     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 10}s linear infinite;
-// `;
+const ContentText = styled.text`
+    color: gray;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 12px;
+`;
 
 const Orbit1 = styled.div`
     width: 170px;
