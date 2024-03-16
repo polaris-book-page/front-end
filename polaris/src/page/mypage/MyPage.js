@@ -220,7 +220,7 @@ const MyPage = () => {
   }
 
   return (
-    !queries[0].isLoading && !queries[1].isLoading && !queries[2].data.isLoading && <>
+    !queries[0].isLoading && !queries[1].isLoading && !queries[2].isLoading && <>
       <NavBar/>
       <BookContainer>
         <Background>
