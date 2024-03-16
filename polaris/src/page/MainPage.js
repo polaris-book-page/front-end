@@ -25,7 +25,6 @@ const MainPage = () => {
       setLoading(true);
       try {
         const result = await axios.get(`ttb/api/ItemList.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Cover=Big&QueryType=Bestseller&MaxResults=${maxResults}&start=${start}&SearchTarget=Book&output=js&Version=20131101`);
-        console.log(result.data.item);
         setData(result.data.item);
         if (result.data.item) {
           mutate({ books: result.data.item });
@@ -44,9 +43,7 @@ const MainPage = () => {
 
     const { mutate } = useMutation({
       mutationFn: async (bookInfo) => {
-          console.log("bookInfo", bookInfo)
           const { data } = await axios.post(`/api/search/result/save`, bookInfo, { withCredentials: true })
-          console.log("data", data)
           return data;
       }, 
       onSuccess: (data) => {
