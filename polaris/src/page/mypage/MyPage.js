@@ -573,7 +573,7 @@ const FavoriteBox = styled.div`
 const BookListBox = styled.div`
     display: flex;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1500px) {
       display: grid;
       grid-template-rows: 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
