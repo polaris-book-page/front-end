@@ -24,7 +24,7 @@ const BookInfoPage = () => {
     const bookSearch = async () => {
       setLoading(true);
       try {
-        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101`);
+        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101&cover=big`);
         console.log(result.data.item[0]);
         console.log("itemPage: ", result.data.item[0].subInfo.itemPage);
         setBook(result.data.item[0]);
