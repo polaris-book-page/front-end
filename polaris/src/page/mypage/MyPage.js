@@ -220,7 +220,7 @@ const MyPage = () => {
   }
 
   return (
-    !queries[0].isLoading && !queries[1].isLoading && !queries[2].data.isLoading && <>
+    !queries[0].isLoading && !queries[1].isLoading && !queries[2].isLoading && <>
       <NavBar/>
       <BookContainer>
         <Background>
@@ -573,7 +573,7 @@ const FavoriteBox = styled.div`
 const BookListBox = styled.div`
     display: flex;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1500px) {
       display: grid;
       grid-template-rows: 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;

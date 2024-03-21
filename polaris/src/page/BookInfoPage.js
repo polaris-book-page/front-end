@@ -24,7 +24,7 @@ const BookInfoPage = () => {
     const bookSearch = async () => {
       setLoading(true);
       try {
-        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101`);
+        const result = await axios.get(`/ttb/api/ItemLookUp.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&itemIdType=ISBN&ItemId=${state}&output=js&Version=20131101&cover=big`);
         console.log(result.data.item[0]);
         console.log("itemPage: ", result.data.item[0].subInfo.itemPage);
         setBook(result.data.item[0]);
@@ -64,6 +64,7 @@ const BookInfoPage = () => {
     try {
       const res = await axios.post(`/api/mypage/check/like`, { isbn: state }, { withCredentials: true });
       const data = res.data;
+      setCheckLike(data.is_liked);
 
       return data.is_liked;
     } catch (err) {
@@ -141,7 +142,7 @@ const BookInfoPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchCheckLike();
+    fetchCheckLike(); 
   }, [])
   
   useEffect(() => {
@@ -162,7 +163,7 @@ const BookInfoPage = () => {
     console.log(review)
     const cnt = 5;
     const list = new Array(cnt)
-    if (!review.findBookReview) list.push(<>리뷰가 없어요.</>)
+    if (!review.findBookReview) list.push(<InfoContentText>리뷰가 없어요.</InfoContentText>)
     else {
       for (let i=0; i < 5; i++){
       list.push(<ReviewComment index={i} review={review.result[i]} />)
@@ -188,9 +189,10 @@ const BookInfoPage = () => {
   return (
     <>
       <NavBar />
+      <CenterContainer>
       <Container>
         {/* book info */}
-        <TitleText style={{ justifySelf: 'center' }} color={'#4659A9'} size={'24px'}>{book.title}</TitleText>
+        <TitleText color={'#4659A9'} size={'24px'}>{book.title}</TitleText>
         <div style={{height: '20px'}} />
         <InfoContainer>
           <InfoBookBox>
@@ -231,7 +233,7 @@ const BookInfoPage = () => {
           <ButtonBox>
             <Button onClick={() => handleLikeBook()}>{!checkLike ? <>북킷리스트에 추가</> : <>북킷리스트에 삭제</>}</Button>
             <Button onClick={() => handleNewTab(`https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${book.itemId}`)}>알라딘에서 책 구매하기</Button>
-            <BookProgressDropDown handleAddReview={handleAddReview}  />
+            <BookProgressDropDown handleAddReview={handleAddReview} book={book}  />
           </ButtonBox>
         </InfoContainer>
         <div style={{ height: 30 }} />
@@ -242,7 +244,7 @@ const BookInfoPage = () => {
             <ReviewTitleBox>
               <ReviewTitle>
                 <TitleText color={'#4659A9'} size={'17px'}>다른 탐험자들의 리뷰</TitleText>
-              <TitleText color={'#97A4E8'} size={'17px'}>{reviewQuery.data.length}</TitleText>
+                <TitleText color={'#97A4E8'} size={'17px'}>{reviewQuery.data.length}</TitleText>
               </ReviewTitle>
               <EvaluateBox>
                 <StarRating rating={3.8} size={'20px'} />
@@ -258,6 +260,7 @@ const BookInfoPage = () => {
         </ReviewContainer>
         <div style={{ height: 30 }} />
       </Container>
+      </CenterContainer>
       <FooterBar />
     </>
   );
@@ -265,12 +268,13 @@ const BookInfoPage = () => {
 
 // main container
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(#c4cef9, #facecb, #ffffff);
   padding: 40px 5%;
+`;
+
+const CenterContainer = styled.div`
+  display: flex;
+  background: linear-gradient(#c4cef9, #facecb, #ffffff);
+  justify-content: center;
 `;
 
 // text
@@ -406,7 +410,7 @@ const ButtonBox = styled.div`
 
 const ReviewTitleBox = styled.div`
   display: grid;
-  grid-template-columns: 220px 150px 1.5fr;
+  grid-template-columns: 170px 150px 1.5fr;
   align-items: center;
   text-align: left;
 

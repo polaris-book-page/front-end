@@ -7,7 +7,7 @@ import CustomDatePicker from "./CustomDatePicker";
 import { useNavigate } from "react-router-dom";
 
 
-const BookProgressDropDown = ({handleAddReview}) => {
+const BookProgressDropDown = ({handleAddReview, book}) => {
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
     const [isModal, setIsModal] = useState(false);
@@ -35,7 +35,7 @@ const BookProgressDropDown = ({handleAddReview}) => {
                     <Li color={'#FACECBd4'} onClick={() => setIsModal(!isModal)}>
                         읽는 중이에요.
                     </Li>
-                    <Li color={'#D5CFFBd4'} onClick={() => navigate('/mypage/write')}>
+                    <Li color={'#D5CFFBd4'} onClick={() => navigate('/mypage/write', {state: book})}>
                         다 읽었어요!
                     </Li>
                 </Menu>
