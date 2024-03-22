@@ -23,7 +23,7 @@ const CustomDatePicker = ({ setDate, page, current}) => {
                 selected={selectedDate}
                 onChange={(date) => {
                     setSelectedDate(date)
-                    current(date)
+                    setCurrentDate(date)
                 }
                 }
                 withPortal
