@@ -3,7 +3,7 @@ import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 import DrawChart1 from "../../component/DrawChart1";
 import DrawChart2 from "../../component/DrawChart2";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Modal from 'react-modal';
 import React, { useState } from "react";
@@ -11,6 +11,9 @@ import { HiMiniXMark } from "react-icons/hi2";
 import StarChart from "../../component/StarChart";
 import { FaStar } from "react-icons/fa";
 import { BiSolidBook } from "react-icons/bi";
+import Calendar from "react-calendar";
+import moment from 'moment/moment';
+
 
 const StatisticsPage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -29,7 +32,34 @@ const StatisticsPage = () => {
         }
     });
 
+        const [value, onChange] = useState(new Date());
+
+    // fetch API
+    const fetchReviewList = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log(response.data)
+            
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    // react-query
+    const ReviewQuery = useQuery({
+        queryKey: ["review-list"],
+        queryFn: fetchReviewList
+    })
+
+    // save mark book: start date, end date
+    const CalIndexFunc = (date) => {
+        return ReviewQuery.data.reviewList.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
+    }
+
     return (
+        !ReviewQuery.isFetching && ReviewQuery.data &&
         <>
         {/* <Background> */}
             <NavBar />
@@ -109,11 +139,30 @@ const StatisticsPage = () => {
 
                         </ReviewContainer>
                     </Review>
-                    <Calendar>
-                        <CalendarContainer/>
+                    <CalendarContainer>
+                        <CalendarBox>
                         <CalendarText>월별 달력</CalendarText>
-
-                    </Calendar>
+                        <Calendar
+                        style={{width: 100}}
+                        minDetail="month"
+                        maxDetail="month"
+                        value={value}
+                        onChange={onChange}
+                        navigationLabel={null}
+                        showNeighboringMonth={false} //  이전, 이후 달의 날짜는 보이지 않도록 설정
+                        tileContent={({ date }) => {
+                            if (ReviewQuery.data.findMyReview && ReviewQuery.data.reviewList.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
+                                return (
+                                    <>
+                                        <BookImage src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
+                                    </>
+                                )
+                            }
+                            }
+                        }
+                        />
+                        </CalendarBox>
+                    </CalendarContainer>
                 </StatisticsGrid>
                 
             <FooterBar />
@@ -376,9 +425,10 @@ const ReviewContainer = styled.div`
     margin-right: 80px;
 `;
 
-const Calendar = styled.div`
+const CalendarContainer = styled.div`
     grid-area: calendar;
     position: relative;
+    display:flex
 `;
 
 const CalendarText = styled.p`
@@ -391,13 +441,26 @@ const CalendarText = styled.p`
     bottom: 330px;
 `;
 
-const CalendarContainer = styled.div`
+const CalendarBox = styled.div`
     width: 540px;
     height: 323px;
     border-radius: 61px;
     background: #6F61C6;
-    opacity: 0.3;
     margin-bottom: 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 30px;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 6px;
+    }
 `;
 
 const Content = styled.div`
@@ -468,6 +531,15 @@ const CloseBtn = styled(HiMiniXMark)`
     position: absolute;
     top: 20px;
     right: 20px;
+`;
+
+// component
+const BookImage = styled.img`
+    display: flex;
+    width: 65px;
+    height: 100px;
+    border-radius: 5px;
+    background-color: #dddddd;
 `;
 
 export default StatisticsPage;

@@ -178,7 +178,7 @@ const NavLogo = styled.img`
 const NavScreenListBox = styled.div`
   display: flex;
   
-  @media all and (max-width: 540px) {
+  @media all and (max-width: 570px) {
     display: none;
   }
 `;
@@ -187,7 +187,7 @@ const NavMobileListBox = styled.div`
   display: flex;
   gap: 10px;
   
-  @media all and (min-width: 540px) {
+  @media all and (min-width: 570px) {
     display: none;
   }
 `;
@@ -207,7 +207,7 @@ const NavBarScreenIconBox = styled.div`
   float: left;
   gap: 7px;
 
-  @media all and (max-width: 540px) {
+  @media all and (max-width: 570px) {
     display: none;
   }
 `;
@@ -216,7 +216,7 @@ const NavBarMobileIconBox = styled.div`
   display: flex;
   align-items: center;
 
-  @media all and (min-width: 540px) {
+  @media all and (min-width: 570px) {
     display: none;
   }
 `;
