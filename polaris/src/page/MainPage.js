@@ -58,6 +58,7 @@ const MainPage = () => {
     mutationFn: async (subInfo) => {
       console.log("subInfo", subInfo)
       const { data } = await axios.post(`api/user/subscribe`, subInfo, { withCredentials: true })
+      alert("구독이 완료되었습니다. 이제 작은 글조각들이 메일함으로 전송될 거예요!")
       return data;
     },
     onSuccess: (data) => {
