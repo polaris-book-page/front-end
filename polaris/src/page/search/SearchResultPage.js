@@ -18,6 +18,7 @@ const SearchResultPage = () => {
     const [slicePages, setSlicePages] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState([]);
     const [currentItems, setCurrentItems] = useState([]);
+    const [startIndex, setStartIndex] = useState(1)
     const pagePerLimit = 20
     const pageArrayLimit = 5
     const maxResults = 40
@@ -36,7 +37,7 @@ const SearchResultPage = () => {
         setLoading(true);
         try {
             const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=${searchText}
-            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}
+            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${startIndex}
             &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
@@ -85,11 +86,11 @@ const SearchResultPage = () => {
         }
         prevBookTypeRef.current = bookType;
         prevOrderRef.current = order;
-    }, [currentArray, bookType, order, categories, searchText]);
+    }, [startIndex, bookType, order, categories, searchText]);
 
     useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
-        setCurrentItems(itemsPerPage[(currentPage - 1) % 5])
+        setCurrentItems(itemsPerPage[(currentPage - 1) % 2])
         // if current page is 1, 6..., page array change
         if (currentPage % pageArrayLimit === 1) {
             setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
@@ -120,6 +121,11 @@ const SearchResultPage = () => {
     const handlePageChange = (newCurrentArray, newCurrentPage) => {
         setCurrentArray(newCurrentArray);
         setcurrentPage(newCurrentPage);
+        if (newCurrentPage % 2 === 0) {
+            setStartIndex(newCurrentPage / 2)
+        } else {
+            setStartIndex(Math.floor(newCurrentPage / 2) + 1)
+        }
     };
 
     const toggleActive2 = () => {
