@@ -39,7 +39,7 @@ const GridBox = ({ item }) => {
     };
 
     return (
-        <div>
+        <div style={{ marginBottom: '15px'}}>
             <Imgdiv onClick={openModal}>
                 <BookImg style={{ backgroundImage: `url(${item.cover})` }} />
             </Imgdiv>
@@ -71,8 +71,8 @@ const GridBox = ({ item }) => {
 };
 
 const Imgdiv = styled.div`
-    width: 228px;
-    height: 299px;
+    width: 200px;
+    height: 250px;
     margin-bottom: 3px;
 `;
 
@@ -93,17 +93,17 @@ const BookText = styled.div`
 `;
 
 const BookAuthor = styled.div`
-    width: 175px;
+    width: 138px;
     line-height: 1.5;
-    font-size: 20px;
+    font-size: 15px;
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
 `;
 
 const BookPub = styled.div`
-    width: 175px;
+    width: 138px;
     line-height: 1.5;
-    font-size: 20px;
+    font-size: 15px;
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
 `;
