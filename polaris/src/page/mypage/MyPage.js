@@ -12,14 +12,8 @@ import { useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
 
 const MyPage = () => {
-  // pagination
-  const pagePerLimit = 6;
-  const [itemsPerPage, setItemsPerPage] = useState([]);
-  const [currentItems, setCurrentItems] = useState([]);
-  const [maxResults, setMaxResults] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentArray, setCurrentArray] = useState(1);
-  
+  const [bookInfo, setBookInfo] = useState(null);
+
   const [flip, setFlip] = useState(false);
   let navigate = useNavigate();
   const queryClient = useQueryClient()
@@ -29,10 +23,12 @@ const MyPage = () => {
       try {
           const res = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
           const data = res.data;
-        
-          data.reviewList.length > 50 ? setMaxResults(50) : setMaxResults(data.length)
-          
+
+          if (!data.findMyReview) return false;
+          console.log("data: ", data);
+
           return data;
+          
       } catch (err) {
           console.log(err)
       }
@@ -65,11 +61,12 @@ const MyPage = () => {
   }
 
   const fetchInfoBook = async (isbn) => {
+    
     try {
-      const res = await axios.post(`/api/book/info`, { isbn: isbn });
+      const res = await axios.get(`/api/book/info/${isbn}`);
       const data = res.data;
-      
-      return data;
+
+      return data.book;
     } catch (err) {
       console.log("get book info failure.", err);
     }
@@ -104,13 +101,13 @@ const MyPage = () => {
     if (data.length >= 2) {
       const newData = data.slice(-2)
       const items = newData.map((item, index) => {
-        const res = fetchInfoBook(item.isbn);
-        
+        fetchInfoBook(item.isbn);
+
         return (
-          <ReadingBox key={index}>
-            <img src={item.cover} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+          bookInfo !== null && <ReadingBox key={index}>
+            <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
             <ReadingContent>
-              <ContentText color={'#4659A9'} size={'16px'}>{res.title}</ContentText>
+              <ContentText color={'#4659A9'} size={'14px'}>{}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
           </ReadingBox>
@@ -121,72 +118,26 @@ const MyPage = () => {
     }
     else {
       let items = new Array();
-      for (let cnt = 0; cnt >= 1; cnt++) {
+      for (let cnt = 0; cnt <= 1; cnt++) {
         if (data.length - cnt > 0) {
           items = data.map((item, index) => {
-          const res = fetchInfoBook(item.isbn);
+          fetchInfoBook(item.isbn);
+
           cnt++;
           return (
-            <ReadingBox key={index}>
-              <img src={item.cover} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+            bookInfo !== null && <ReadingBox key={index}>
+              <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
               <ReadingContent>
-                <ContentText color={'#4659A9'} size={'16px'}>{res.title}</ContentText>
+                <ContentText color={'#4659A9'} size={'14px'}>{}</ContentText>
                 <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
               </ReadingContent>
             </ReadingBox>
           )
         })}
-        items.push(
-            <ReadingBox>
-              <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
-              <ReadingContent>
-                <ContentText color={'#4659A9'} size={'16px'}>작성한 리뷰가 없습니다.</ContentText>
-              </ReadingContent>
-            </ReadingBox>
-        )
       }
       return items;
     }
   }
-
-    const handleNextPage = () => {
-    const nextPage = currentPage + 1;
-    const totalPages = Math.ceil(maxResults / pagePerLimit);
-    console.log("nextpage ", nextPage)
-    if (nextPage <= totalPages) {
-      setCurrentPage(nextPage);
-    }
-    if (nextPage % 10 === 1) {
-      setCurrentArray(Math.floor((nextPage) / 10 + 1))
-      setCurrentPage(1)
-    }
-  };
-  
-  const handlePrevPage = () => {
-    const prevPage = currentPage - 1;
-    
-    if (prevPage >= 1) {
-      setCurrentPage(prevPage);
-    }
-    console.log('prepage ', prevPage)
-    console.log('curr ', currentPage)
-    if ((prevPage) % 10 === 0) {
-      if (currentArray !== 1) {
-        setCurrentArray(currentArray - 1)
-        setCurrentPage(10)
-      }
-    }
-  };
-  
-  useEffect(() => {
-    if (currentArray !== 0) {
-      fetchInfoBook(currentArray);
-    }
-  }, [currentArray]);
-
-  useEffect(() => {
-      setCurrentItems(itemsPerPage[(currentPage - 1) % 10])
-  }, [currentPage, itemsPerPage, currentItems])
 
   const BooketList = (data) => {
     if (data.length >= 6) {
@@ -303,7 +254,7 @@ const MyPage = () => {
                   <ProfileSubTitleText onClick={() => navigate('/mypage/universe')}>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>지금까지 읽은 책 탐방하기</ContentText>
-                {reviewList(queries[1].data.reviewList)}
+                {queries[1].data.findMyReview ? reviewList(queries[1].data.reviewList) : <ContentText>작성한 리뷰가 없습니다.</ContentText>}
               </ContentBox>
               </ContentContainer>
               </>
@@ -348,13 +299,11 @@ const MyPage = () => {
           </TextBox>
           <div style={{ height: '30px' }} />
           <FavoriteBox>
-            {currentPage !== 1 && <ArrowLeft onClick={handlePrevPage} />}
             <div style={{flex: 1}} />
             <BookListBox>
               {BooketList(queries[2].data)}
             </BookListBox>
             <div style={{flex: 1}} />
-            {currentPage !== parseInt(queries[1].data.reviewList.length / pagePerLimit) + 1 && <ArrowRight onClick={handleNextPage} />}
           </FavoriteBox>
         </FavoriteContainer>
       </BookContainer>
@@ -536,6 +485,7 @@ const StatisticsBar = styled.div`
 // reading book
 const ReadingBox = styled.div`
   display: flex;
+  max-height: 200px;
   flex: 0.6;
   align-items: center;
   border-style: solid;
