@@ -18,9 +18,9 @@ const SearchResultPage = () => {
     const [slicePages, setSlicePages] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState([]);
     const [currentItems, setCurrentItems] = useState([]);
-    const pagePerLimit = 10
+    const pagePerLimit = 20
     const pageArrayLimit = 5
-    const maxResults = 50
+    const maxResults = 40
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isActive2, setIsActive2] = useState(false);
@@ -227,6 +227,8 @@ const BookContainer = styled.div`
     "resultText resultText resultText resultFilter resultFilter"
     "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
     "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
+    "gridBox11 gridBox12 gridBox13 gridBox14 gridBox15"
+    "gridBox16 gridBox17 gridBox18 gridBox19 gridBox20"
     ". pagination pagination pagination .";
     grid-template-columns: repeat(5, 1fr);
 `;
@@ -234,8 +236,8 @@ const BookContainer = styled.div`
 const SearchBox = styled.div`
     display: flex;
     grid-area: searchBox;
-    width: 781px;
-    height: 93px;
+    width: 730px;
+    height: 85px;
     border-radius: 50px;
     border: 4px solid #4659A9;
     align-items: center;
@@ -248,7 +250,7 @@ const SearchInput = styled.input`
     margin-left:40px;
     width: 100%;
     height: 90%;
-    font-size: 35px;
+    font-size: 32px;
 `;
 
 const SearchBtn = styled(IoSearch)`
@@ -259,7 +261,7 @@ const SearchBtn = styled(IoSearch)`
 const ResultText = styled.div`
     grid-area: resultText;
     color: #4659A9;
-    font-size: 36px;
+    font-size: 30px;
     font-family: "KOTRA_BOLD";
     justify-self: start;
     margin-left: 20px;

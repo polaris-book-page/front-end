@@ -11,15 +11,15 @@ const textLoop = keyframes`
 `;
 
 const FlowContainer = styled.div`
-	width: 175px;
+	width: 152px;
 	margin-right: 10px;
 	overflow: hidden;
 `;
 
 const FlowWrap = styled.div`
-	width: 175px;
+	width: 152px;
 	line-height: 1.5;
-	font-size: ${(props) => props.size || '24px'};
+	font-size: ${(props) => props.size || '19px'};
 	color: ${(props) => props.color || '#4659A9' };
 	font-weight: 700;
 	font-family: "KOTRA_GOTHIC";

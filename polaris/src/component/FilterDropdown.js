@@ -21,7 +21,7 @@ const FilterDropdown = ({ isActive, setIsActive, options, setOptions }) => {
 		<Dropdown>
 			<FilterBtn onClick={onClickDropDown}>
 				<Text className="text">{selectedValue === '' ? options[0] : selectedValue}</Text>
-				<BottomArrow size={31}/>
+				<BottomArrow size={25}/>
 			</FilterBtn>
 			<OptionList className={`${isActive ? 'active' : ''}`}>
 				{options.map((option, index) => (
@@ -42,8 +42,8 @@ const Dropdown = styled.div`
 
 const FilterBtn = styled.button`
     display: flex;
-    width: 175px;
-    height: 42px;
+    width: 170px;
+    height: 35px;
     border: none;
     border-radius: 50px;
     background-color: #E5E7FF;
@@ -52,7 +52,7 @@ const FilterBtn = styled.button`
 `;
 
 const Text = styled.div`
-    font-size: 20px;
+    font-size: 17px;
     color: #4659A9;
 	margin-left: 10px;
 `;
@@ -87,7 +87,7 @@ const OptionList = styled.ul`
 
 const Option = styled.li`
     list-style-type: none;
-    font-size: 20px;
+    font-size: 15px;
     color: #4659A9;
     background-color: #E5E7FF;
     padding-left: 0;
