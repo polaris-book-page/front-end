@@ -25,14 +25,14 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
 	return (
 		<Paging>
 			<SideBtn 
-				onClick={()=>{setPage(currentArray - 1, slicePages); isactive(1)}} 
+				onClick={()=>{setPage(currentArray - 1); isactive(1)}} 
 				disabled={currentArray === 0}
 				>
 				&lt;
 			</SideBtn>
 				{pagination(slicePages, currentPage)}
 			<SideBtn 
-				onClick={()=>{setPage(currentArray + 1, slicePages); isactive(1)}} 
+				onClick={()=>{setPage(currentArray + 1); isactive(1)}} 
 				disabled={currentArray === slicePages.length - 1}>
 				&gt;
 			</SideBtn>
