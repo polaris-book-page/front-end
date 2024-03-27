@@ -41,6 +41,7 @@ const SearchResultPage = () => {
             &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
+            console.log('searchtext', searchText)
             if (data) {
                 mutate({ books: result.data.item });
             }
@@ -79,13 +80,15 @@ const SearchResultPage = () => {
     }, [searchQuery])
 
     useEffect(() => {
-        searchResultFunc();
-        if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
-            setcurrentPage(1);
-            setCurrentArray(0);
+        if (searchText) {
+            searchResultFunc();
+            if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
+                setcurrentPage(1);
+                setCurrentArray(0);
+            }
+            prevBookTypeRef.current = bookType;
+            prevOrderRef.current = order;
         }
-        prevBookTypeRef.current = bookType;
-        prevOrderRef.current = order;
     }, [startIndex, bookType, order, categories, searchText]);
 
     useEffect(() => {
