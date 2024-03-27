@@ -15,7 +15,8 @@ const BooketListPage = () =>{
     const [itemsPerPage, setItemsPerPage] = useState([]);
     const [currentItems, setCurrentItems] = useState([]);
     const [currentUser, setCurrentUser] = useState([]);
-    const pagePerLimit = 10
+    const [startIndex, setStartIndex] = useState(1)
+    const pagePerLimit = 20
     const pageArrayLimit = 5
 
     const queryClient = useQueryClient()
@@ -72,6 +73,7 @@ const BooketListPage = () =>{
                 newSlicePages.push(newTotalPage.slice(i, i + pageArrayLimit));
             }
             setSlicePages(newSlicePages);
+            // console.log('newSlicePages: ', newSlicePages)
         }
     }, [data, currentUser]);
 
@@ -130,6 +132,8 @@ const MainContainer = styled.div`
         "resultText resultText resultText resultText resultText"
         "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
         "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
+        "gridBox11 gridBox12 gridBox13 gridBox14 gridBox15"
+        "gridBox16 gridBox17 gridBox18 gridBox19 gridBox20"
         ". pagination pagination pagination .";
     grid-template-columns: repeat(5, 1fr);
 `;
@@ -137,9 +141,10 @@ const MainContainer = styled.div`
 const ResultText = styled.div`
     margin-top: 50px;
     margin-bottom: 10px;
+    margin-left: 20px;
     grid-area: resultText;
     color: #4659A9;
-    font-size: 36px;
+    font-size: 30px;
     font-family: "KOTRA_BOLD";
     justify-self: start;
 `;
