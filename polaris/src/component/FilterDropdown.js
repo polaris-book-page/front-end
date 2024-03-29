@@ -38,23 +38,44 @@ const Dropdown = styled.div`
 	position: relative;
     cursor: default;
     margin: 10px;
+    @media screen and (max-width: 990px) {
+        margin-bottom: 30px;
+    }
 `;
 
 const FilterBtn = styled.button`
     display: flex;
-    width: 170px;
-    height: 35px;
     border: none;
     border-radius: 50px;
     background-color: #E5E7FF;
     justify-content: center;
     align-items: center;
+    @media screen and (min-width: 991px) {
+        width: 170px;
+        height: 35px;
+    }
+    @media screen and (max-width: 990px) {
+        width: 145px;
+        height: 30px;
+    }
+    @media screen and (max-width: 515px) {
+        width: 128px;
+        height: 30px;
+    }
 `;
 
 const Text = styled.div`
-    font-size: 17px;
     color: #4659A9;
 	margin-left: 10px;
+    @media screen and (min-width: 991px) {
+        font-size: 17px;
+    }
+    @media screen and (max-width: 990px) {
+        font-size: 13px;
+    }
+    @media screen and (max-width: 515px) {
+        font-size: 11px;
+    }
 `;
 
 const OptionList = styled.ul`
@@ -95,6 +116,15 @@ const Option = styled.li`
     padding: 5px;
 	margin: 5px;
 	border-radius: 50px;
+    @media screen and (min-width: 991px) {
+        font-size: 17px;
+    }
+    @media screen and (max-width: 990px) {
+        font-size: 13px;
+    }
+    @media screen and (max-width: 515px) {
+        font-size: 11px;
+    }
 `;
 
 const BottomArrow = styled(GoTriangleDown)`

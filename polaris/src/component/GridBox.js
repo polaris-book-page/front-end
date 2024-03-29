@@ -71,9 +71,23 @@ const GridBox = ({ item }) => {
 };
 
 const Imgdiv = styled.div`
-    width: 200px;
-    height: 290px;
     margin-bottom: 3px;
+    @media screen and (min-width: 991px) {
+        width: 200px;
+        height: 290px;
+    }
+    @media screen and (max-width: 990px) {
+        width: 200px;
+        height: 290px;
+    }
+    @media screen and (max-width: 515px) {
+        width: 150px;
+        height: 210px;
+    }
+    @media screen and (max-width: 380px) {
+        width: 120px;
+        height: 170px;
+    }
 `;
 
 const BookImg = styled.img`
@@ -84,8 +98,10 @@ const BookImg = styled.img`
 `;
 
 const BookInfo = styled.div`
-    display: flex;
     margin-right: 26px;
+    @media screen and (min-width: 516px) {
+        display: flex;
+    }
 `;
 
 const BookText = styled.div`
@@ -93,19 +109,35 @@ const BookText = styled.div`
 `;
 
 const BookAuthor = styled.div`
-    width: 152px;
     line-height: 1.5;
     font-size: 15px;
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
+    @media screen and (min-width: 516px) {
+        width: 152px;
+    }
+    @media screen and (max-width: 515px) {
+        width: 150px;
+    }
+    @media screen and (max-width: 380px) {
+        width: 90px;
+    }
 `;
 
 const BookPub = styled.div`
-    width: 152px;
     line-height: 1.5;
     font-size: 15px;
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
+    @media screen and (min-width: 516px) {
+        width: 152px;
+    }
+    @media screen and (max-width: 515px) {
+        width: 150px;
+    }
+    @media screen and (max-width: 380px) {
+        width: 90px;
+    }
 `;
 
 const Content = styled.div`
