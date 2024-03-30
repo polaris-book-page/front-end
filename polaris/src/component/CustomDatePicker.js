@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as ArrowRight } from "../assets/arrow-right.svg";
 import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 
-const CustomDatePicker = ({ setDate, page, current}) => {
+const CustomDatePicker = ({ setDate, page, onDate}) => {
     const [selectedDate, setSelectedDate] = useState(new Date(setDate));
     const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -24,6 +24,7 @@ const CustomDatePicker = ({ setDate, page, current}) => {
                 onChange={(date) => {
                     setSelectedDate(date)
                     setCurrentDate(date)
+                    onDate(date)
                 }
                 }
                 withPortal

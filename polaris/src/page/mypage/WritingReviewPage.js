@@ -1,52 +1,225 @@
 import styled, { css } from "styled-components";
 import StarRating from "../../component/StarRating";
 import NavBar from "../../component/NavBar";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
 import useDetectClose from "../../component/hook/useDetectClose";
 import MoveStarRating from "../../component/MoveStarRating";
 import NightSkyBackground from "../../component/NightSkyBackground";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
-    const [quote, setQuote] = useState([
-            <QuoteInputBox>
-                <QuoteInput style={{flex: 0.8}} />
-                <QuotePageInput style={{flex: 0.2}}/>
-        </QuoteInputBox>]);
+    const [quotes, setQuotes] = useState([{
+        id: 0,
+        quote: "",
+        page: 0
+    }]);
+    const quoteIdNxt = useRef(1);
+    const navigate = useNavigate();
     
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
-    const [selPlanet, setSelPlanet] = useState("")
+    const [selPlanet, setSelPlanet] = useState('')
+    const [content, onContent] = useState('');
+    const [rate, onRate] = useState(5);
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const queryClient = useQueryClient()
+
+    const date = new Date();
 
     const {state} = useLocation();
-    console.log("state: ", state)
+    
 
     const plenetImgArr = [require('../../assets/graphic/planet-1.png'), require('../../assets/graphic/planet-2.png'), require('../../assets/graphic/planet-3.png'), require('../../assets/graphic/planet-5.png'), require('../../assets/graphic/planet-6.png'), require('../../assets/graphic/planet-7.png'), require('../../assets/graphic/planet-8.png'), require('../../assets/graphic/planet-9.png'), require('../../assets/graphic/planet-10.png')]
+    
     // radio func
     const selectRadioFunc = (e) => {
         setSelect(e.target.value)
     }
 
     // quote func
+    const quoteList = () => {
+        const quotesItem = quotes.map((item, index) => {
+            console.log(index)
+            return(
+                <>
+                    <QuoteInputBox key={index}>
+                        <QuoteInput name={index} style={{flex: 0.8}} defaultValue={item.quote} placeholder={'인용구를 작성하세요.'} onChange={handleQuote} />
+                        <QuotePageInput name={index} style={{flex: 0.2}} defaultValue={item.page} onChange={handleQuotePage} />
+                    </QuoteInputBox>
+                </>
+        )})
+        return quotesItem;
+    }
+
     const inputQuoteFunc = () => {
-        setQuote(quote.concat(
-            <QuoteInputBox>
-                <QuoteInput style={{flex: 0.8}} />
-                <QuotePageInput style={{flex: 0.2}}/>
-            </QuoteInputBox>
-            )
-        )
+        const quote = {
+            id: quoteIdNxt.current,
+            quote: "",
+            page: 0
+        }
+        setQuotes(quotes.concat(quote));
+        quoteIdNxt.current++;
     }
 
     const deleteQuoteFunc = () => {
-        if (quote.length <= 1) return;
-        else setQuote(quote.slice(0, quote.length - 1))
+        if(quotes.length == 0) return  
+        setQuotes(quotes.slice(0, quoteIdNxt.current - 1));
+        quoteIdNxt.current--;
     }
 
+    const handleQuote = (e) => {
+        quotes.map((item, index) => {
+            if (item.id == e.target.name) {
+                const temp = quotes
+                temp[e.target.name].quote = e.target.value
+                setQuotes(temp);
+                console.log("temp: ", temp);
+                return;
+            }
+        })
+    }
+
+    const handleQuotePage = (e) => {
+        quotes.map((item, index) => {
+            if (item.id == e.target.name) {
+                const temp = quotes
+                temp[e.target.name].page = parseInt(e.target.value);
+                setQuotes(temp);
+                console.log("temp: ", temp);
+                return;
+            }
+        })
+    }
+
+    const fetchIsWriteReview  = async () => {
+        try{
+            const res = await axios.get(`/api/mypage/iswrited/review/person1/${state.isbn13}`)
+            const data = res.data
+
+            return data.iswrited;
+            
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const fetchEditReview = async () => {
+        try{
+            
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    // radio func
+    const selectTypeFunc = () => {
+        if(select == 1) return '종이책';
+        else return '전자책';
+    }
+
+    // category func
+    const categorySlicingFunc = () => {
+        const categoryList = state.categoryName.split('>')
+        console.log("categoryList: ", categoryList);
+        return categoryList[1];
+    }
+
+    // bas64 to blob
+    const b64toBlob =(b64Data, sliceSize = 512) => {
+        const image_data = atob(b64Data.split(',')[1]);
+    
+        const arraybuffer = new ArrayBuffer(image_data.length);
+        const view = new Uint8Array(arraybuffer);
+    
+        for (let i = 0; i < image_data.length; i++) {
+        view[i] = image_data.charCodeAt(i) & 0xff;
+        }
+    
+        return new Blob([arraybuffer], { type: 'image/png' });
+    }
+
+
+    const fetchAddReview = async () => {
+
+        queryClient.refetchQueries(["check"]);
+        const userAuthInfoCheck = queryClient.getQueryData(["check"]);
+        const blob = b64toBlob(selPlanet);
+
+        // set form data
+        const formData = new FormData();
+        formData.append('dir', 'planetImg');
+        formData.append('planetImage', blob);
+        formData.append('userId', userAuthInfoCheck.userId);
+        formData.append('isbn', state.isbn13);
+        formData.append('evaluation', rate);
+        formData.append('content', content);
+        formData.append('quotes', JSON.stringify(quotes));
+        formData.append('progressPage', state.subInfo.itemPage);
+        formData.append('progressPercent', 100);
+        formData.append('category', categorySlicingFunc());
+        formData.append('type', selectTypeFunc());
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+
+        try{
+            const res = axios.post(`/api/mypage/review/add`,  formData, {
+                headers: {
+                    "Content-Type": `multipart/form-data`,
+                },
+            });
+            const data = res.data;
+            
+            return data;
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    // send a review
+    const handleUploadReview = () => {
+        if(isWriteReviewQuery.data) {
+            editReviewMutation.mutate();
+            navigate('/mypage/');
+        }
+        else {
+            addReviewMutation.mutate();
+            navigate('/mypage/');
+        }
+    }
+
+    // query
+    const isWriteReviewQuery = useQuery({
+        queryKey: ['iswrite-review'], 
+        queryFn: fetchIsWriteReview
+    })
+
+    const editReviewMutation = useMutation({
+        mutationFn: fetchEditReview,
+        onSuccess: () => {
+            console.log("update profile success.")
+        },
+        onError: () => {
+            console.log("update profile failure.")
+        }
+    });
+
+    const addReviewMutation = useMutation({
+        mutationFn: fetchAddReview,
+        onSuccess: () => {
+            console.log("update profile success.")
+        },
+        onError: () => {
+            console.log("update profile failure.")
+        }
+    });
+
     return (
-        <>
+        !isWriteReviewQuery.isLoading && <>
             <NavBar/>
             <NightSkyBackground height={'90vh'} />
             <Container>
@@ -63,7 +236,7 @@ const WritingReviewPage = () => {
                             <PlanetSelBox>
                                 <PlenetList $isClicked={isOpen} >
                                     {plenetImgArr.map((item, index) => {
-                                        return (<PlenetComponents src={item} key={index} onClick={() => setSelPlanet(item)} />)
+                                        return (<PlenetComponents src={item} key={index} onClick={(e) => {console.log(item); setSelPlanet(item)}} />)
                                     })}
                                 </PlenetList>
                                 <div style={{margin: 5}} />
@@ -80,7 +253,7 @@ const WritingReviewPage = () => {
                         <div style={{marginBottom: 20}} />
                         <TitleText color={'white'} size={'16px'}>{state.title}</TitleText>
                         <ContentText color={'white'} size={'13px'}>{state.author}</ContentText>
-                        <MoveStarRating />
+                        <MoveStarRating onRate={onRate} />
                     </BookImageBox>
                     {/* book type */}
                     <div style={{height: 20}} />
@@ -98,10 +271,10 @@ const WritingReviewPage = () => {
                     {/* input date */}
                     <DateInputBox>
                         <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                        <CustomDatePicker setDate='2024-01-01' page="addreview" />
+                        <CustomDatePicker setDate='2024-01-01' page="addreview" onDate={setStartDate} />
                         <div style={{height: 20}} />
                         <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                        <CustomDatePicker setDate='2020-01-13' page="addreview" />
+                        <CustomDatePicker setDate={date} page="addreview" onDate={setEndDate} />
                     </DateInputBox>
                     {/* dashed line */}
                     <Line />
@@ -112,9 +285,9 @@ const WritingReviewPage = () => {
                                 <QuoteInputTitleText flex={0.8} color={'white'} size={'16px'}>마음에 남았던 구절</QuoteInputTitleText>
                                 <QuoteInputTitleText flex={0.2} color={'white'} size={'16px'}>페이지</QuoteInputTitleText>
                             </QuoteInputTitleBox>
-                            {quote}
+                            {quoteList()}
                             <DeleteQuoteButton onClick={() => deleteQuoteFunc()}>{
-                                quote.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
+                                quotes.length > 1 && <ContentText color={'red'} size={'12px'}>구절 삭제하기</ContentText>
                             }
                             </DeleteQuoteButton>
                             <AddQuoteButton onClick={() => inputQuoteFunc()}>
@@ -126,10 +299,10 @@ const WritingReviewPage = () => {
                     <div style={{height: 20}} />
                     <ReviewBox>
                         <TitleText color='white' size='16px'>리뷰</TitleText>
-                        <ReviewInput />
+                        <ReviewInput onChange={e => onContent(e.target.value)} />
                     </ReviewBox>
                     <div style={{height: 10}} />
-                    <Button>
+                    <Button onClick={handleUploadReview}>
                         <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
                     </Button>
                     </ContentContainer>
