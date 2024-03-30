@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import StarRating from "../../component/StarRating";
 import NavBar from "../../component/NavBar";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import CustomDatePicker from "../../component/CustomDatePicker";
 import useDetectClose from "../../component/hook/useDetectClose";
 import MoveStarRating from "../../component/MoveStarRating";
@@ -180,6 +180,12 @@ const WritingReviewPage = () => {
         }
     }
 
+    // handle textarea size
+    const textRef = useRef();
+    const handleResizeHeight = useCallback(() => {
+        textRef.current.style.height = textRef.current.scrollHeight + "px";
+    }, []);
+
     // send a review
     const handleUploadReview = () => {
         if(isWriteReviewQuery.data) {
@@ -299,7 +305,7 @@ const WritingReviewPage = () => {
                     <div style={{height: 20}} />
                     <ReviewBox>
                         <TitleText color='white' size='16px'>리뷰</TitleText>
-                        <ReviewInput onChange={e => onContent(e.target.value)} />
+                        <ReviewInput ref={textRef} onChange={e => onContent(e.target.value)} onInput={handleResizeHeight} />
                     </ReviewBox>
                     <div style={{height: 10}} />
                     <Button onClick={handleUploadReview}>
@@ -442,7 +448,6 @@ const QuoteInputBox = styled.div`
 
 const ReviewBox = styled.div`
     display: flex;
-    flex: 1;
     flex-direction: column;
     align-items: center;
 `;
@@ -500,7 +505,6 @@ const QuotePageInput = styled.input`
 const ReviewInput = styled.textarea`
     width: 370px;
     font-size: 14px;
-    flex: 1;
     border: none;
     border-radius: 20px;
     background-color: white;
