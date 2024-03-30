@@ -43,6 +43,7 @@ const EditProfilePage = () => {
 
         formData.append('dir', 'profile')
         if (file !== '') formData.append('profileImage', file)
+        console.log("file: ", file)
         formData.append('nickname', userNickname)
         
         mutate(formData)
