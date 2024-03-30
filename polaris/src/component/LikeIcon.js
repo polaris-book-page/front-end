@@ -96,9 +96,9 @@ const LikeIcon = ({ item, onModalOpen }) => {
 				</linearGradient>
 			</svg>
 			{isChecked ? (
-				<HeartFilledIcon size={45} onClick={onClick} />
+				<HeartFilledIcon size={40} onClick={onClick} />
 			) : ( 
-				<HeartOutlinedIcon size={45} onClick={onClick} />
+				<HeartOutlinedIcon size={40} onClick={onClick} />
 			)}
 		</Icon>
 	)

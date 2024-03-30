@@ -18,9 +18,10 @@ const SearchResultPage = () => {
     const [slicePages, setSlicePages] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState([]);
     const [currentItems, setCurrentItems] = useState([]);
-    const pagePerLimit = 10
+    const [startIndex, setStartIndex] = useState(1)
+    const pagePerLimit = 20
     const pageArrayLimit = 5
-    const maxResults = 50
+    const maxResults = 40
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isActive2, setIsActive2] = useState(false);
@@ -36,10 +37,11 @@ const SearchResultPage = () => {
         setLoading(true);
         try {
             const result = await axios.get(`ttb/api/ItemSearch.aspx?ttbkey=${process.env.REACT_APP_TTBKEY}&Query=${searchText}
-            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${currentArray + 1}
+            &Cover=Big&QueryType=Title&MaxResults=${maxResults}&Sort=${orderOptionsSelect[orderOptions.indexOf(order)]}&start=${startIndex}
             &SearchTarget=${bookOptionsSelect[bookOptions.indexOf(bookType)]}&CategoryId=${categoryOptions[categories]}&output=js&Version=20131101`);
             console.log(result.data)
             setData(result.data);
+            console.log('searchtext', searchText)
             if (data) {
                 mutate({ books: result.data.item });
             }
@@ -78,18 +80,20 @@ const SearchResultPage = () => {
     }, [searchQuery])
 
     useEffect(() => {
-        searchResultFunc();
-        if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
-            setcurrentPage(1);
-            setCurrentArray(0);
+        if (searchText) {
+            searchResultFunc();
+            if (prevBookTypeRef.current !== bookType || prevOrderRef.current !== order) {
+                setcurrentPage(1);
+                setCurrentArray(0);
+            }
+            prevBookTypeRef.current = bookType;
+            prevOrderRef.current = order;
         }
-        prevBookTypeRef.current = bookType;
-        prevOrderRef.current = order;
-    }, [currentArray, bookType, order, categories, searchText]);
+    }, [startIndex, bookType, order, categories, searchText]);
 
     useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
-        setCurrentItems(itemsPerPage[(currentPage - 1) % 5])
+        setCurrentItems(itemsPerPage[(currentPage - 1) % 2])
         // if current page is 1, 6..., page array change
         if (currentPage % pageArrayLimit === 1) {
             setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
@@ -120,6 +124,11 @@ const SearchResultPage = () => {
     const handlePageChange = (newCurrentArray, newCurrentPage) => {
         setCurrentArray(newCurrentArray);
         setcurrentPage(newCurrentPage);
+        if (newCurrentPage % 2 === 0) {
+            setStartIndex(newCurrentPage / 2)
+        } else {
+            setStartIndex(Math.floor(newCurrentPage / 2) + 1)
+        }
     };
 
     const toggleActive2 = () => {
@@ -222,24 +231,75 @@ const BookContainer = styled.div`
     display: grid;
     justify-items: center;
     align-content: center; 
-    grid-template-areas:
-    "searchBox searchBox searchBox searchBox searchBox"
-    "resultText resultText resultText resultFilter resultFilter"
-    "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
-    "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
-    ". pagination pagination pagination .";
-    grid-template-columns: repeat(5, 1fr);
+    @media screen and (min-width: 1201px) {
+        grid-template-areas:
+        "searchBox searchBox searchBox searchBox searchBox"
+        "resultText resultText resultText resultFilter resultFilter"
+        "gridBox1 gridBox2 gridBox3 gridBox4 gridBox5"
+        "gridBox6 gridBox7 gridBox8 gridBox9 gridBox10"
+        "gridBox11 gridBox12 gridBox13 gridBox14 gridBox15"
+        "gridBox16 gridBox17 gridBox18 gridBox19 gridBox20"
+        ". pagination pagination pagination .";
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    @media screen and (max-width: 1200px) {
+        grid-template-areas:
+        "searchBox searchBox searchBox searchBox"
+        "resultText resultText resultFilter resultFilter"
+        "gridBox1 gridBox2 gridBox3 gridBox4"
+        "gridBox5 gridBox6 gridBox7 gridBox8"
+        "gridBox9 gridBox10 gridBox11 gridBox12"
+        "gridBox13 gridBox14 gridBox15 gridBox16"
+        "gridBox17 gridBox18 gridBox19 gridBox20"
+        ". pagination pagination .";
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media screen and (max-width: 990px) {
+        grid-template-areas:
+        "searchBox searchBox"
+        "resultText resultText" 
+        "resultFilter resultFilter"
+        "gridBox1 gridBox2"
+        "gridBox3 gridBox4"
+        "gridBox5 gridBox6" 
+        "gridBox7 gridBox8"
+        "gridBox9 gridBox10" 
+        "gridBox11 gridBox12"
+        "gridBox13 gridBox14" 
+        "gridBox15 gridBox16"
+        "gridBox17 gridBox18" 
+        "gridBox19 gridBox20"
+        "pagination pagination";
+        grid-template-columns: repeat(2, 1fr);
+    }
 `;
 
 const SearchBox = styled.div`
     display: flex;
     grid-area: searchBox;
-    width: 781px;
-    height: 93px;
     border-radius: 50px;
     border: 4px solid #4659A9;
     align-items: center;
-    margin: 60px;
+    @media screen and (min-width: 991px) {
+        width: 730px;
+        height: 85px;
+        margin: 60px;
+    }
+    @media screen and (max-width: 990px) {
+        width: 400px;
+        height: 60px;
+        margin: 60px;
+    }
+    @media screen and (max-width: 515px) {
+        width: 300px;
+        height: 50px;
+        margin-top: 60px;
+        margin-bottom: 60px;
+        margin-left: 30px;
+        margin-right: 30px;
+    }
 `;
 
 const SearchInput = styled.input`
@@ -248,7 +308,12 @@ const SearchInput = styled.input`
     margin-left:40px;
     width: 100%;
     height: 90%;
-    font-size: 35px;
+    @media screen and (min-width: 991px) {
+        font-size: 32px;
+    }
+    @media screen and (max-width: 990px) {
+        font-size: 27px;
+    }
 `;
 
 const SearchBtn = styled(IoSearch)`
@@ -259,10 +324,15 @@ const SearchBtn = styled(IoSearch)`
 const ResultText = styled.div`
     grid-area: resultText;
     color: #4659A9;
-    font-size: 36px;
     font-family: "KOTRA_BOLD";
     justify-self: start;
     margin-left: 20px;
+    @media screen and (min-width: 991px) {
+        font-size: 30px;
+    }
+    @media screen and (max-width: 990px) {
+        font-size: 24px;
+    }
 `;
 
 const TextContainer = styled.div`
@@ -276,21 +346,33 @@ const TextContainer = styled.div`
 `;
 
 const HaveBookText = styled.p`
-    font-size: 30px;
-    width: 359px;
     color: #B7B5B5;
     font-family: "KOTRA_BOLD";
+    @media screen and (min-width: 516px) {
+        font-size: 30px;
+        width: 359px;
+    }
+    @media screen and (max-width: 515px) {
+        font-size: 20px;
+        width: 250px;
+    }
 `;
 
 const AddBookText = styled.p`
-    font-size: 30px;
-    width: 196px;
     color: #4659A9;
     font-family: "KOTRA_BOLD";
     border-bottom : 3px solid #4659A9;
     margin-top: 10px;
     &:hover {
         cursor: default;
+    }
+    @media screen and (min-width: 516px) {
+        font-size: 30px;
+        width: 196px;
+    }
+    @media screen and (max-width: 515px) {
+        font-size: 20px;
+        width: 130px;
     }
 `;
 
