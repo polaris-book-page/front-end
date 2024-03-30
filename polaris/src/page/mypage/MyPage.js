@@ -12,8 +12,6 @@ import { useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
 
 const MyPage = () => {
-  const [bookInfo, setBookInfo] = useState(null);
-
   const [flip, setFlip] = useState(false);
   let navigate = useNavigate();
   const queryClient = useQueryClient()
@@ -25,7 +23,7 @@ const MyPage = () => {
           const data = res.data;
 
           if (!data.findMyReview) return false;
-          console.log("data: ", data);
+          
 
           return data;
           
@@ -60,18 +58,6 @@ const MyPage = () => {
     }
   }
 
-  const fetchInfoBook = async (isbn) => {
-    
-    try {
-      const res = await axios.get(`/api/book/info/${isbn}`);
-      const data = res.data;
-
-      return data.book;
-    } catch (err) {
-      console.log("get book info failure.", err);
-    }
-  }
-
   const queries = useQueries({
     queries: [{
       queryKey: ["profile", 1],
@@ -99,15 +85,14 @@ const MyPage = () => {
 
   const reviewList = (data) => {
     if (data.length >= 2) {
-      const newData = data.slice(-2)
+      const newData = data.slice(-2).reverse()
       const items = newData.map((item, index) => {
-        fetchInfoBook(item.isbn);
-
+        
         return (
-          bookInfo !== null && <ReadingBox key={index}>
+          <ReadingBox key={index}>
             <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
             <ReadingContent>
-              <ContentText color={'#4659A9'} size={'14px'}>{}</ContentText>
+              <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
           </ReadingBox>
@@ -121,14 +106,12 @@ const MyPage = () => {
       for (let cnt = 0; cnt <= 1; cnt++) {
         if (data.length - cnt > 0) {
           items = data.map((item, index) => {
-          fetchInfoBook(item.isbn);
-
           cnt++;
           return (
-            bookInfo !== null && <ReadingBox key={index}>
+            <ReadingBox key={index}>
               <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
               <ReadingContent>
-                <ContentText color={'#4659A9'} size={'14px'}>{}</ContentText>
+                <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
                 <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
               </ReadingContent>
             </ReadingBox>
