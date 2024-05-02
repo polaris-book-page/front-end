@@ -61,54 +61,48 @@ const StatisticsPage = () => {
     return (
         !ReviewQuery.isFetching && ReviewQuery.data &&
         <>
-        {/* <Background> */}
             <NavBar />
-                <TitleContainer>
-                    <TitleText>나의 여행기록</TitleText>
-                </TitleContainer>
                 <StatisticsGrid className="container">
+                <TitleText>나의 여행기록</TitleText>
                     <Goal>
-                        {/* <Chartex/> */}
-                        {!modalIsOpen && (
-                            <ContainerRocketBlind>
-                                <GoalBtn onClick={() => setModalIsOpen(true)}>2024년<br/>목표 설정하기</GoalBtn>
-                            </ContainerRocketBlind>
-                        )}
                         <GoalModal
-                                isOpen={modalIsOpen}
-                                onRequestClose={() => setModalIsOpen(false)}
-                                style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
+                            isOpen={modalIsOpen}
+                            onRequestClose={() => setModalIsOpen(false)}
+                            style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}
                             >
                             <Content>
-                                <Text>
-                                    몇 권 완독을<br/>목표로 하시겠어요?
-                                </Text>
+                                <Text>몇 권 완독을<br/>목표로 하시겠어요?</Text>
                                 <InputBox type='text' placeholder='권 수를 입력하세요'></InputBox>
                                 <BtnContainer>
                                     <Btn>설정 완료</Btn>
                                 </BtnContainer>
-                                    <CloseBtn size="45" onClick={() => setModalIsOpen(false)}></CloseBtn>
+                                <CloseBtn size="45" onClick={() => setModalIsOpen(false)}></CloseBtn>
                             </Content>
                         </GoalModal>
-                        <ContainerRocket>
-                            <Ground/>
-                        </ContainerRocket>
-                        <LevelHeightContainer>
-                            <LevelHeightHorizonT></LevelHeightHorizonT>
-                            <LevelHeightVertical></LevelHeightVertical>
-                            <LevelHeightHorizonB></LevelHeightHorizonB>
-                        </LevelHeightContainer>
-                        <TextT>10000km<br/>50권</TextT>
-                        <Current>
-                            <Icon> 
-                                <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
-                                <Fire src={require("../../assets/ic-fire.svg").default}/>
-                            </Icon>
-                            <TextB>140km<br/>14권</TextB>
-                            <Line></Line>
-                        </Current>
+                        <Background>
+                            {!modalIsOpen && (
+                                <ContainerRocketBlind>
+                                    <GoalBtn onClick={() => setModalIsOpen(true)}>2024년<br/>목표 설정하기</GoalBtn>
+                                </ContainerRocketBlind>
+                            )}
+                            <ContainerRocket>
+                                <Ground/>
+                            </ContainerRocket>
+                            <LevelHeightContainer>
+                                <LevelHeightHorizonT></LevelHeightHorizonT>
+                                <LevelHeightVertical></LevelHeightVertical>
+                            </LevelHeightContainer>
+                            <TextT>10000km<br/>50권</TextT>
+                            <Current>
+                                <Icon> 
+                                    <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
+                                    <Fire src={require("../../assets/ic-fire.svg").default}/>
+                                </Icon>
+                                <TextB>140km<br/>14권</TextB>
+                                <Line></Line>
+                            </Current>
+                        </Background>
                         <GoalText>우주로 가기 위한 여정</GoalText>
-                        
                     </Goal>
                     <Category>
                         <CategoryContainer/>
@@ -125,7 +119,6 @@ const StatisticsPage = () => {
                         </DrawChartContainer>
                     </Type>
                     <Review>
-                        <ReviewContainer>
                         <ReviewText>지금까지 남긴 별점</ReviewText>
                         <StarText>
                             <FaStar style={{marginRight: '10px'}}/>
@@ -136,8 +129,6 @@ const StatisticsPage = () => {
                             56
                         </BookText>
                         <StarChart/>
-
-                        </ReviewContainer>
                     </Review>
                     <CalendarContainer>
                         <CalendarBox>
@@ -164,51 +155,45 @@ const StatisticsPage = () => {
                         </CalendarBox>
                     </CalendarContainer>
                 </StatisticsGrid>
-                
             <FooterBar />
         </>
     )
 }
 
-// const Background = styled.div`
-//     background-color: pink;
-// `;
-
-const TitleContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin: 100px 0 30px 0;
-`;
-
-const TitleText = styled.p`
-    font-size: 50px;
-    margin: 0;
-    font-family: "KOTRA_BOLD";
-`;
-
 const StatisticsGrid = styled.div`
     display: grid;
     grid-template-areas:
-        "goal category"
-        "goal type"
-        "review calendar";
+    "title title"
+    "goal review"
+    "goal calendar"
+    "category calendar"
+    "type calendar";
+    width: 100%;
+    justify-content: center;
+    column-gap: 50px;
+`;
+
+const TitleText = styled.p`
+    grid-area: title;
+    text-align: center;
+    font-size: 35px;
+    margin: 60px;
+    color: #4659A9;
+    font-family: "KOTRA_BOLD";
 `;
 
 const Goal = styled.div`
     grid-area: goal;
-    position: relative;  
 `;
 
 const ContainerRocketBlind = styled.div`
     position: absolute;
-    right: 0px;
+    right: 83px;
     width: 373px;
     height: 727px;
     border-radius: 61px;
     background-color: rgba(0.88, 0.88, 0.88, 0.64);;
-    margin-right: 100px;
     z-index: 2;
-    display: flex;
 `;
 
 const GoalBtn = styled.button`
@@ -224,6 +209,11 @@ const GoalBtn = styled.button`
     font-weight: 1000;
 `;
 
+const Background = styled.div`
+    position: relative;
+    display: flex;
+`;
+
 const ContainerRocket = styled.div`
     width: 373px;
     height: 727px;
@@ -233,24 +223,20 @@ const ContainerRocket = styled.div`
                                     #FFB628, #E5AA4A, #F3C984, #FFFBD7, 
                                     #EAE5E9, #D5CFFB);
     opacity: 0.5;
-    float: right;
-    margin-right: 100px;
+    margin: auto;
 `;
-
 
 const Ground = styled.div`
     position:absolute; 
-    bottom: 79px;
+    bottom: 0px;
     background-color: #CFBB9C;
     width: 373px;
     height: 101px;
     border-radius: 0 0 61px 61px;
-    vertical-align: bottom;
 `;
 
 const Rocket = styled.img`
     width: auto;
-    position: relative;
 `;
 
 const Fire = styled.img`
@@ -263,75 +249,73 @@ const Icon = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     /* z-index: 1; */
 `;
 
 const LevelHeightContainer = styled.div`
     position: absolute;
-    bottom: 777px;
-    right: 110px;
+    right: 140px;
+    top: 56px;
 `;
 
 const LevelHeightVertical = styled.div`
-    border-left : 3px solid #fff;
-    height : 597px;
+    border-left : 3px solid #000;
+    height : 570px;
     width: 10px;
     position: absolute;
-    left: 19px;
+    left: 18px;
 `;
 
 const LevelHeightHorizonT = styled.div`
-    border-bottom : 3px solid #fff;
-    width : 40px;
-`;
-
-const LevelHeightHorizonB = styled.div`
-    border-bottom : 3px solid #fff;
+    border-bottom : 3px solid #000;
+    border-top : 3px solid #000;
+    height: 570px;
     width : 40px;
     position: absolute;
-    top: 597px;
 `;
 
 const TextT = styled.p`
     position: absolute;
-    right: 155px;
+    right: 150px;
     top: 33px;
     text-align: right;
-`;
-
-const Current = styled.div`
-    display: flex;
-    position: absolute;
-    right: 115px;
-    bottom: 200px;
 `;
 
 const GoalText = styled.div`
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
     font-size: 20px;
-    width: 185px;
-    position: absolute;
-    bottom: 40px;
-    right: 185px;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 `;
 
-const TextB = styled.p`
+const Current = styled.div`
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 105px;
+    bottom: 250px;
+`;
+
+const TextB = styled.div`
     text-align: right;
 `;
 
 const Line = styled.div`
     border-bottom : 1px solid #000;
     width : 30px;
-    height: 30px;
+    height: 9px;
     margin-left: 10px;
 `;
 
 const Category = styled.div`
     grid-area: category;
     position: relative;
+    margin-top: 50px;
     margin-bottom: 30px;
-    `;
+`; 
 
 const CategoryText = styled.p`
     text-align: center;
@@ -364,7 +348,6 @@ const DrawChartContainer = styled.div`
 const Type = styled.div`
     grid-area: type;
     position: relative;
-    margin-bottom: 30px;
 `;
 
 const TypeText = styled.p`
@@ -391,7 +374,11 @@ const TypeContainer = styled.div`
 
 const Review = styled.div`
     grid-area: review;
-    position: relative;
+    width: 400px;
+    display: flex;
+    flex-direction: column; 
+    justify-self: center;
+    align-items: center;
 `;
 
 const ReviewText = styled.p`
@@ -408,27 +395,17 @@ const StarText = styled.div`
     color: #4659A9;
     font-size: 32px;
 `
+
 const BookText = styled.div`
     font-family: "KOTRA_BOLD";
     color: #4659A9;
     font-size: 32px;
 `
 
-const ReviewContainer = styled.div`
-    height: 323px;
-    width: 400px;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-    float: right;
-    margin-right: 80px;
-`;
-
 const CalendarContainer = styled.div`
     grid-area: calendar;
     position: relative;
-    display:flex
+    display:flex;
 `;
 
 const CalendarText = styled.p`
@@ -438,18 +415,19 @@ const CalendarText = styled.p`
     color: #4659A9;
     position: absolute;
     left: 210px;
-    bottom: 330px;
+    top: 30px;
 `;
 
 const CalendarBox = styled.div`
     width: 540px;
-    height: 323px;
+    height: 970px;
     border-radius: 61px;
-    background: #6F61C6;
+    background: #D4D0EE;
     margin-bottom: 50px;
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 30px;
+    margin-top: 50px;
 
     &::-webkit-scrollbar {
         width: 6px;
