@@ -6,7 +6,7 @@ import DrawChart2 from "../../component/DrawChart2";
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Modal from 'react-modal';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniXMark } from "react-icons/hi2";
 import StarChart from "../../component/StarChart";
 import { FaStar } from "react-icons/fa";
@@ -17,10 +17,12 @@ import moment from 'moment/moment';
 
 const StatisticsPage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [goalVal, setGoalVal] = useState(false);
+    const [userGoal, setUserGoal] = useState(false);
 
     const { mutate } = useMutation({
         mutationFn: async (goal) => {
-            const { data } = await axios.post(`/api/mypage/goal`, goal, { withCredentials: true })
+            const { data } = await axios.post(`/api/mypage/goal`, { goal: goal }, { withCredentials: true })
             console.log("data", data)
             return data;
         }, 
@@ -58,6 +60,27 @@ const StatisticsPage = () => {
         return ReviewQuery.data.reviewList.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
     }
 
+    const checkGoal = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/goal/check`, { withCredentials: 'true'});
+            console.log("checkgoal: ", response.data)
+            if (response.data.result === true) {
+                setUserGoal(response.data.goal)
+            }
+            return response.data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleSetGoal = () => {
+        mutate(goalVal);
+    };
+
+    useEffect(() => {
+        checkGoal();
+    }, [])
+
     return (
         !ReviewQuery.isFetching && ReviewQuery.data &&
         <>
@@ -72,15 +95,15 @@ const StatisticsPage = () => {
                             >
                             <Content>
                                 <Text>몇 권 완독을<br/>목표로 하시겠어요?</Text>
-                                <InputBox type='text' placeholder='권 수를 입력하세요'></InputBox>
+                                <InputBox type='text' placeholder='권 수를 입력하세요' onChange={(e) => {setGoalVal(e.target.value)}}></InputBox>
                                 <BtnContainer>
-                                    <Btn>설정 완료</Btn>
+                                    <Btn onClick={() => {handleSetGoal(); setModalIsOpen(false)}}>설정 완료</Btn>
                                 </BtnContainer>
                                 <CloseBtn size="45" onClick={() => setModalIsOpen(false)}></CloseBtn>
                             </Content>
                         </GoalModal>
                         <Background>
-                            {!modalIsOpen && (
+                            {!modalIsOpen && !userGoal && (
                                 <ContainerRocketBlind>
                                     <GoalBtn onClick={() => setModalIsOpen(true)}>2024년<br/>목표 설정하기</GoalBtn>
                                 </ContainerRocketBlind>
@@ -92,7 +115,7 @@ const StatisticsPage = () => {
                                 <LevelHeightHorizonT></LevelHeightHorizonT>
                                 <LevelHeightVertical></LevelHeightVertical>
                             </LevelHeightContainer>
-                            <TextT>10000km<br/>50권</TextT>
+                            <TextT>10000km<br/>{userGoal}권</TextT>
                             <Current>
                                 <Icon> 
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
@@ -296,7 +319,8 @@ const Current = styled.div`
     align-items: center;
     position: absolute;
     right: 105px;
-    bottom: 250px;
+    bottom: 150px;
+    /* bottom: ${({ userGoal }) => (userGoal ? `${userGoal * 10}px` : '30px')}; */
 `;
 
 const TextB = styled.div`
