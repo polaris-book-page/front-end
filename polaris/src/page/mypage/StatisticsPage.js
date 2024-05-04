@@ -13,13 +13,16 @@ import { FaStar } from "react-icons/fa";
 import { BiSolidBook } from "react-icons/bi";
 import Calendar from "react-calendar";
 import moment from 'moment/moment';
+import { useQueryClient } from '@tanstack/react-query'
 
 
 const StatisticsPage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [goalVal, setGoalVal] = useState(false);
     const [userGoal, setUserGoal] = useState(false);
-
+    const [currReviewCnt, setCurrReviewCnt] = useState(0);
+    const queryClient = useQueryClient()
+    
     const { mutate } = useMutation({
         mutationFn: async (goal) => {
             const { data } = await axios.post(`/api/mypage/goal`, { goal: goal }, { withCredentials: true })
@@ -67,6 +70,9 @@ const StatisticsPage = () => {
             if (response.data.result === true) {
                 setUserGoal(response.data.goal)
             }
+            const reviewList = await queryClient.getQueryData(["review-list"]);
+            console.log(reviewList.reviewList.length)
+            setCurrReviewCnt(reviewList.reviewList.length)
             return response.data;
         } catch (err) {
             console.log(err)
@@ -116,7 +122,7 @@ const StatisticsPage = () => {
                                 <LevelHeightVertical></LevelHeightVertical>
                             </LevelHeightContainer>
                             <TextT>10000km<br/>{userGoal}권</TextT>
-                            <Current>
+                            <Current userGoal={userGoal} currReviewCnt={currReviewCnt}>
                                 <Icon> 
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
                                     <Fire src={require("../../assets/ic-fire.svg").default}/>
@@ -279,12 +285,12 @@ const Icon = styled.div`
 const LevelHeightContainer = styled.div`
     position: absolute;
     right: 140px;
-    top: 56px;
+    top: 54px;
 `;
 
 const LevelHeightVertical = styled.div`
     border-left : 3px solid #000;
-    height : 570px;
+    height : 571px;
     width: 10px;
     position: absolute;
     left: 18px;
@@ -293,7 +299,7 @@ const LevelHeightVertical = styled.div`
 const LevelHeightHorizonT = styled.div`
     border-bottom : 3px solid #000;
     border-top : 3px solid #000;
-    height: 570px;
+    height: 574px;
     width : 40px;
     position: absolute;
 `;
@@ -303,6 +309,7 @@ const TextT = styled.p`
     right: 150px;
     top: 33px;
     text-align: right;
+    font-size: 15px;
 `;
 
 const GoalText = styled.div`
@@ -319,12 +326,13 @@ const Current = styled.div`
     align-items: center;
     position: absolute;
     right: 105px;
-    bottom: 150px;
-    /* bottom: ${({ userGoal }) => (userGoal ? `${userGoal * 10}px` : '30px')}; */
+    // 600px이 최대
+    bottom: ${({ userGoal, currReviewCnt }) => (userGoal ? `${ (currReviewCnt / userGoal * 100) * (570 / 100) + 30}px` : '30px')}; 
 `;
 
 const TextB = styled.div`
     text-align: right;
+    font-size: 15px;
 `;
 
 const Line = styled.div`
