@@ -60,7 +60,7 @@ const MyReviewPage = () => {
                         <ReviewContainer>
                             { 
                                 ReviewQuery.data.reviewList.map((item, index) => {  // 경로 수정
-                                    return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} title={item.title} isbn={item.isbn} /> 
+                                    return <BookReviewItem key={index} item={item} /> 
                                 })
                             }
                         </ReviewContainer> : <>작성한 리뷰가 없습니다.</>
