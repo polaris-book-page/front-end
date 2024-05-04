@@ -7,9 +7,9 @@ import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NightSkyBackground from '../../component/NightSkyBackground';
+import { useNavigate } from "react-router";
 
 const MyReviewPage = () => {
-
 
     // fetch API
     const fetchReviewList = async () => {
@@ -40,7 +40,7 @@ const MyReviewPage = () => {
     return (
         !ReviewQuery.isLoading && <>
             <NavBar />
-            <NightSkyBackground height={'100vh'}/>
+            <NightSkyBackground height={'90vh'}/>
             <Background>
                 <Container>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
@@ -58,9 +58,9 @@ const MyReviewPage = () => {
                     <div style={{ height: 20 }} />
                     { ReviewQuery.data.findMyReview ?
                         <ReviewContainer>
-                            {
-                                ReviewQuery.data.reviewList.map((item, index) => {
-                                    return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} title={item.title} />
+                            { 
+                                ReviewQuery.data.reviewList.map((item, index) => {  // 경로 수정
+                                    return <BookReviewItem key={index} rate={item.evaluation} image={item.bookImage} title={item.title} isbn={item.isbn} /> 
                                 })
                             }
                         </ReviewContainer> : <>작성한 리뷰가 없습니다.</>
@@ -73,9 +73,9 @@ const MyReviewPage = () => {
 
 // text
 const TitleText = styled.text`
-  color: ${(props) => props.color || 'gray'};
-  font-family: "KOTRA_BOLD";
-  font-size: ${(props) => props.size || '12px'};
+    color: ${(props) => props.color || 'gray'};
+    font-family: "KOTRA_BOLD";
+    font-size: ${(props) => props.size || '12px'};
 `;
 
 // background
@@ -96,24 +96,15 @@ const Container = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
+    margin: 120px auto;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
     flex-direction: column;
     padding: 40px 20px;
-    height: 80vh;
     width: 90vh;
+    height: 80vh;
     box-shadow: 0px 2px 7px #00000022;
-
-
-    @media screen and (max-width: 900px) {
-        width: 60vh;
-    }
-
-    @media screen and (max-width: 500px) {  
-        width: 50vh;
-    }
 `;
 
 const StatisticsContainer = styled.div`
@@ -127,6 +118,7 @@ const ReviewContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     overflow-y: scroll;
+    flex-grow: 3;
 
     &::-webkit-scrollbar {
         width: 6px;
