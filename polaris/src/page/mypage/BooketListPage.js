@@ -78,13 +78,8 @@ const BooketListPage = () =>{
     }, [data, currentUser]);
 
     useEffect(() => {
-        setcurrentPage(1);
-        setCurrentArray(0);
-    }, [currentArray]);
-
-    useEffect(() => {
         // change page(ex 1, 2, 3, 4, 5)
-        setCurrentItems(itemsPerPage[(currentPage - 1) % 5])
+        setCurrentItems(itemsPerPage[(currentPage - 1)])
         // if current page is 1, 6..., page array change
         if (currentPage % pageArrayLimit === 1) {
             setCurrentArray(Math.floor((currentPage - 1) / pageArrayLimit));
