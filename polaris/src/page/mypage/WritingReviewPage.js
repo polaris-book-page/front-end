@@ -197,6 +197,8 @@ const WritingReviewPage = () => {
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
 
+        console.log(state.isbn13);
+
         try{
             const res = axios.post(`/api/mypage/review/add`,  formData, {
                 headers: {
@@ -227,6 +229,7 @@ const WritingReviewPage = () => {
                 }) 
                 console.log("updateQuotes", updateQuotes)
                 setQuotes(updateQuotes)
+                onContent(data.content);
             }
 
             return data;
@@ -368,7 +371,7 @@ const WritingReviewPage = () => {
                     <div style={{height: 20}} />
                     <ReviewBox>
                         <TitleText color='white' size='16px'>리뷰</TitleText>
-                        <ReviewInput ref={textRef} value={iswrited ? queries[1].data.content : ""} onChange={e => onContent(e.target.value)} onInput={handleResizeHeight} />
+                        <ReviewInput ref={textRef} value={content} onChange={e => onContent(e.target.value)} onInput={handleResizeHeight} />
                     </ReviewBox>
                     <div style={{height: 10}} />
                     <Button onClick={handleUploadReview}>
