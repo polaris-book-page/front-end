@@ -117,8 +117,32 @@ const WritingReviewPage = () => {
     }
 
     const fetchEditReview = async () => {
+        const reviewId = queries[1].data.reviewId;
+        console.log(reviewId);
+        const blob = b64toBlob(selPlanet);
+
+        // set form data
+        const formData = new FormData();
+        formData.append('dir', 'planetImg');
+        formData.append('planetImage', blob);
+        formData.append('_id', reviewId);
+        formData.append('evaluation', rate);
+        formData.append('content', content);
+        formData.append('quotes', JSON.stringify(quotes));
+        formData.append('type', selectTypeFunc());
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+
         try{
-            const res = axios.put(`api/mypage/review/modify`)
+            const res = await axios.put(`/api/mypage/review/modify`, formData, {
+                headers: {
+                    "Content-Type": `multipart/form-data`,
+                },
+            })
+            const data = res.data;
+            console.log(data);
+            
+            return data;
         } catch(err){
             console.log(err);
         }
@@ -246,10 +270,10 @@ const WritingReviewPage = () => {
     const editReviewMutation = useMutation({
         mutationFn: fetchEditReview,
         onSuccess: () => {
-            console.log("update profile success.")
+            console.log("update review success.")
         },
         onError: () => {
-            console.log("update profile failure.")
+            console.log("update review failure.")
         }
     });
 
