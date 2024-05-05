@@ -122,7 +122,7 @@ const StatisticsPage = () => {
                                 <LevelHeightVertical></LevelHeightVertical>
                             </LevelHeightContainer>
                             <TextT>10000km<br/>{userGoal}권</TextT>
-                            <Current userGoal={userGoal} currReviewCnt={currReviewCnt}>
+                            <Current $userGoal={userGoal} $currReviewCnt={currReviewCnt}>
                                 <Icon> 
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
                                     <Fire src={require("../../assets/ic-fire.svg").default}/>
@@ -327,7 +327,7 @@ const Current = styled.div`
     position: absolute;
     right: 105px;
     // 600px이 최대
-    bottom: ${({ userGoal, currReviewCnt }) => (userGoal ? `${ (currReviewCnt / userGoal * 100) * (570 / 100) + 30}px` : '30px')}; 
+    bottom: ${({ $userGoal, $currReviewCnt }) => ($userGoal ? `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px` : '30px')}; 
 `;
 
 const TextB = styled.div`
