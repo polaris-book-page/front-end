@@ -102,7 +102,8 @@ const Container = styled.div`
     border-radius: 50px;
     flex-direction: column;
     padding: 40px 20px;
-    width: 90vh;
+    width: 75vw;
+    max-width: 1000px;
     height: 80vh;
     box-shadow: 0px 2px 7px #00000022;
 `;
