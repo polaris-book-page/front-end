@@ -7,7 +7,7 @@ import useDetectClose from "../../component/hook/useDetectClose";
 import MoveStarRating from "../../component/MoveStarRating";
 import NightSkyBackground from "../../component/NightSkyBackground";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const WritingReviewPage = () => {
@@ -28,6 +28,7 @@ const WritingReviewPage = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const queryClient = useQueryClient()
+    const [iswrited, setIsWrited] = useState(false);
 
     const date = new Date();
 
@@ -98,8 +99,15 @@ const WritingReviewPage = () => {
 
     const fetchIsWriteReview  = async () => {
         try{
-            const res = await axios.get(`/api/mypage/iswrited/review/person1/${state.isbn13}`)
+            // check user
+            await queryClient.refetchQueries(["check"]);
+            const UserAuthInfoCheck = queryClient.getQueryData(["check"]);
+
+            // connect api
+            const res = await axios.get(`/api/mypage/iswrited/review/${UserAuthInfoCheck.userId}/${state.isbn13}`)
             const data = res.data
+            console.log(queryClient.userId, data.iswrited);
+            setIsWrited(data.iswrited);
 
             return data.iswrited;
             
@@ -110,7 +118,7 @@ const WritingReviewPage = () => {
 
     const fetchEditReview = async () => {
         try{
-            
+            const res = axios.put(`api/mypage/review/modify`)
         } catch(err){
             console.log(err);
         }
@@ -142,7 +150,6 @@ const WritingReviewPage = () => {
     
         return new Blob([arraybuffer], { type: 'image/png' });
     }
-
 
     const fetchAddReview = async () => {
 
@@ -180,6 +187,31 @@ const WritingReviewPage = () => {
         }
     }
 
+    const fetchOneReview = async () => {
+        try{
+            const res = await axios.get(`/api/book/info/review/${state.isbn13}`)
+            const data = res.data;
+
+            if(iswrited){
+                onRate(data.evaluation)
+                const updateQuotes = data.quotes.map((item, index) => {
+                    return ({
+                        id: quoteIdNxt.current++,
+                        quote: item.quote,
+                        page: item.page
+                    });
+                }) 
+                console.log("updateQuotes", updateQuotes)
+                setQuotes(updateQuotes)
+            }
+
+            return data;
+
+        } catch(err){
+            console.log(err);
+        }
+    }
+
     // handle textarea size
     const textRef = useRef();
     const handleResizeHeight = useCallback(() => {
@@ -188,7 +220,7 @@ const WritingReviewPage = () => {
 
     // send a review
     const handleUploadReview = () => {
-        if(isWriteReviewQuery.data) {
+        if(iswrited) {
             editReviewMutation.mutate();
             navigate('/mypage/');
         }
@@ -199,9 +231,16 @@ const WritingReviewPage = () => {
     }
 
     // query
-    const isWriteReviewQuery = useQuery({
-        queryKey: ['iswrite-review'], 
-        queryFn: fetchIsWriteReview
+    const queries = useQueries({
+        queries: [{
+            queryKey: ['iswrite-review'],
+            queryFn: fetchIsWriteReview
+        },{
+            queryKey: ['one-review'],
+            queryFn: fetchOneReview,
+            enabled: iswrited,
+            notifyOnChangeProps: ['data']
+        }]
     })
 
     const editReviewMutation = useMutation({
@@ -225,7 +264,7 @@ const WritingReviewPage = () => {
     });
 
     return (
-        !isWriteReviewQuery.isLoading && <>
+        !queries[0].isLoading && (queries[0].data ? !queries[1].isFetching : true) && <>
             <NavBar/>
             <NightSkyBackground height={'90vh'} />
             <Container>
@@ -259,7 +298,7 @@ const WritingReviewPage = () => {
                         <div style={{marginBottom: 20}} />
                         <TitleText color={'white'} size={'16px'}>{state.title}</TitleText>
                         <ContentText color={'white'} size={'13px'}>{state.author}</ContentText>
-                        <MoveStarRating onRate={onRate} />
+                        <MoveStarRating onRate={onRate} rate={rate} />
                     </BookImageBox>
                     {/* book type */}
                     <div style={{height: 20}} />
@@ -277,10 +316,10 @@ const WritingReviewPage = () => {
                     {/* input date */}
                     <DateInputBox>
                         <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                        <CustomDatePicker setDate='2024-01-01' page="addreview" onDate={setStartDate} />
+                        <CustomDatePicker setDate={iswrited ? queries[1].data.startDate : date} page="addreview" onDate={setStartDate} />
                         <div style={{height: 20}} />
                         <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
-                        <CustomDatePicker setDate={date} page="addreview" onDate={setEndDate} />
+                        <CustomDatePicker setDate={iswrited ? queries[1].data.endDate :date} page="addreview" onDate={setEndDate} />
                     </DateInputBox>
                     {/* dashed line */}
                     <Line />
@@ -305,7 +344,7 @@ const WritingReviewPage = () => {
                     <div style={{height: 20}} />
                     <ReviewBox>
                         <TitleText color='white' size='16px'>리뷰</TitleText>
-                        <ReviewInput ref={textRef} onChange={e => onContent(e.target.value)} onInput={handleResizeHeight} />
+                        <ReviewInput ref={textRef} value={iswrited ? queries[1].data.content : ""} onChange={e => onContent(e.target.value)} onInput={handleResizeHeight} />
                     </ReviewBox>
                     <div style={{height: 10}} />
                     <Button onClick={handleUploadReview}>
