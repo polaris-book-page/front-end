@@ -70,12 +70,32 @@ const StatisticsPage = () => {
             if (response.data.result === true) {
                 setUserGoal(response.data.goal)
             }
-            const reviewList = await queryClient.getQueryData(["review-list"]);
-            console.log(reviewList.reviewList.length)
-            setCurrReviewCnt(reviewList.reviewList.length)
             return response.data;
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    const checkReviewCnt = async () => {
+        try {
+            setCurrReviewCnt(ReviewQuery.data.reviewList.length)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const calRatingAvg = () => {
+        try {
+            const reviewList = ReviewQuery.data.reviewList
+            let sum = 0
+            if (reviewList && reviewList.length > 0) {
+                reviewList.forEach(review => {
+                    sum += review.evaluation;
+                });
+            }
+            return sum / currReviewCnt
+        } catch (error) {
+            console.error("Error loading review data:", error);
         }
     }
 
@@ -84,8 +104,11 @@ const StatisticsPage = () => {
     };
 
     useEffect(() => {
-        checkGoal();
-    }, [])
+        if (!ReviewQuery.isLoading && ReviewQuery.data) {
+            checkGoal();
+            checkReviewCnt();
+        }
+    }, [ReviewQuery.data]);
 
     return (
         !ReviewQuery.isFetching && ReviewQuery.data &&
@@ -151,11 +174,11 @@ const StatisticsPage = () => {
                         <ReviewText>지금까지 남긴 별점</ReviewText>
                         <StarText>
                             <FaStar style={{marginRight: '10px'}}/>
-                            3.85
+                            {ReviewQuery.data.findMyReview ? calRatingAvg().toFixed(2) : 0}
                         </StarText>
                         <BookText>
                             <BiSolidBook style={{marginRight: '10px'}}/>
-                            56
+                            {currReviewCnt}
                         </BookText>
                         <StarChart/>
                     </Review>
