@@ -150,7 +150,7 @@ const StatisticsPage = () => {
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
                                     {currReviewCnt === 0 ? '' : <Fire src={require("../../assets/ic-fire.svg").default}/>}
                                 </Icon>
-                                <TextB>140km<br/>14권</TextB>
+                                <TextB>{(currReviewCnt / userGoal * 100) * (10000 / 100)}km<br/>{currReviewCnt}권</TextB>
                                 <Line></Line>
                             </Current>
                         </Background>
