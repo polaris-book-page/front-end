@@ -148,7 +148,7 @@ const StatisticsPage = () => {
                             <Current $userGoal={userGoal} $currReviewCnt={currReviewCnt}>
                                 <Icon> 
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
-                                    <Fire src={require("../../assets/ic-fire.svg").default}/>
+                                    {currReviewCnt === 0 ? '' : <Fire src={require("../../assets/ic-fire.svg").default}/>}
                                 </Icon>
                                 <TextB>140km<br/>14권</TextB>
                                 <Line></Line>
