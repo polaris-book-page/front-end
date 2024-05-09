@@ -132,7 +132,7 @@ const StatisticsPage = () => {
                             </Content>
                         </GoalModal>
                         <Background>
-                            {!modalIsOpen && !userGoal && (
+                            {!modalIsOpen && !goalVal && !userGoal &&(
                                 <ContainerRocketBlind>
                                     <GoalBtn onClick={() => setModalIsOpen(true)}>2024년<br/>목표 설정하기</GoalBtn>
                                 </ContainerRocketBlind>
