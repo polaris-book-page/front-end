@@ -52,13 +52,16 @@ const data = [
 const StarChart = () => {
     const queryClient = useQueryClient();
     const [starData, setStarData] = useState([]);
+    // const [isCal, setIsCal] = useState(false);
+    const [isAlreadyLoad, setIsAlreadyLoad] = useState(false);
     
     const loadReview = async () => {
         try {
             const fetchReview = await queryClient.getQueryData(["review-list"]);
             const reviewList = fetchReview.reviewList
-            if (reviewList && reviewList.length > 0) {
-                const userStar = [...data];
+            if (!isAlreadyLoad && reviewList && reviewList.length > 0) {
+                const initData = initCount();
+                const userStar = [...initData];
                 reviewList.forEach(review => {
                     const evaluation = review.evaluation;
                     const index = userStar.findIndex(item => item.name === String(evaluation));
@@ -67,17 +70,42 @@ const StarChart = () => {
                     }
                 });
                 setStarData(userStar);
+                setIsAlreadyLoad(true)
             }
-        } catch (error) {
-            console.error("Error loading review data:", error);
+        } catch (err) {
+            console.log("err loading review data:", err);
         }
     }
 
+    // const reCalReview = async () => {
+    //     try {
+    //         starData.forEach(review => {
+    //             console.log(review)
+    //             console.log(review.count)
+    //             if (review.count > 0) {
+    //                 review.count /= 2
+    //             }
+    //         });
+    //         setIsCal(true)
+    //     } catch (err) {
+    //         console.log("err loading cal review data:", err);
+    //     }
+    // }
+
+    const initCount = () => {
+        return data.map(item => ({ ...item, count: 0 }));
+    };
+
     useEffect(() => {
-        loadReview();
-    }, []);
+        loadReview(); 
+    }, []); 
+
+    // useEffect(() => {
+    //     reCalReview();
+    // }, [starData]); 
 
     return (
+        // isCal && 
         <ResponsiveContainer width="60%" height={240} >
             <BarChart data={starData} style={{ marginBottom: '10px' }}>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} ticks={['0', '1', '2', '3', '4', '5']} style={{ fontFamily: 'KOTRA_BOLD' }}/>
