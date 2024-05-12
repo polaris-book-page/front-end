@@ -79,7 +79,7 @@ const DrawChart2 = ({ legendContainerId }) => {
   return (
     <DrawChartContainer>
       <div style={{ marginRight: '20px' }}>
-        <canvas ref={chartRef} id={`myChart-${legendContainerId}`} width="240" height="240"></canvas>
+        <canvas ref={chartRef} id={`myChart-${legendContainerId}`} width="220px" height="220px"></canvas>
       </div>
       <div id={`legend-container-${legendContainerId}`} className="legend-div"></div>
       <style>

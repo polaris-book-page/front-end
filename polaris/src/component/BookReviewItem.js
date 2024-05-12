@@ -2,22 +2,23 @@ import styled from "styled-components";
 import StarRatingVertical from "./StarRatingVertical";
 import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
 import Marquee from "./Marquee";
+import { useNavigate } from "react-router-dom";
 
-const BookReviewItem = ({rate, image, title}) => {
+const BookReviewItem = ({item}) => {
+
+    const navigate = useNavigate();
 
     return (
-        <>
-            <Container>
+            <Container onClick={() => navigate(`/mypage/review/detail`, {state: item})}>
                 <BookContainer>
                     <Bookmark>
                         <ICBookmark width={35} />
                     </Bookmark>
-                    <StarRatingVertical rating={rate} size={'18px'} />
-                    <Image src={image} />
+                    <StarRatingVertical rating={item.evaluation} size={'18px'} />
+                    <Image src={item.bookImage} />
                 </BookContainer>
-                <Marquee title={title} size={'15px'} color={'white'} />
+                <Marquee title={item.title} size={'15px'} color={'white'} />
             </Container>
-        </>
     );
 }
 

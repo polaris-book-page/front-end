@@ -3,6 +3,9 @@ import styled from "styled-components";
 const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => {
 	const setPage = (newCurrentArray) => {
         onPageChange(newCurrentArray, slicePages[newCurrentArray][0]);
+		console.log('newCurrentArray', newCurrentArray)
+		console.log('slicePages[newCurrentArray][0]', slicePages[newCurrentArray][0])
+		console.log('currentArray in pagenation', currentArray)
     };
 
 	const isactive = (page) => {
@@ -25,14 +28,14 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
 	return (
 		<Paging>
 			<SideBtn 
-				onClick={()=>{setPage(currentArray - 1, slicePages); isactive(1)}} 
+				onClick={()=>{setPage(currentArray - 1); isactive(1)}} 
 				disabled={currentArray === 0}
 				>
 				&lt;
 			</SideBtn>
 				{pagination(slicePages, currentPage)}
 			<SideBtn 
-				onClick={()=>{setPage(currentArray + 1, slicePages); isactive(1)}} 
+				onClick={()=>{setPage(currentArray + 1); isactive(1)}} 
 				disabled={currentArray === slicePages.length - 1}>
 				&gt;
 			</SideBtn>
@@ -41,7 +44,6 @@ const Pagination = ({ slicePages, currentArray, currentPage, onPageChange }) => 
 }
 
 const PageButton = styled.button`
-    font-size: 27px;
     color: #4659A9;
     border: transparent;
     background-color: transparent;
@@ -50,12 +52,23 @@ const PageButton = styled.button`
 		color: #ffffff;
 		background-color: #4659A9;
 	}
+	@media screen and (min-width: 516px) {
+		font-size: 27px;
+    }
+    @media screen and (max-width: 515px) {
+		font-size: 22px;
+    }
 `
 const SideBtn = styled.button`
-    font-size: 27px;
     color: #4659A9;
     border: transparent;
     background-color: transparent;
+	@media screen and (min-width: 516px) {
+		font-size: 27px;
+    }
+    @media screen and (max-width: 515px) {
+		font-size: 22px;
+    }
 `
 const Paging = styled.div`
     grid-area: pagination;

@@ -24,6 +24,7 @@ import RegisterEvaluatePage from "./page/auth/RegisterEvaluatePage.js"
 import ForgotPasswordPage from "./page/auth/ForgotPasswordPage.js"
 import ResetPasswordPage from './page/auth/ResetPasswordPage';
 import EditProfilePage from './page/mypage/EditProfilePage.js'
+import ReviewDetailPage from './page/mypage/ReviewDetailPage.js';
 
 const checkUser = async () => {
   const response = await axios.get(`/api/user/check`, {
@@ -53,6 +54,7 @@ function App() {
           <Route path="/search/add" element={<AddBookPage />}/>
           <Route path="/mypage" element={<Auth><MyPage /></Auth>}/>
           <Route path="/mypage/review" element={<Auth><MyReviewPage /></Auth>}/>
+          <Route path="/mypage/review/detail" element={<Auth><ReviewDetailPage /></Auth>}/>
           <Route path="/mypage/list" element={<Auth><BooketListPage /></Auth>}/>
           <Route path="/mypage/calendar" element={<Auth><CalendarPage /></Auth>}/>
           <Route path="/mypage/universe" element={<Auth><UniversePage /></Auth>}/>

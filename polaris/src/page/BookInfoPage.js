@@ -51,7 +51,7 @@ const BookInfoPage = () => {
 
   const fetchBookReviewList = async () => {
     try {
-      const res = await axios.get(`/api/book/info/review/list?isbn=${state}`, { withCredentials: true });
+      const res = await axios.get(`/api/book/info/review/list?isbn=${state}&page=1`, { withCredentials: true });
       const data = res.data;
 
       return data;
@@ -160,10 +160,15 @@ const BookInfoPage = () => {
   }
 
   const handleReviewList = (review) => {
-    console.log(review)
+    console.log("reviwe:", review)
     const cnt = 5;
     const list = new Array(cnt)
     if (!review.findBookReview) list.push(<InfoContentText>리뷰가 없어요.</InfoContentText>)
+    else if(review.result.length <= 5) {
+      for(let i=0; i < review.result.length; i++){
+        list.push(<ReviewComment index={i} review={review.result[i]} />)
+      }
+    }
     else {
       for (let i=0; i < 5; i++){
       list.push(<ReviewComment index={i} review={review.result[i]} />)
