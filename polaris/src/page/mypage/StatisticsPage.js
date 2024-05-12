@@ -241,7 +241,7 @@ const Goal = styled.div`
 const ContainerRocketBlind = styled.div`
     position: absolute;
     right: 83px;
-    width: 373px;
+    width: 445px;
     height: 727px;
     border-radius: 61px;
     background-color: rgba(0.88, 0.88, 0.88, 0.64);;
@@ -267,7 +267,7 @@ const Background = styled.div`
 `;
 
 const ContainerRocket = styled.div`
-    width: 373px;
+    width: 445px;
     height: 727px;
     border-radius: 61px;
     background-image: linear-gradient(#000000, #10093E, #281453, #221C5E, 
@@ -282,7 +282,7 @@ const Ground = styled.div`
     position:absolute; 
     bottom: 0px;
     background-color: #CFBB9C;
-    width: 373px;
+    width: 445px;
     height: 101px;
     border-radius: 0 0 61px 61px;
 `;
@@ -307,7 +307,7 @@ const Icon = styled.div`
 
 const LevelHeightContainer = styled.div`
     position: absolute;
-    right: 140px;
+    right: 60px;
     top: 54px;
 `;
 
@@ -329,7 +329,7 @@ const LevelHeightHorizonT = styled.div`
 
 const TextT = styled.p`
     position: absolute;
-    right: 150px;
+    right: 60px;
     top: 33px;
     text-align: right;
     font-size: 15px;
@@ -348,7 +348,7 @@ const Current = styled.div`
     display: flex;
     align-items: center;
     position: absolute;
-    right: 105px;
+    right: 25px;
     // 600px이 최대
     bottom: ${({ $userGoal, $currReviewCnt }) => ($userGoal ? `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px` : '30px')}; 
 `;
@@ -368,7 +368,7 @@ const Line = styled.div`
 const Category = styled.div`
     grid-area: category;
     position: relative;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 30px;
 `; 
 
@@ -378,17 +378,17 @@ const CategoryText = styled.p`
     font-family: "KOTRA_BOLD";
     color: #4659A9;
     position: absolute;
-    left: 195px;
-    bottom: 330px;
+    left: 145px;
+    bottom: 300px;
 `;
 
 const CategoryContainer = styled.div`
-    width: 540px;
-    height: 323px;
+    width: 445px;
+    height: 300px;
     border-radius: 61px;
     background: #4659A9;
     opacity: 0.3;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 `;
 
 const DrawChart11 = styled(DrawChart1)`
@@ -396,8 +396,8 @@ const DrawChart11 = styled(DrawChart1)`
 
 const DrawChartContainer = styled.div`
     position: absolute;
-    left: 110px;
-    bottom: 90px;
+    left: 55px;
+    bottom: 70px;
 `;
 
 const Type = styled.div`
@@ -411,20 +411,20 @@ const TypeText = styled.p`
     font-family: "KOTRA_BOLD";
     color: #4659A9;
     position: absolute;
-    left: 230px;
-    bottom: 330px;
+    left: 185px;
+    bottom: 300px;
 `;
 
 const DrawChart22 = styled(DrawChart2)`
 `;
 
 const TypeContainer = styled.div`
-    width: 540px;
-    height: 323px;
+    width: 445px;
+    height: 300px;
     border-radius: 61px;
     background: #97A4E8;
     opacity: 0.3;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 `;
 
 const Review = styled.div`
@@ -434,6 +434,7 @@ const Review = styled.div`
     flex-direction: column; 
     justify-self: center;
     align-items: center;
+    margin-bottom: 20px;
 `;
 
 const ReviewText = styled.p`
@@ -455,12 +456,14 @@ const BookText = styled.div`
     font-family: "KOTRA_BOLD";
     color: #4659A9;
     font-size: 32px;
+    margin-bottom: 30px;
 `
 
 const CalendarContainer = styled.div`
     grid-area: calendar;
     position: relative;
     display:flex;
+    /* margin-top: 20px; */
 `;
 
 const CalendarText = styled.p`
@@ -475,7 +478,7 @@ const CalendarText = styled.p`
 
 const CalendarBox = styled.div`
     width: 540px;
-    height: 970px;
+    height: 980px;
     border-radius: 61px;
     background: #D4D0EE;
     margin-bottom: 50px;

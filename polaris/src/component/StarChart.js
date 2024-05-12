@@ -106,7 +106,7 @@ const StarChart = () => {
 
     return (
         // isCal && 
-        <ResponsiveContainer width="60%" height={240} >
+        <ResponsiveContainer width="60%" height={260} >
             <BarChart data={starData} style={{ marginBottom: '10px' }}>
                 <XAxis dataKey="name" axisLine={false} tickLine={false} ticks={['0', '1', '2', '3', '4', '5']} style={{ fontFamily: 'KOTRA_BOLD' }}/>
             <Bar dataKey="count" fill="#D9D9D9" radius={10} barSize={10} label={{ position: 'top' }}/>
