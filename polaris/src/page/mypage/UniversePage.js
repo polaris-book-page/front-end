@@ -73,6 +73,8 @@ const neon_flicker = keyframes`
 
 const Background = styled.div`
     background: #2C2C60;
+    padding-top: 100px;
+    padding-bottom: 100px;
 `;
 
 const Solar = styled.div`
