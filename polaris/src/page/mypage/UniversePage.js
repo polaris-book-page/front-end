@@ -42,16 +42,16 @@ const cloudOrbit = (initialX, degree) => keyframes`
     0% {
         transform: 
             rotate(0deg) 
-            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
-            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
             rotate(0deg);
 
     }
     100% {
         transform: 
             rotate(360deg) 
-            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
-            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (85 + 45 * initialX)}px) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
             rotate(-360deg);
     }
 `;
@@ -73,8 +73,6 @@ const neon_flicker = keyframes`
 
 const Background = styled.div`
     background: #2C2C60;
-    padding-top: 100px;
-    padding-bottom: 100px;
 `;
 
 const Solar = styled.div`
@@ -84,11 +82,11 @@ const Solar = styled.div`
 `;
 
 const Sun = styled.img`
-    width: 86px;
-    height: 86px;
+    width: 60px;
+    height: 60px;
     position: absolute;
-    left: calc(50% - 43px);
-    top: calc(50% - 43px);
+    left: calc(50% - 30px);
+    top: calc(50% - 30px);
 `;
 
 const PlanetWrapper = ({ src, m, n }) => (
@@ -106,14 +104,14 @@ const PlanetWrapper = ({ src, m, n }) => (
 
 const BookInfo = styled.div`
     position: absolute;
-    left: calc(50% - 20px);
-    top: calc(50% - 20px);
+    left: calc(50% - 14px);
+    top: calc(50% - 14px);
     animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
 `;
 
 const Planet = styled.img`
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
 `;
 
 const ReadingBox = styled.div`
@@ -147,8 +145,8 @@ const ContentText = styled.text`
 `;
 
 const Orbit1 = styled.div`
-    width: 170px;
-    height: 170px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -158,11 +156,27 @@ const Orbit1 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 85px);
-    top: calc(50% - 85px);
+    left: calc(50% - 60px);
+    top: calc(50% - 60px);
 `;
 
 const Orbit2 = styled.div`
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1.2px solid white;
+    box-shadow: ${props => props.animated ? 'none' :
+        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
+        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
+        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
+    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    position: absolute;
+    left: calc(50% - 95px);
+    top: calc(50% - 95px);
+`;
+
+const Orbit3 = styled.div`
     width: 260px;
     height: 260px;
     border-radius: 50%;
@@ -178,25 +192,9 @@ const Orbit2 = styled.div`
     top: calc(50% - 130px);
 `;
 
-const Orbit3 = styled.div`
-    width: 350px;
-    height: 350px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 1.2px solid white;
-    box-shadow: ${props => props.animated ? 'none' :
-        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
-        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
-        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
-    position: absolute;
-    left: calc(50% - 175px);
-    top: calc(50% - 175px);
-`;
-
 const Orbit4 = styled.div`
-    width: 440px;
-    height: 440px;
+    width: 330px;
+    height: 330px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -206,13 +204,13 @@ const Orbit4 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 220px);
-    top: calc(50% - 220px);
+    left: calc(50% - 165px);
+    top: calc(50% - 165px);
 `;
 
 const Orbit5 = styled.div`
-    width: 530px;
-    height: 530px;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -222,13 +220,13 @@ const Orbit5 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 265px);
-    top: calc(50% - 265px);
+    left: calc(50% - 200px);
+    top: calc(50% - 200px);
 `;
 
 const Orbit6 = styled.div`
-    width: 620px;
-    height: 620px;
+    width: 470px;
+    height: 470px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -238,13 +236,13 @@ const Orbit6 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 310px);
-    top: calc(50% - 310px);
+    left: calc(50% - 235px);
+    top: calc(50% - 235px);
 `;
 
 const Orbit7 = styled.div`
-    width: 710px;
-    height: 710px;
+    width: 540px;
+    height: 540px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -254,13 +252,13 @@ const Orbit7 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 355px);
-    top: calc(50% - 355px);
+    left: calc(50% - 270px);
+    top: calc(50% - 270px);
 `;
 
 const Orbit8 = styled.div`
-    width: 800px;
-    height: 800px;
+    width: 610px;
+    height: 610px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
@@ -270,72 +268,72 @@ const Orbit8 = styled.div`
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
     /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
-    left: calc(50% - 400px);
-    top: calc(50% - 400px);
+    left: calc(50% - 305px);
+    top: calc(50% - 305px);
 `;
 
 const Orbit9 = styled.div`
+    width: 680px;
+    height: 680px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1.2px solid white;
+    box-shadow: ${props => props.animated ? 'none' :
+        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
+        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
+        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
+    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    position: absolute;
+    left: calc(50% - 340px);
+    top: calc(50% - 340px);
+`;
+
+const Orbit10 = styled.div`
+    width: 750px;
+    height: 750px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1.2px solid white;
+    box-shadow: ${props => props.animated ? 'none' :
+        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
+        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
+        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
+    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    position: absolute;
+    left: calc(50% - 375px);
+    top: calc(50% - 375px);
+`;
+
+const Orbit11 = styled.div`
+    width: 820px;
+    height: 820px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: 1.2px solid white;
+    box-shadow: ${props => props.animated ? 'none' :
+        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
+        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
+        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
+    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    position: absolute;
+    left: calc(50% - 410px);
+    top: calc(50% - 410px);
+`;
+
+const Orbit12 = styled.div`
     width: 890px;
     height: 890px;
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
+    /* animation: ${neon_flicker} 1.5s infinite alternate; */
     box-shadow: ${props => props.animated ? 'none' :
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
     position: absolute;
     left: calc(50% - 445px);
     top: calc(50% - 445px);
-`;
-
-const Orbit10 = styled.div`
-    width: 980px;
-    height: 980px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 1.2px solid white;
-    box-shadow: ${props => props.animated ? 'none' :
-        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
-        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
-        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
-    position: absolute;
-    left: calc(50% - 490px);
-    top: calc(50% - 490px);
-`;
-
-const Orbit11 = styled.div`
-    width: 1070px;
-    height: 1070px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 1.2px solid white;
-    box-shadow: ${props => props.animated ? 'none' :
-        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
-        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
-        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
-    position: absolute;
-    left: calc(50% - 535px);
-    top: calc(50% - 535px);
-`;
-
-const Orbit12 = styled.div`
-    width: 1160px;
-    height: 1160px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 1.2px solid white;
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
-    box-shadow: ${props => props.animated ? 'none' :
-        'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
-        'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
-        'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    position: absolute;
-    left: calc(50% - 580px);
-    top: calc(50% - 580px);
 `;
 
 
