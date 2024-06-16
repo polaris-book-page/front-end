@@ -138,7 +138,7 @@ const ReadingContent = styled.div`
     margin-left: 10px;
 `;
 
-const ContentText = styled.text`
+const ContentText = styled.span`
     color: gray;
     font-family: "KOTRA_GOTHIC";
     font-size: 12px;
