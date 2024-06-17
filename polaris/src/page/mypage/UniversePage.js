@@ -1,9 +1,50 @@
 import styled, { keyframes } from "styled-components";
 import NavBar from "../../component/NavBar";
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 const UniversePage = () =>{
+    const reviewPerMonth = Array.from({length: 12}, () => 0)
+
+    const fetchReviewList = async () => {
+        try {
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const ReviewQuery = useQuery({
+        queryKey: ["review-list"],
+        queryFn: fetchReviewList
+    })
+
+    console.log(ReviewQuery.data)
+    if (ReviewQuery.data) {
+        // ordering month
+        let sortedCars1 = [].slice.call(ReviewQuery.data.reviewList).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+        console.log("after: ", sortedCars1)
+        console.log("reviewPerMonth: ", reviewPerMonth)
+
+        // calculate review per month
+        ReviewQuery.data.reviewList.forEach(review => {
+            if (review.endDate) {
+                const endDate = new Date(review.endDate);
+                const month = endDate.getMonth(); 
+                reviewPerMonth[month]++;
+            }
+        });
+        
+        console.log("reviewPerMonth: ", reviewPerMonth)
+
+    }
+
     return (
-        <>
+        !ReviewQuery.isLoading && <>
+        {/* <> */}
             <NavBar/>
             <Background>
                 <Solar>
@@ -20,24 +61,53 @@ const UniversePage = () =>{
                     <Orbit10></Orbit10>
                     <Orbit11></Orbit11>
                     <Orbit12></Orbit12>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/>
+                    {ReviewQuery.data.reviewList.map((review, index) => {
+                            const endDate = new Date(review.endDate);
+                            const month = endDate.getMonth(); 
+                            const reviewCount = reviewPerMonth[month];
+                            console.log("month: ", month, "reviewcnt: ", reviewCount)
+                            return (
+                                <PlanetWrapper 
+                                    key={index} 
+                                    src={review.bookImage} 
+                                    m={month} 
+                                    n={index}
+                                />
+                            );
+                        })}
+                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/> */}
+                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={1}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={2}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={3}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={4}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-2.png")} m={7} n={2}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={3}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={4}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={5}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={6}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={7}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={8}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={9}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={10}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={11}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={12}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={13}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={14}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={15}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={16}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={17}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={18}/> */}
+                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-2.png")} m={7} n={2}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-3.png")} m={10} n={1}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-7.png")} m={10} n={3}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-8.png")} m={10} n={5}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-9.png")} m={10} n={7}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={10} n={10}/>
+                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={10} n={10}/> */}
                 </Solar>
             </Background>
         </>)
 }
 
 // 행성의 시작점은 translateX(-85px), translateX(85px), translateY(85px), translateY(-85px)
-// initialX는 0 ~ 11 사이의 값
-// degree를 360 * 행성 개수로 해야 조금 더 조화로울듯?
+// initialX(m)(링 위치)는 0 ~ 11 사이의 값
+// degree(n)(링 안에서 시작위치)를 360 / 행성 개수로 해야 조금 더 조화로울듯?
 const cloudOrbit = (initialX, degree) => keyframes`
     0% {
         transform: 
