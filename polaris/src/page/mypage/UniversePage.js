@@ -2,9 +2,13 @@ import styled, { keyframes } from "styled-components";
 import NavBar from "../../component/NavBar";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from "react";
 
 const UniversePage = () =>{
     const reviewPerMonth = Array.from({length: 12}, () => 0)
+    const [reviewList, setReviewList] = useState([])
+    let premonth = -1
+    let n = 0
 
     const fetchReviewList = async () => {
         try {
@@ -23,24 +27,27 @@ const UniversePage = () =>{
     })
 
     console.log(ReviewQuery.data)
-    if (ReviewQuery.data) {
-        // ordering month
-        let sortedCars1 = [].slice.call(ReviewQuery.data.reviewList).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
-        console.log("after: ", sortedCars1)
-        console.log("reviewPerMonth: ", reviewPerMonth)
 
-        // calculate review per month
-        ReviewQuery.data.reviewList.forEach(review => {
-            if (review.endDate) {
-                const endDate = new Date(review.endDate);
-                const month = endDate.getMonth(); 
-                reviewPerMonth[month]++;
-            }
-        });
-        
-        console.log("reviewPerMonth: ", reviewPerMonth)
+    useEffect(() => {
+        if (ReviewQuery.data) {
+            // ordering month
+            let sortedCars1 = [].slice.call(ReviewQuery.data.reviewList).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+            console.log("after: ", sortedCars1)
+            console.log("reviewPerMonth: ", reviewPerMonth)
+            setReviewList(sortedCars1)
+    
+            // calculate review per month
+            reviewList.forEach(review => {
+                if (review.endDate) {
+                    const endDate = new Date(review.endDate);
+                    const month = endDate.getMonth(); 
+                    reviewPerMonth[month]++;
+                }
+            });
+            console.log("reviewPerMonth: ", reviewPerMonth)    
+        }
+    }, [ReviewQuery.data])
 
-    }
 
     return (
         !ReviewQuery.isLoading && <>
@@ -61,17 +68,24 @@ const UniversePage = () =>{
                     <Orbit10></Orbit10>
                     <Orbit11></Orbit11>
                     <Orbit12></Orbit12>
-                    {ReviewQuery.data.reviewList.map((review, index) => {
+                    {reviewList.map((review, index) => {
                             const endDate = new Date(review.endDate);
-                            const month = endDate.getMonth(); 
-                            const reviewCount = reviewPerMonth[month];
-                            console.log("month: ", month, "reviewcnt: ", reviewCount)
+                            const curmonth = endDate.getMonth(); 
+                            
+                            console.log("title: ", review.title, "month: ", curmonth, premonth, "x: ", Math.cos((n * 20 % 360) * (Math.PI / 180)) * (60 + 35 * curmonth))
+                            if (curmonth === premonth) {
+                                n += 1
+                            } else (
+                                n = 0
+                            )
+                            premonth = endDate.getMonth(); 
+                    
                             return (
                                 <PlanetWrapper 
                                     key={index} 
                                     src={review.bookImage} 
-                                    m={month} 
-                                    n={index}
+                                    m={curmonth} 
+                                    n={n}
                                 />
                             );
                         })}
