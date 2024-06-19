@@ -3,6 +3,7 @@ import NavBar from "../../component/NavBar";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
+import Moment from 'moment';
 
 const UniversePage = () =>{
     const reviewPerMonth = Array.from({length: 12}, () => 0)
@@ -83,7 +84,8 @@ const UniversePage = () =>{
                             return (
                                 <PlanetWrapper 
                                     key={index} 
-                                    src={review.bookImage} 
+                                    review={review}
+                                    // src={review.bookImage} 
                                     m={curmonth + 1} 
                                     n={n}
                                 />
@@ -173,14 +175,15 @@ const Sun = styled.img`
     top: calc(50% - 30px);
 `;
 
-const PlanetWrapper = ({ src, m, n }) => (
+const PlanetWrapper = ({ review, m, n }) => (
     <BookInfo m={m} n={n}>
-        <Planet src={src} />
+        <Planet src={review.bookImage} />
         <ReadingBox>
             <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
             <ReadingContent>
-                <ContentText color={'#4659A9'} size={'16px'}>종의 기원담</ContentText>
-                <ContentText color={'#4659A9'}>2024.01.26 ~ 2024.02.15</ContentText>
+                <ContentText color={'#4659A9'} size={'16px'}>{review.title}</ContentText>
+                <ContentText color={'#4659A9'}>{Moment(review.startDate).format('YYYY.MM.DD')} /
+                                                ~ {Moment(review.endDate).format('YYYY.MM.DD')}</ContentText>
             </ReadingContent>
         </ReadingBox>
     </BookInfo>
