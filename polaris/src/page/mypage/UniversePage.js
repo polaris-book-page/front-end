@@ -84,7 +84,7 @@ const UniversePage = () =>{
                                 <PlanetWrapper 
                                     key={index} 
                                     src={review.bookImage} 
-                                    m={curmonth} 
+                                    m={curmonth + 1} 
                                     n={n}
                                 />
                             );
@@ -126,16 +126,16 @@ const cloudOrbit = (initialX, degree) => keyframes`
     0% {
         transform: 
             rotate(0deg) 
-            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
-            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * (initialX - 1))}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * (initialX - 1))}px) 
             rotate(0deg);
 
     }
     100% {
         transform: 
             rotate(360deg) 
-            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
-            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * initialX)}px) 
+            translateX(${Math.cos((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * (initialX - 1))}px) 
+            translateY(${Math.sin((degree * 20 % 360) * (Math.PI / 180)) * (60 + 35 * (initialX - 1))}px) 
             rotate(-360deg);
     }
 `;
@@ -190,7 +190,7 @@ const BookInfo = styled.div`
     position: absolute;
     left: calc(50% - 14px);
     top: calc(50% - 14px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => props.m * 15}s linear infinite;
+    animation: ${props => cloudOrbit(props.m, props.n)} ${props => (props.m + 1) * 15}s linear infinite;
 `;
 
 const Planet = styled.img`
