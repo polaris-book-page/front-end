@@ -2,12 +2,49 @@ import styled from "styled-components";
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 // import * as helpers from 'chart.js/helpers';
 // import LabelPluginProvider from './LabelPluginProvider';
 
 const DrawChart1 = ({ legendContainerId }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const categories = [];
+  const categoryCnt = new Map();
+
+  const fetchReviewList = async () => {
+    try {
+        const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+        const data = response.data;
+        
+        return data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+  const ReviewQuery = useQuery({
+      queryKey: ["review-list"],
+      queryFn: fetchReviewList
+  })
+
+  console.log(ReviewQuery.data)
+
+  useEffect(() => {
+      if (ReviewQuery.data) {
+          ReviewQuery.data.reviewList.forEach(review => {
+            if (!categoryCnt.has(review.category)) {
+              categoryCnt.set(review.category, 0);
+              categories.push(review.category);
+            }
+            categoryCnt.set(review.category, categoryCnt.get(review.category) + 1);
+          });
+          console.log("categories: ", categories)
+          console.log("categoryCnt: ", categoryCnt)
+          console.log("categoryCnt.values(): ", Array.from(categoryCnt.values()))
+      }
+  }, [])
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -36,10 +73,9 @@ const DrawChart1 = ({ legendContainerId }) => {
     chartInstance.current = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['인문', '에세이', '소설', '과학', '철학'],
+        labels: categories,
         datasets: [{
-          label: ['책 타입'],
-          data: [12, 13, 3, 5, 2],
+          data: Array.from(categoryCnt.values()),
           backgroundColor: [
             '#2C2C60', '#4659A9', '#97A4E8', '#6F61C6', '#CBCDFA', '#D5CFFB'
           ],
