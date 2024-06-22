@@ -29,10 +29,15 @@ const DrawChart1 = ({ legendContainerId }) => {
       queryFn: fetchReviewList
   })
 
-  console.log(ReviewQuery.data)
+  const initCount = () => {
+    return categoryCnt.forEach((value, key, map) => {
+      map.set(key, 0);
+    });;
+  };
 
   useEffect(() => {
       if (ReviewQuery.data) {
+          initCount();
           ReviewQuery.data.reviewList.forEach(review => {
             if (!categoryCnt.has(review.category)) {
               categoryCnt.set(review.category, 0);
@@ -40,9 +45,6 @@ const DrawChart1 = ({ legendContainerId }) => {
             }
             categoryCnt.set(review.category, categoryCnt.get(review.category) + 1);
           });
-          console.log("categories: ", categories)
-          console.log("categoryCnt: ", categoryCnt)
-          console.log("categoryCnt.values(): ", Array.from(categoryCnt.values()))
       }
   }, [])
 
@@ -96,7 +98,7 @@ const DrawChart1 = ({ legendContainerId }) => {
           datalabels: {
             formatter: function (value, ctx) {
               var value = ctx.dataset.data[ctx.dataIndex];
-              return value > 0 ? Math.round(value / (ctx.dataset.data[0] + ctx.dataset.data[1] + ctx.dataset.data[2]) * 100) + ' %' : null;
+              return value > 0 ? Math.round(value / Object.keys(ReviewQuery.data.reviewList).length * 100) + ' %' : null;
             },
             font: {
               size: '17px',
