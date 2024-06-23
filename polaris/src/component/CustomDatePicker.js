@@ -51,7 +51,7 @@ const CustomDatePicker = ({ setDate, page, onDate}) => {
                                 <MonthBtn
                                     onClick={increaseMonth}
                                     disabled={nextMonthButtonDisabled}>
-                                    {currentDate.getMonth() == date.getMonth() && date.getFullYear() == currentDate.getFullYear() ? "" : <ArrowRight color='#CBCDFA' width={10}/>}
+                                    <ArrowRight color='#CBCDFA' width={10}/>
                                 </MonthBtn>
                             </MonthBox>
                         </CustomHeaderContainer>
