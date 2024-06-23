@@ -73,7 +73,7 @@ const RegisterEvaluatePage = () => {
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
-                            return <BookReviewItem key={index} rate={3.5} image={item.cover} title={item.title} />
+                            return <BookReviewItem key={index} item={item} />
                         })
                     ) : <ContentText color={'white'} size={'15px'}>로딩 중입니다...</ContentText>
                     }
