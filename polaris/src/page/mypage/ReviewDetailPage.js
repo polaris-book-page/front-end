@@ -88,7 +88,7 @@ const ReviewDetailPage = () => {
                     <ReviewContainer>
                         <QuoteBox>
                             <TitleText color='white' size='16px'>인용</TitleText>
-                            {
+                            {DetailReviewQuery.data.quotes == null ? <ContentText color={"white"} size={'13px'}>등록된 인용구가 없습니다.</ContentText> :  (
                                 DetailReviewQuery.data.quotes.map((item, index) => {
                                     return (<>
                                         <ContentText color={"white"} size={'13px'}>- {item.page} page</ContentText>
@@ -96,7 +96,7 @@ const ReviewDetailPage = () => {
                                         <div style={{height: 10}} />
                                     </>)
                                 })
-                            }
+                            )}
                         </QuoteBox>
                         {/* review */}
                         <div style={{height: 20}} />

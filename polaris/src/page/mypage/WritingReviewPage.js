@@ -128,10 +128,14 @@ const WritingReviewPage = () => {
         formData.append('_id', reviewId);
         formData.append('evaluation', rate);
         formData.append('content', content);
-        formData.append('quotes', JSON.stringify(quotes));
         formData.append('type', selectTypeFunc());
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
+
+        // delete null quote
+        let filterQuotes = quotes.filter((item) => item.quote !== "")
+        console.log(filterQuotes)
+        if(filterQuotes.length !=0) formData.append('quotes', JSON.stringify(filterQuotes));
 
         try{
             const res = await axios.put(`/api/mypage/review/modify`, formData, {
@@ -189,13 +193,16 @@ const WritingReviewPage = () => {
         formData.append('isbn', state.isbn13);
         formData.append('evaluation', rate);
         formData.append('content', content);
-        formData.append('quotes', JSON.stringify(quotes));
         formData.append('progressPage', state.subInfo.itemPage);
         formData.append('progressPercent', 100);
         formData.append('category', categorySlicingFunc());
         formData.append('type', selectTypeFunc());
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
+
+        let filterQuotes = quotes.filter((item) => item.quote !== "")
+        console.log(filterQuotes)
+        if(filterQuotes.length !=0) formData.append('quotes', JSON.stringify(filterQuotes));
 
         console.log(state.isbn13);
 
