@@ -2,17 +2,58 @@ import styled from "styled-components";
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 // import * as helpers from 'chart.js/helpers';
 // import LabelPluginProvider from './LabelPluginProvider'
 
 const DrawChart2 = ({ legendContainerId }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const types = [];
+  let typeCnt = new Map();
+  
+
+  const fetchReviewList = async () => {
+    try {
+        const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+        const data = response.data;
+        
+        return data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+  const ReviewQuery = useQuery({
+      queryKey: ["review-list"],
+      queryFn: fetchReviewList
+  })
+
+  const initCount = () => {
+    return typeCnt.forEach((value, key, map) => {
+      map.set(key, 0);
+    });;
+};
+
+  useEffect(() => {
+      if (ReviewQuery.data) {
+          initCount();
+          ReviewQuery.data.reviewList.forEach(review => {
+            if (!typeCnt.has(review.type)) {
+              typeCnt.set(review.type, 0);
+              types.push(review.type);
+            }
+            typeCnt.set(review.type, typeCnt.get(review.type) + 1);
+          });
+      }
+  }, [ReviewQuery.data])
 
   useEffect(() => {
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
+    
 
     const customLegendPlugin = {
       afterDraw: function (chart) {
@@ -36,12 +77,11 @@ const DrawChart2 = ({ legendContainerId }) => {
     chartInstance.current = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['종이책', 'e-book', '오디오북'],
+        labels: types,
         datasets: [{
-          label: '책 타입',
-          data: [12, 13, 3],
+          data: Array.from(typeCnt.values()),
           backgroundColor: [
-          '#2C2C60', '#4659A9', '#97A4E8'
+            '#2C2C60', '#4659A9', '#97A4E8', '#6F61C6', '#CBCDFA', '#D5CFFB'
           ],
           borderWidth: 1.5
         }]
@@ -57,7 +97,7 @@ const DrawChart2 = ({ legendContainerId }) => {
           datalabels: {
             formatter: function (value, ctx) {
               var value = ctx.dataset.data[ctx.dataIndex];
-              return value > 0 ? Math.round(value / (ctx.dataset.data[0] + ctx.dataset.data[1] + ctx.dataset.data[2]) * 100) + ' %' : null;
+              return value > 0 ? Math.round(value / Object.keys(ReviewQuery.data.reviewList).length * 100) + ' %' : null;
             },
             font: {
               size: '17px',

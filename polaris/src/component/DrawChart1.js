@@ -2,12 +2,51 @@ import styled from "styled-components";
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 // import * as helpers from 'chart.js/helpers';
 // import LabelPluginProvider from './LabelPluginProvider';
 
 const DrawChart1 = ({ legendContainerId }) => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const categories = [];
+  const categoryCnt = new Map();
+
+  const fetchReviewList = async () => {
+    try {
+        const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+        const data = response.data;
+        
+        return data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+  const ReviewQuery = useQuery({
+      queryKey: ["review-list"],
+      queryFn: fetchReviewList
+  })
+
+  const initCount = () => {
+    return categoryCnt.forEach((value, key, map) => {
+      map.set(key, 0);
+    });;
+  };
+
+  useEffect(() => {
+      if (ReviewQuery.data) {
+          initCount();
+          ReviewQuery.data.reviewList.forEach(review => {
+            if (!categoryCnt.has(review.category)) {
+              categoryCnt.set(review.category, 0);
+              categories.push(review.category);
+            }
+            categoryCnt.set(review.category, categoryCnt.get(review.category) + 1);
+          });
+      }
+  }, [])
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -36,10 +75,9 @@ const DrawChart1 = ({ legendContainerId }) => {
     chartInstance.current = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['인문', '에세이', '소설', '과학', '철학'],
+        labels: categories,
         datasets: [{
-          label: ['책 타입'],
-          data: [12, 13, 3, 5, 2],
+          data: Array.from(categoryCnt.values()),
           backgroundColor: [
             '#2C2C60', '#4659A9', '#97A4E8', '#6F61C6', '#CBCDFA', '#D5CFFB'
           ],
@@ -60,7 +98,7 @@ const DrawChart1 = ({ legendContainerId }) => {
           datalabels: {
             formatter: function (value, ctx) {
               var value = ctx.dataset.data[ctx.dataIndex];
-              return value > 0 ? Math.round(value / (ctx.dataset.data[0] + ctx.dataset.data[1] + ctx.dataset.data[2]) * 100) + ' %' : null;
+              return value > 0 ? Math.round(value / Object.keys(ReviewQuery.data.reviewList).length * 100) + ' %' : null;
             },
             font: {
               size: '17px',
