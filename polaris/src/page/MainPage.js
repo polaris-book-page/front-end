@@ -118,62 +118,64 @@ const MainPage = () => {
   return (
     <>
       <NavBar />
-      {/* banner */}
-      <Carousel>
-        <Carousel.Item>
-          <Banner src={require('../assets/graphic/main-cover-1.png')} />
-        </Carousel.Item>
-        <Carousel.Item>
-          <Banner src={require('../assets/graphic/main-cover-2.png')} />
-        </Carousel.Item>
-        <Carousel.Item>
-          <Banner src={require('../assets/graphic/main-cover-3.png')} />
-        </Carousel.Item>
-      </Carousel>
-      <div style={{ height: "50px" }} />
+        {/* banner */}
+        <Carousel>
+          <Carousel.Item>
+            <Banner src={require('../assets/graphic/main-cover-1.png')} />
+          </Carousel.Item>
+          <Carousel.Item>
+            <Banner src={require('../assets/graphic/main-cover-2.png')} />
+          </Carousel.Item>
+          <Carousel.Item>
+            <Banner src={require('../assets/graphic/main-cover-3.png')} />
+          </Carousel.Item>
+        </Carousel>
+        <div style={{ height: "50px" }} />
       {/* content */}
-      <MainContainer>
-        <TitleText>Best Seller:</TitleText>
-        <SubTitleText>사람들이 요즘 많이 보는 책을 살펴볼까요?</SubTitleText>
-        <BookContainer>
-          <ArrowL onClick={handlePrevPage} />
-          {currentItems && currentItems.map((item, index) => (
-                <GridBox key={index} item={item} gridArea={`gridBox${index % 5 + 1}`} />
-            ))}
-          <ArrowR onClick={handleNextPage}/>
-        </BookContainer>
-        <div style={{ height: "50px" }} />
-        <TitleText>여행자가 가장 많이 읽은 책:</TitleText>
-        <SubTitleText>
-          북극성 사용자가 많이 완독한 책을 살펴볼까요?
-        </SubTitleText>
-        <BookContainer>
-          <ArrowL />
-          <BookItem />
-          <BookItem />
-          <BookItem />
-          <BookItem />
-          <BookItem />
-          <ArrowR />
-        </BookContainer>
-        <div style={{ height: "50px" }} />
-        <TitleText>북극성 구독하기:</TitleText>
-        <SubTitleText>북극성의 이야기를 들어보고 싶으시다면,</SubTitleText>
-        <SubTitleText>
-          북극성 운영자가 북극성의 소식과 글조각을 간간이 전해드립니다.
-        </SubTitleText>
-        <SubscribeContainer>
-          <TextInput placeholder="여러분의 닉네임을 입력하세요." onChange={(e) => {setNickname(e.target.value)}}/>
-          <TextInput placeholder="여러분의 이메일을 입력하세요." onChange={(e) => {setEmail(e.target.value)}}/>
-          <PersonalInfoBox>
-            <PersonalInfoCheck type="checkbox" />
-            <PersonalInfoText>개인정보처리방침에 동의합니다.</PersonalInfoText>
-          </PersonalInfoBox>
+      <Background>
+        <MainContainer>
+          <TitleText>Best Seller:</TitleText>
+          <SubTitleText>사람들이 요즘 많이 보는 책을 살펴볼까요?</SubTitleText>
+          <BookContainer>
+            <ArrowL onClick={handlePrevPage} />
+            {currentItems && currentItems.map((item, index) => (
+                  <GridBox key={index} item={item} gridArea={`gridBox${index % 5 + 1}`} />
+              ))}
+            <ArrowR onClick={handleNextPage}/>
+          </BookContainer>
           <div style={{ height: "50px" }} />
-          <SubscribeBtn onClick={handleSubscribe}>구독하기</SubscribeBtn>
-        </SubscribeContainer>
-        <div style={{ height: "100px" }} />
-      </MainContainer>
+          <TitleText>여행자가 가장 많이 읽은 책:</TitleText>
+          <SubTitleText>
+            북극성 사용자가 많이 완독한 책을 살펴볼까요?
+          </SubTitleText>
+          <BookContainer>
+            <ArrowL />
+            <BookItem />
+            <BookItem />
+            <BookItem />
+            <BookItem />
+            <BookItem />
+            <ArrowR />
+          </BookContainer>
+          <div style={{ height: 50 }} />
+          <TitleText>북극성 구독하기:</TitleText>
+          <SubTitleText>북극성의 이야기를 들어보고 싶으시다면,<br /></SubTitleText>
+          <SubTitleText>
+            북극성 운영자가 북극성의 소식과 글조각을 간간이 전해드립니다.
+          </SubTitleText>
+          <SubscribeContainer>
+            <TextInput placeholder="여러분의 닉네임을 입력하세요." onChange={(e) => {setNickname(e.target.value)}}/>
+            <TextInput placeholder="여러분의 이메일을 입력하세요." onChange={(e) => {setEmail(e.target.value)}}/>
+            <PersonalInfoBox>
+              <PersonalInfoCheck type="checkbox" />
+              <PersonalInfoText>개인정보처리방침에 동의합니다.</PersonalInfoText>
+            </PersonalInfoBox>
+            <div style={{ height: "50px" }} />
+            <SubscribeBtn onClick={handleSubscribe}>구독하기</SubscribeBtn>
+          </SubscribeContainer>
+          <div style={{ height: "100px" }} />
+          </MainContainer>
+        </Background>
       <FooterBar />
     </>
   );
@@ -186,6 +188,12 @@ const Banner = styled.img`
   background-color: #d9d9d9;
 `;
 
+const Background = styled.div`
+    padding-right: 5%;
+    padding-left: 5%;
+`;
+
+
 const MainContainer = styled.div`
   padding: 0 48px;
 `;
@@ -197,7 +205,7 @@ const TitleText = styled.p`
   font-family: "KOTRA_BOLD";
 `;
 
-const SubTitleText = styled.p`
+const SubTitleText = styled.span`
   font-size: 20px;
   color: #97a4e8;
   font-family: "KOTRA_GOTHIC";
@@ -234,6 +242,7 @@ const SubscribeContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 `;
 
 const TextInput = styled.input`
@@ -248,8 +257,8 @@ const TextInput = styled.input`
 `;
 
 const SubscribeBtn = styled.button`
-  width: 350px;
-  height: 80px;
+  width: 300px;
+  height: 60px;
   background-color: #4659a9;
   border: none;
   border-radius: 50px;
@@ -260,9 +269,8 @@ const SubscribeBtn = styled.button`
 
 const PersonalInfoBox = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const PersonalInfoCheck = styled.input`
@@ -273,7 +281,6 @@ const PersonalInfoText = styled.div`
   font-size: 16px;
   color: #97a4e8;
   margin-left: 10px;
-  margin-top: 10px;
   font-family: "KOTRA_GOTHIC";
 `;
 
