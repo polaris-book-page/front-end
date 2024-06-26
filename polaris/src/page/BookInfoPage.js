@@ -51,8 +51,9 @@ const BookInfoPage = () => {
 
   const fetchBookReviewList = async () => {
     try {
-      const res = await axios.get(`/api/book/info/review/list?isbn=${state}&page=1`, { withCredentials: true });
+      const res = await axios.get(`/api/book/info/users/review/list?isbn=${state}&page=1`, { withCredentials: true });
       const data = res.data;
+      console.log(res.data)
 
       return data;
     } catch (err) {
