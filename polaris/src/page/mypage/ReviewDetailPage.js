@@ -29,7 +29,8 @@ const ReviewDetailPage = () => {
     // review query
     const DetailReviewQuery = useQuery({
         queryKey: ['detail-review'],
-        queryFn: fetchDetailReview
+        queryFn: fetchDetailReview,
+        refetchOnWindowFocus : true
     });
 
     const DateFormat = (date) => {
@@ -90,11 +91,11 @@ const ReviewDetailPage = () => {
                             <TitleText color='white' size='16px'>인용</TitleText>
                             {DetailReviewQuery.data.quotes == null ? <ContentText color={"white"} size={'13px'}>등록된 인용구가 없습니다.</ContentText> :  (
                                 DetailReviewQuery.data.quotes.map((item, index) => {
-                                    return (<>
+                                    return (<div key={index}>
                                         <ContentText color={"white"} size={'13px'}>- {item.page} page</ContentText>
                                         <ContentText color={"white"}>{item.quote}</ContentText>
                                         <div style={{height: 10}} />
-                                    </>)
+                                    </div>)
                                 })
                             )}
                         </QuoteBox>

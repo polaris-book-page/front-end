@@ -34,7 +34,7 @@ const MyReviewPage = () => {
         let init = 0;
         const sum = ReviewQuery.data.reviewList.reduce((acc, item) => acc + item.evaluation, init);
         let avg = sum/ReviewQuery.data.reviewList.length;
-        return avg;
+        return Math.round(avg*100) / 100;
     }
 
     return (
