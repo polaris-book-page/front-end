@@ -112,8 +112,6 @@ const NavBar = () => {
     }
   }
 
-  console.log("window.innerWidth: ", window.innerWidth)
-
   return (
     <>
       <NavbarContainer>
