@@ -32,6 +32,8 @@ const GridBox = ({ item }) => {
             setModalIsOpen(true);
         } else {
             console.log("in gird: ", item.isbn13)
+            // refetch
+            queryClient.invalidateQueries(["book-review-list"])
             navigate('/book/info', {state : item.isbn13 });
             console.log(state)
             // navigate('/book/info'); 
