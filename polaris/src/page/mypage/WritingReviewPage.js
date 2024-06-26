@@ -26,7 +26,7 @@ const WritingReviewPage = () => {
     const [content, onContent] = useState('');
     const [rate, onRate] = useState(5);
     const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [endDate, setEndDate] = useState(Date());
     const queryClient = useQueryClient()
     const [iswrited, setIsWrited] = useState(false);
 
