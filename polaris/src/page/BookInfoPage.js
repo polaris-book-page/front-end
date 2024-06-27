@@ -34,21 +34,6 @@ const BookInfoPage = () => {
       setLoading(false);
     }
 
-  const { mutate } = useMutation({
-    mutationFn: async (bookInfo) => {
-        const { data } = await axios.post(`/api/book/info`, bookInfo, { withCredentials: true })
-        //console.log("data", data)
-        return data;
-    }, 
-    onSuccess: (data) => {
-      console.log("book info save success")
-      setDbook(data);
-    },
-    onError: () => {
-      console.log("book info save failure")
-    }
-  });
-
   const fetchBookReviewList = async () => {
     try {
       const res = await axios.get(`/api/book/info/review/list?isbn=${state}&page=1`, { withCredentials: true });
@@ -160,12 +145,6 @@ const BookInfoPage = () => {
   useEffect(() => {
     fetchCheckLike(); 
   }, [])
-  
-  useEffect(() => {
-    if (book) {
-      mutate({ isbn: book.isbn13, page: book.subInfo.itemPage });
-    }
-  }, [book])
   
   if (!(book)) {
     return null;
