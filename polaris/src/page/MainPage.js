@@ -7,7 +7,7 @@ import { ReactComponent as ArrowLeft } from "../assets/arrow-left.svg";
 import NavBar from "../component/NavBar";
 import FooterBar from "../component/FooterBar";
 import GridBox from "../component/GridBox"
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const MainPage = () => {
   const pagePerLimit = 5;
@@ -15,9 +15,13 @@ const MainPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentReadPage, setCurrentReadPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState([]);
+  const [itemsReadPerPage, setItemsReadPerPage] = useState([]);
   const [currentItems, setCurrentItems] = useState([]);
+  const [currentReadItems, setCurrentReadItems] = useState([]);
   const [currentArray, setCurrentArray] = useState(1);
+  const [currentReadArray, setCurrentReadArray] = useState(1);
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
 
@@ -54,6 +58,46 @@ const MainPage = () => {
       }
   });
 
+  const fetchMostRead = async () => {
+    try {
+        const response = await axios.get(`/api/book/most-read`, { withCredentials: 'true'});
+        const data = response.data;
+        
+        return data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+  const fetchBookInfo = async (isbn) => {
+    try {
+        const response = await axios.get(`/api/book/info/${isbn}`, { withCredentials: 'true'});
+        const data = response.data;
+        
+        return data;
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  const mostReadQuery = useQuery({
+      queryKey: ["most-read"],
+      queryFn: fetchMostRead
+  })
+
+  const MostReadResult = async () => {
+    try {
+      console.log("mostReadQuery.data", mostReadQuery.data)
+      const newItemSlice = [];
+          for (let i = 0; i < maxResults; i += pagePerLimit) {
+              newItemSlice.push(mostReadQuery.data.slice(i, i + pagePerLimit));
+          }
+          setItemsReadPerPage(newItemSlice)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const subscribe = useMutation({
     mutationFn: async (subInfo) => {
       console.log("subInfo", subInfo)
@@ -72,8 +116,26 @@ const MainPage = () => {
 
     useEffect(() => {
       setCurrentItems(itemsPerPage[(currentPage - 1) % 10])
-  }, [currentPage, itemsPerPage, currentItems])
+  }, [currentPage, itemsPerPage])
+
+  useEffect(() => {
+    const fetchBookDetails = async () => {
+        if (itemsReadPerPage.length > 0) {
+          const currentSlice = itemsReadPerPage[(currentReadPage - 1) % 10];
+          const bookDetailsPromises = currentSlice.map(item => fetchBookInfo(item._id));
+          const bookDetails = await Promise.all(bookDetailsPromises);
+          setCurrentReadItems(bookDetails);
+      }
+    };
   
+    fetchBookDetails();
+  }, [currentReadPage, itemsReadPerPage]);
+
+  useEffect(() => {
+    if (mostReadQuery.data) {
+      MostReadResult();
+    }
+  }, [mostReadQuery.data]);
 
   const handleNextPage = () => {
     const nextPage = currentPage + 1;
@@ -104,6 +166,35 @@ const MainPage = () => {
     }
   };
   
+  const handleReadNextPage = () => {
+    const nextPage = currentReadPage + 1;
+    const totalPages = Object.keys(itemsReadPerPage).length;
+    console.log("nextpage ", nextPage)
+    if (nextPage <= totalPages) {
+      setCurrentReadPage(nextPage);
+    }
+    if (nextPage % 10 === 1) {
+      setCurrentReadArray(Math.floor((nextPage) / 10 + 1))
+      setCurrentReadPage(1)
+    }
+  };
+  
+  const handleReadPrevPage = () => {
+    const prevPage = currentReadPage - 1;
+    
+    if (prevPage >= 1) {
+      setCurrentReadPage(prevPage);
+    }
+    console.log('prepage ', prevPage)
+    console.log('curr ', currentReadPage)
+    if ((prevPage) % 10 === 0) {
+      if (currentReadArray !== 1) {
+        setCurrentReadArray(currentReadArray - 1)
+        setCurrentReadPage(10)
+      }
+    }
+  };
+  
   useEffect(() => {
     if (currentArray !== 0) {
       bestsellerResult(currentArray);
@@ -113,9 +204,9 @@ const MainPage = () => {
   const handleSubscribe = () => {
     subscribe.mutate({ nickname, email });
   }
-        
 
   return (
+    !mostReadQuery.isLoading  && mostReadQuery.data &&
     <>
       <NavBar />
         {/* banner */}
@@ -149,14 +240,12 @@ const MainPage = () => {
             북극성 사용자가 많이 완독한 책을 살펴볼까요?
           </SubTitleText>
           <BookContainer>
-            <ArrowL />
-            <BookItem />
-            <BookItem />
-            <BookItem />
-            <BookItem />
-            <BookItem />
-            <ArrowR />
-          </BookContainer>
+        <ArrowL onClick={handleReadPrevPage} />
+          {currentReadItems && currentReadItems.map((item, index) => (
+                <GridBox key={index} item={item} gridArea={`gridBox${index % 5 + 1}`} />
+            ))}
+          <ArrowR onClick={handleReadNextPage}/>
+        </BookContainer>
           <div style={{ height: 50 }} />
           <TitleText>북극성 구독하기:</TitleText>
           <SubTitleText>북극성의 이야기를 들어보고 싶으시다면,<br /></SubTitleText>
@@ -227,14 +316,6 @@ const ArrowL = styled(ArrowLeft)`
 const ArrowR = styled(ArrowRight)`
   grid-area: arrowr;
   margin-top: 140px;
-`;
-
-const BookItem = styled.div`
-  width: 228px;
-  height: 299px;
-  background-color: #d9d9d9;
-  margin: 10px;
-  box-shadow: 0px 5px 10px #d9d9d9;
 `;
 
 const SubscribeContainer = styled.div`
