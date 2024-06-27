@@ -84,7 +84,9 @@ const RegisterPage = () =>{
     
     const handleDuplicateCheckId = () => {
         console.log("chck in id")
-        fetchIdCheck()
+        if (is_id){
+            fetchIdCheck()
+        }
     };
 
     const handleDuplicateCheckNickname = () => {
