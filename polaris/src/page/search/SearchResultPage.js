@@ -42,9 +42,6 @@ const SearchResultPage = () => {
             console.log(result.data)
             setData(result.data);
             console.log('searchtext', searchText)
-            if (data) {
-                mutate({ books: result.data.item });
-            }
             // divide books to show 10 per page
             const newItemSlice = [];
             for (let i = 0; i < maxResults; i += pagePerLimit) {
@@ -102,6 +99,8 @@ const SearchResultPage = () => {
 
     useEffect(() => {
         if (data) {
+            // save book data
+            mutate({ books: data.item });
             // calculate the total number of pages
             const newTotalPage = [];
             for (let i = 1; i <= Math.ceil(data.totalResults / pagePerLimit); i++) {
