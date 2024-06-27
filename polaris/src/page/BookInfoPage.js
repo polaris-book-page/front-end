@@ -113,6 +113,22 @@ const BookInfoPage = () => {
 
   }
 
+  const fetchCountLike = async () => {
+    try {
+      const res = await axios.post(`/api/book/cnt-likes`, { isbn: state }, { withCredentials: true });
+      const data = res.data;
+
+      return data.count;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const countLikesQuery = useQuery({
+    queryKey: ["count-likes"],
+    queryFn: fetchCountLike
+})
+
   const handleAddReview = (progress, startDate, pageType) => {
     setProgress(progress);
     setStartDate(startDate);
@@ -207,7 +223,9 @@ const BookInfoPage = () => {
               <StarRating rating={3.5} size={'25px'} />
               <LikeBox>
                 <ICLike />
-                <TitleText color={'#97A4E8'} size={'16px'}>43</TitleText>
+                {!countLikesQuery.isLoading && countLikesQuery.data && <>
+                  <TitleText color={'#97A4E8'} size={'16px'}>{countLikesQuery.data}</TitleText>
+                </>}
               </LikeBox>
             </BookImageBox>
             {/* book content */}
