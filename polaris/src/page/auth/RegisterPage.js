@@ -115,7 +115,7 @@ const RegisterPage = () =>{
             setUserIdMsg('아이디는 2자리부터 20자리까지 가능합니다.')
             setIsUserId(false)
         } else {
-            setUserIdMsg('사용가능한 아이디입니다.')
+            setUserIdMsg('')
             setIsUserId(true)
         }
     }
