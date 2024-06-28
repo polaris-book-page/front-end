@@ -280,13 +280,13 @@ const CenterContainer = styled.div`
 `;
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.span`
   color: ${(props) => props.color || 'gray'};
   font-family: "KOTRA_BOLD";
   font-size: ${(props) => props.size || '12px'};
 `;
 
-const InfoTitleText = styled.text`
+const InfoTitleText = styled.span`
   color: #4659A9;
   font-family: "KOTRA_GOTHIC";
   font-size: 16px;
@@ -294,7 +294,7 @@ const InfoTitleText = styled.text`
   font-weight: 700;
 `;
 
-const InfoContentText = styled.text`
+const InfoContentText = styled.span`
   flex: 1; 
   color: #4659A9;
   font-family: "KOTRA_GOTHIC";
