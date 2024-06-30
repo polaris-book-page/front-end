@@ -34,21 +34,6 @@ const BookInfoPage = () => {
       setLoading(false);
     }
 
-  const { mutate } = useMutation({
-    mutationFn: async (bookInfo) => {
-        const { data } = await axios.post(`/api/book/info`, bookInfo, { withCredentials: true })
-        //console.log("data", data)
-        return data;
-    }, 
-    onSuccess: (data) => {
-      console.log("book info save success")
-      setDbook(data);
-    },
-    onError: () => {
-      console.log("book info save failure")
-    }
-  });
-
   const fetchBookReviewList = async () => {
     try {
       const res = await axios.get(`/api/book/info/users/review/list?isbn=${state}&page=1`, { withCredentials: true });
@@ -114,6 +99,22 @@ const BookInfoPage = () => {
 
   }
 
+  const fetchCountLike = async () => {
+    try {
+      const res = await axios.post(`/api/book/cnt-likes`, { isbn: state }, { withCredentials: true });
+      const data = res.data;
+
+      return data.count;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const countLikesQuery = useQuery({
+    queryKey: ["count-likes"],
+    queryFn: fetchCountLike
+})
+
   const handleAddReview = (progress, startDate, pageType) => {
     setProgress(progress);
     setStartDate(startDate);
@@ -145,12 +146,6 @@ const BookInfoPage = () => {
   useEffect(() => {
     fetchCheckLike(); 
   }, [])
-  
-  useEffect(() => {
-    if (book) {
-      mutate({ isbn: book.isbn13, page: book.subInfo.itemPage });
-    }
-  }, [book])
   
   if (!(book)) {
     return null;
@@ -208,7 +203,9 @@ const BookInfoPage = () => {
               <StarRating rating={3.5} size={'25px'} />
               <LikeBox>
                 <ICLike />
-                <TitleText color={'#97A4E8'} size={'16px'}>43</TitleText>
+                {!countLikesQuery.isLoading && countLikesQuery.data && <>
+                  <TitleText color={'#97A4E8'} size={'16px'}>{countLikesQuery.data}</TitleText>
+                </>}
               </LikeBox>
             </BookImageBox>
             {/* book content */}
@@ -284,13 +281,13 @@ const CenterContainer = styled.div`
 `;
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.span`
   color: ${(props) => props.color || 'gray'};
   font-family: "KOTRA_BOLD";
   font-size: ${(props) => props.size || '12px'};
 `;
 
-const InfoTitleText = styled.text`
+const InfoTitleText = styled.span`
   color: #4659A9;
   font-family: "KOTRA_GOTHIC";
   font-size: 16px;
@@ -298,7 +295,7 @@ const InfoTitleText = styled.text`
   font-weight: 700;
 `;
 
-const InfoContentText = styled.text`
+const InfoContentText = styled.span`
   flex: 1; 
   color: #4659A9;
   font-family: "KOTRA_GOTHIC";

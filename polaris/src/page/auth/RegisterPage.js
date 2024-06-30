@@ -45,51 +45,54 @@ const RegisterPage = () =>{
         }
     });
 
-    const { idCheckQuery } = useQuery({
-        queryKey:  ['idCheck', _id],
-        queryFn: async () => {
-            const response = await fetch(
-                `/api/user/join/id-check/${_id}`,
-                );
-            const idCheckQuery = await response.json();
-            return idCheckQuery;
-        }, 
-        onSuccess: () => {
+    const fetchIdCheck = async () => {
+        try {
+            const response = await axios.get(`/api/user/join/id-check/${_id}`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log(data.isAvailable)
             console.log("id-check success")
-            if (idCheckQuery && idCheckQuery.isAvailable) {
+            if (data && data.isAvailable === true) {
                 alert('사용 가능한 아이디입니다.')
-            }
-        },
-            enabled: is_id,
-    });
-    
-    const { nicknameCheckQuey } = useQuery({
-        queryKey:  ['nicknameCheck', nickname],
-        queryFn: async () => {
-            const response = await fetch(
-                `/api/user/join/id-check/${nickname}`,
-                );
-            const nicknameCheckQuey = await response.json();
-            return nicknameCheckQuey;
-        }, 
-        onSuccess: () => {
+            } else if (data && data.isAvailable === false) {
+                alert('중복된 아이디입니다.')
+            } 
+            
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const fetchNicknameCheck = async () => {
+        try {
+            const response = await axios.get(`/api/user/join/nickname-check/${nickname}`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log(data.isAvailable)
             console.log("nickname-check success")
-            if (nicknameCheckQuey && nicknameCheckQuey.isAvailable) {
+            if (data && data.isAvailable === true) {
                 alert('사용 가능한 닉네임입니다.')
-            }
-        },
-            enabled: isNickname,
-    });
-    
+            } else if (data && data.isAvailable === false) {
+                alert('중복된 닉네임입니다.')
+            } 
+            
+            return data;
+        } catch (err) {
+            console.log(err)
+        }
+    }
     
     const handleDuplicateCheckId = () => {
         console.log("chck in id")
-        queryClient.invalidateQueries(['idCheck', _id]);
+        if (is_id){
+            fetchIdCheck()
+        }
     };
 
     const handleDuplicateCheckNickname = () => {
         console.log("chck in nick")
-        queryClient.invalidateQueries(['nicknameCheck', nickname]);
+        if (isNickname){
+            fetchNicknameCheck()
+        }
     };
 
     let goHome = () => {
@@ -115,7 +118,7 @@ const RegisterPage = () =>{
             setUserIdMsg('아이디는 2자리부터 20자리까지 가능합니다.')
             setIsUserId(false)
         } else {
-            setUserIdMsg('사용가능한 아이디입니다.')
+            setUserIdMsg('')
             setIsUserId(true)
         }
     }
@@ -152,7 +155,7 @@ const RegisterPage = () =>{
             setNicknameMsg('닉네임은 6자리부터 30자리까지 가능합니다.')
             setIsNickname(false)
         } else {
-            setNicknameMsg('사용가능한 닉네임입니다.')
+            setNicknameMsg('')
             setIsNickname(true)
         }
     }
