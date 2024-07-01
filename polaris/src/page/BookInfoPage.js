@@ -17,6 +17,7 @@ const BookInfoPage = () => {
   const [checkLike, setCheckLike] = useState(null);
   const [progress, setProgress] = useState(null);
   const [startDate, setStartDate] = useState(null);
+  const [starAvg, setStarAvg] = useState(0);
   const { state } = useLocation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -139,13 +140,28 @@ const BookInfoPage = () => {
       queryFn: fetchBookReviewList
   })
 
+  const calStarAvg = (data) => {
+    if (data) {
+        const evaluations = data.map(({ evaluation }) => evaluation)
+        const total = evaluations.reduce((acc, curr) => acc + curr, 0)
+        const avg = total / evaluations.length
+        setStarAvg(avg)
+
+        return avg
+    }
+    return 0
+};
+
   useEffect(() => {
     bookSearch();
+    fetchCheckLike(); 
+    calStarAvg();
   }, []);
 
   useEffect(() => {
-    fetchCheckLike(); 
-  }, [])
+    calStarAvg(reviewQuery.data.result);
+  }, [reviewQuery.data]);
+
   
   if (!(book)) {
     return null;
@@ -200,7 +216,9 @@ const BookInfoPage = () => {
             {/* book image */}
             <BookImageBox>
             <img style={{ width: '150px', height: '200px' }} src={book.cover} alt="Book cover" />
-              <StarRating rating={3.5} size={'25px'} />
+            {!reviewQuery.isFetching && reviewQuery.data && <>
+              <StarRating rating={starAvg} size={'25px'} />
+              </>}
               <LikeBox>
                 <ICLike />
                 {!countLikesQuery.isLoading && countLikesQuery.data && <>
@@ -250,8 +268,10 @@ const BookInfoPage = () => {
                 <TitleText color={'#97A4E8'} size={'17px'}>{reviewQuery.data.length}</TitleText>
               </ReviewTitle>
               <EvaluateBox>
-                <StarRating rating={3.8} size={'20px'} />
-                <TitleText style={{ marginTop: 4, marginLeft: 5 }} color={'#97A4E8'} size={'16px'}>3.8</TitleText>
+              {!reviewQuery.isFetching && reviewQuery.data && <>
+                <StarRating rating={starAvg} size={'20px'} />
+                <TitleText style={{ marginTop: 4, marginLeft: 5 }} color={'#97A4E8'} size={'16px'}>{starAvg}</TitleText>
+              </>}
               </EvaluateBox>
               <TitleText onClick={() => navigate('/book/review', {state : state })} style={{ justifySelf: 'flex-end', gridRow: 1, gridColumn: 3 }} color={'#4659A9'} size={'13px'}>더보기</TitleText>
             </ReviewTitleBox>
