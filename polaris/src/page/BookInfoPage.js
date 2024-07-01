@@ -141,11 +141,10 @@ const BookInfoPage = () => {
   })
 
   const calStarAvg = (data) => {
-    if (data) {
+    if (data && data.length > 0) {
         const evaluations = data.map(({ evaluation }) => evaluation)
         const total = evaluations.reduce((acc, curr) => acc + curr, 0)
         const avg = total / evaluations.length
-        setStarAvg(avg)
 
         return avg
     }
@@ -159,7 +158,10 @@ const BookInfoPage = () => {
   }, []);
 
   useEffect(() => {
-    calStarAvg(reviewQuery.data.result);
+    if (reviewQuery.data && reviewQuery.data.result) {
+      const avg = calStarAvg(reviewQuery.data.result);
+      setStarAvg(avg);
+    }
   }, [reviewQuery.data]);
 
   
