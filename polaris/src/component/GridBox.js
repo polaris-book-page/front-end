@@ -110,6 +110,7 @@ const BookInfo = styled.div`
 
 const BookText = styled.div`
     flex-grow: 1;
+    height: 70px;
 `;
 
 const BookAuthor = styled.div`

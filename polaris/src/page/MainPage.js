@@ -234,7 +234,7 @@ const MainPage = () => {
               ))}
             <ArrowR onClick={handleNextPage}/>
           </BookContainer>
-          <div style={{ height: "50px" }} />
+          <div style={{ height: "50px", marginTop: "50px" }} />
           <TitleText>여행자가 가장 많이 읽은 책:</TitleText>
           <SubTitleText>
             북극성 사용자가 많이 완독한 책을 살펴볼까요?
@@ -242,11 +242,11 @@ const MainPage = () => {
           <BookContainer>
         <ArrowL onClick={handleReadPrevPage} />
           {currentReadItems && currentReadItems.map((item, index) => (
-                <GridBox key={index} item={item} gridArea={`gridBox${index % 5 + 1}`} />
+            <GridBox key={index} item={item} gridArea={`gridBox${index % 5 + 1}`} />
             ))}
           <ArrowR onClick={handleReadNextPage}/>
         </BookContainer>
-          <div style={{ height: 50 }} />
+          <div style={{ height: "50px", marginTop: "50px" }} />
           <TitleText>북극성 구독하기:</TitleText>
           <SubTitleText>북극성의 이야기를 들어보고 싶으시다면,<br /></SubTitleText>
           <SubTitleText>
