@@ -130,6 +130,8 @@ const DrawChart2 = ({ legendContainerId }) => {
             align-items: flex-start;
             padding: 0;
             margin: 0;
+            font-weight: 600;
+            text-shadow: -1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white;
           }
 
           #legend-container-${legendContainerId} ul li span {
