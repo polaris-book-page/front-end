@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
 import DrawChart1 from "../../component/DrawChart1";
@@ -150,7 +150,7 @@ const StatisticsPage = () => {
                                     <Rocket src={require("../../assets/ic-spaceship.svg").default}/>
                                     {currReviewCnt === 0 || !userGoal ? '' : <Fire src={require("../../assets/ic-fire.svg").default}/>}
                                 </Icon>
-                                <TextB>{((currReviewCnt / userGoal * 100) * (10000 / 100)).toFixed(2)}km<br/>{currReviewCnt}권</TextB>
+                                <TextB $userGoal={userGoal} $currReviewCnt={currReviewCnt}>{((currReviewCnt / userGoal * 100) * (10000 / 100)).toFixed(2)}km<br/>{currReviewCnt}권</TextB>
                                 <Line></Line>
                             </Current>
                         </Background>
@@ -350,12 +350,31 @@ const Current = styled.div`
     position: absolute;
     right: 25px;
     // 600px이 최대
-    bottom: ${({ $userGoal, $currReviewCnt }) => ($userGoal ? `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px` : '30px')}; 
+    bottom: ${({ $userGoal, $currReviewCnt }) => {
+                if ($userGoal >= $currReviewCnt) {
+                    return `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px`
+                } else if ($userGoal <= $currReviewCnt) {
+                    return '600px'
+                } else {
+                        return  '30px'
+                }
+            }};
 `;
 
 const TextB = styled.div`
     text-align: right;
     font-size: 15px;
+    ${({ $userGoal, $currReviewCnt }) => {
+        if ($userGoal <= $currReviewCnt) {
+                return css`
+                opacity: 0;
+            `;
+        } else {
+            return css`
+                opacity: 1;
+            `;
+        }
+    }};
 `;
 
 const Line = styled.div`
