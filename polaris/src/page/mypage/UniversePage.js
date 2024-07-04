@@ -3,11 +3,13 @@ import NavBar from "../../component/NavBar";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import Moment from 'moment';
 
 const UniversePage = () =>{
     const reviewPerMonth = Array.from({length: 12}, () => 0)
     const [reviewList, setReviewList] = useState([])
+    let navigate = useNavigate()
     let premonth = -1
     let n = 0
 
@@ -49,6 +51,9 @@ const UniversePage = () =>{
         }
     }, [ReviewQuery.data])
 
+    const handleReviewDetail = (review) => {
+        navigate(`/mypage/review/detail`, { state: review })
+    }
 
     return (
         !ReviewQuery.isLoading && <>
@@ -73,7 +78,6 @@ const UniversePage = () =>{
                             const endDate = new Date(review.endDate);
                             const curmonth = endDate.getMonth(); 
                             
-                            console.log("title: ", review.title, "month: ", curmonth, premonth, "x: ", Math.cos((n * 20 % 360) * (Math.PI / 180)) * (60 + 35 * curmonth))
                             if (curmonth === premonth) {
                                 n += 1
                             } else (
@@ -85,9 +89,9 @@ const UniversePage = () =>{
                                 <PlanetWrapper 
                                     key={index} 
                                     review={review}
-                                    // src={review.bookImage} 
                                     m={curmonth + 1} 
                                     n={n}
+                                    onClick={() => handleReviewDetail(review)}
                                 />
                             );
                         })}
@@ -175,8 +179,8 @@ const Sun = styled.img`
     top: calc(50% - 30px);
 `;
 
-const PlanetWrapper = ({ review, m, n }) => (
-    <BookInfo m={m} n={n}>
+const PlanetWrapper = ({ review, m, n, onClick }) => (
+    <BookInfo m={m} n={n} onClick={onClick}>
         <Planet src={review.bookImage} />
         <ReadingBox>
             <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
