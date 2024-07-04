@@ -183,7 +183,7 @@ const PlanetWrapper = ({ review, m, n, onClick }) => (
     <BookInfo m={m} n={n} onClick={onClick}>
         <Planet src={review.bookImage} />
         <ReadingBox>
-            <img style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
+            <img src={review.bookImage} style={{width: 50, height: 70 }} />
             <ReadingContent>
                 <ContentText color={'#4659A9'} size={'16px'}>{review.title}</ContentText>
                 <ContentText color={'#4659A9'}>{Moment(review.startDate).format('YYYY.MM.DD')} /
