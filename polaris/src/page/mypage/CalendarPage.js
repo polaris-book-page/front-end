@@ -3,11 +3,13 @@ import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import moment from 'moment/moment';
 import NavBar from "../../component/NavBar";
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const CalendarPage = () => {
     const [value, onChange] = useState(new Date());
+    let navigate = useNavigate();
 
     // fetch API
     const fetchReviewList = async () => {
@@ -52,7 +54,7 @@ const CalendarPage = () => {
                             if (ReviewQuery.data.findMyReview && ReviewQuery.data.reviewList.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
                                 return (
                                     <>
-                                        <BookImage src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
+                                        <BookImage onClick={()=> navigate(`/mypage/review/detail`, { state: ReviewQuery.data.reviewList[CalIndexFunc(date)] })} src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
                                     </>
                                 )
                             }
