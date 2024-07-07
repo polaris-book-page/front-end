@@ -34,10 +34,10 @@ const GridBox = ({ item }) => {
             console.log("in gird: ", item.isbn13)
             // refetch
             queryClient.invalidateQueries(["book-review-list"])
-            if (item.isbn) {
-                navigate('/book/info', {state : item.isbn });
-            } else {
+            if (item.isbn13) {
                 navigate('/book/info', {state : item.isbn13 });
+            } else {
+                navigate('/book/info', {state : item.isbn });
             }
             console.log(state)
         }
