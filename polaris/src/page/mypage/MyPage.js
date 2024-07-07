@@ -234,7 +234,8 @@ const MyPage = () => {
               <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 나의 우주</ProfileTitleText>
-                  <ProfileSubTitleText onClick={() => navigate('/mypage/universe')}>더보기</ProfileSubTitleText>
+                  <ProfileSubTitleText onClick={() => navigate('/mypage/review')}>리뷰 목록</ProfileSubTitleText>
+                  <ProfileSubTitleText onClick={() => navigate('/mypage/universe')}>우주를 향유하러</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>지금까지 읽은 책 탐방하기</ContentText>
                 {queries[1].data.findMyReview ? reviewList(queries[1].data.reviewList) : <ContentText>작성한 리뷰가 없습니다.</ContentText>}
@@ -399,6 +400,7 @@ const ProfileTitleBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  gap: 10px;
 `
 
 const ProfileTitleText = styled.text`

@@ -3,11 +3,14 @@ import Calendar from 'react-calendar';
 import styled from 'styled-components';
 import moment from 'moment/moment';
 import NavBar from "../../component/NavBar";
-import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const CalendarPage = () => {
     const [value, onChange] = useState(new Date());
+    let navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     // fetch API
     const fetchReviewList = async () => {
@@ -33,6 +36,11 @@ const CalendarPage = () => {
         return ReviewQuery.data.reviewList.findIndex((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))
     }
 
+    const handleOnClick = async (date) => {
+        await queryClient.invalidateQueries(['detail-review']);
+        navigate(`/mypage/review/detail`, { state: ReviewQuery.data.reviewList[CalIndexFunc(date)] }) 
+    }
+
     return (
         !ReviewQuery.isLoading && ReviewQuery.data &&
         <>
@@ -51,9 +59,7 @@ const CalendarPage = () => {
                         tileContent={({ date }) => {
                             if (ReviewQuery.data.findMyReview && ReviewQuery.data.reviewList.find((x) => moment(x.endDate).format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD"))) {
                                 return (
-                                    <>
-                                        <BookImage src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
-                                    </>
+                                    <BookImage onClick={() => handleOnClick(date)} src={ReviewQuery.data.reviewList[CalIndexFunc(date)]['bookImage']} />
                                 )
                             }
                             }

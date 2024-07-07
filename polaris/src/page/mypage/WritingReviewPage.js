@@ -118,13 +118,14 @@ const WritingReviewPage = () => {
 
     const fetchEditReview = async () => {
         const reviewId = queries[1].data.reviewId;
-        console.log(reviewId);
-        const blob = b64toBlob(selPlanet);
 
         // set form data
         const formData = new FormData();
         formData.append('dir', 'planetImg');
-        formData.append('planetImage', blob);
+        if(selPlanet !== ''){
+            const blob = b64toBlob(selPlanet);
+            formData.append('planetImage', blob);
+        }
         formData.append('_id', reviewId);
         formData.append('evaluation', rate);
         formData.append('content', content);
@@ -183,12 +184,14 @@ const WritingReviewPage = () => {
 
         queryClient.refetchQueries(["check"]);
         const userAuthInfoCheck = queryClient.getQueryData(["check"]);
-        const blob = b64toBlob(selPlanet);
+        const formData = new FormData();
+        if(selPlanet !== ''){
+            const blob = b64toBlob(selPlanet);
+            formData.append('planetImage', blob);
+        } else formData.append('planetImage', null);
 
         // set form data
-        const formData = new FormData();
         formData.append('dir', 'planetImg');
-        formData.append('planetImage', blob);
         formData.append('userId', userAuthInfoCheck.userId);
         formData.append('isbn', state.isbn13);
         formData.append('evaluation', rate);
