@@ -5,11 +5,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import Moment from 'moment';
+import YearDropdown from "../../component/YearDropdown";
 
 const UniversePage = () =>{
     const reviewPerMonth = Array.from({length: 12}, () => 0)
     const [reviewList, setReviewList] = useState([])
     let navigate = useNavigate()
+    const [year, setYear] = useState('');
+    const [isActive3, setIsActive3] = useState(false);
+    const years = [2023, 2024]
     let premonth = -1
     let n = 0
 
@@ -30,6 +34,11 @@ const UniversePage = () =>{
     })
 
     console.log(ReviewQuery.data)
+
+    const handleYearChange = (year) => {
+        setYear(year);
+        console.log("years: ", years[year])
+    };
 
     useEffect(() => {
         if (ReviewQuery.data) {
@@ -55,11 +64,24 @@ const UniversePage = () =>{
         navigate(`/mypage/review/detail`, { state: review })
     }
 
+    const toggleActive3 = () => {
+        setIsActive3(prevIsActive => !prevIsActive);
+    };
+
     return (
         !ReviewQuery.isLoading && <>
         {/* <> */}
             <NavBar/>
             <Background>
+            <DropdownBox>
+                <YearDropdown 
+                        isActive={isActive3}
+                        setIsActive={toggleActive3}
+                        options={years}
+                        setOptions={handleYearChange}
+                        style={{ position: "absolute", left: "50%" }}
+                        />
+            </DropdownBox>
                 <Solar>
                     <Sun src={require("../../assets/graphic/sun.png")}></Sun>
                     <Orbit1></Orbit1>
@@ -163,6 +185,13 @@ const neon_flicker = keyframes`
 
 const Background = styled.div`
     background: #2C2C60;
+`;
+
+const DropdownBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh; 
 `;
 
 const Solar = styled.div`
