@@ -37,6 +37,7 @@ const YearDropdown = ({ isActive, setIsActive, options, setOptions }) => {
 const Dropdown = styled.div`
 	position: relative;
     cursor: default;
+    z-index: 999;
 `;
 
 const FilterBtn = styled.button`
