@@ -7,13 +7,13 @@ import { useNavigate } from "react-router";
 import Moment from 'moment';
 import YearDropdown from "../../component/YearDropdown";
 
-const UniversePage = () =>{
+const UniversePage = () => {
     const reviewPerMonth = Array.from({length: 12}, () => 0)
-    const [reviewList, setReviewList] = useState([])
+    const [yearReview, setYearReview] = useState([])
+    const [currYearReview, setCurrYearReview] = useState([])
     let navigate = useNavigate()
-    const [year, setYear] = useState('');
+    const [year, setYear] = useState(new Date().getFullYear());
     const [isActive3, setIsActive3] = useState(false);
-    const years = [2023, 2024]
     let premonth = -1
     let n = 0
 
@@ -33,32 +33,59 @@ const UniversePage = () =>{
         queryFn: fetchReviewList
     })
 
-    console.log(ReviewQuery.data)
-
+    const splitReviewsPerYear = (reviews) => {
+        const reviewsPerYear = {};
+        reviews.forEach(review => {
+            const year = new Date(review.endDate).getFullYear().toString();
+            if (!reviewsPerYear[year]) {
+                reviewsPerYear[year] = [];
+            }
+            reviewsPerYear[year].push(review);
+        });
+        return reviewsPerYear;
+    };
+    
+    const orderReview = (reviews) => {
+        return reviews.slice().sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
+    };
+    
     const handleYearChange = (year) => {
         setYear(year);
-        console.log("years: ", years[year])
     };
 
     useEffect(() => {
-        if (ReviewQuery.data) {
-            // ordering month
-            let sortedCars1 = [].slice.call(ReviewQuery.data.reviewList).sort((a, b) => new Date(a.endDate) - new Date(b.endDate));
-            console.log("after: ", sortedCars1)
-            console.log("reviewPerMonth: ", reviewPerMonth)
-            setReviewList(sortedCars1)
+        const processReviews = async () => {
+            if (ReviewQuery.data) {
+                const reviewsPerYear = splitReviewsPerYear(ReviewQuery.data.reviewList);
+                const sortedReviewsPerYear = {};
+                
+                Object.keys(reviewsPerYear).forEach(year => {
+                    sortedReviewsPerYear[year] = orderReview(reviewsPerYear[year]);
+                });
+                setYearReview(sortedReviewsPerYear);
     
-            // calculate review per month
-            reviewList.forEach(review => {
-                if (review.endDate) {
-                    const endDate = new Date(review.endDate);
-                    const month = endDate.getMonth(); 
-                    reviewPerMonth[month]++;
+                // Calculate reviews per month 
+                if (year && sortedReviewsPerYear[year]) {
+                    const reviewsOfYear = sortedReviewsPerYear[year];
+                    reviewsOfYear.forEach(review => {
+                        if (review.endDate) {
+                            const endDate = new Date(review.endDate);
+                            const month = endDate.getMonth();
+                            reviewPerMonth[month]++;
+                        }
+                    });
+                    console.log("reviewPerMonth: ", reviewPerMonth);
                 }
-            });
-            console.log("reviewPerMonth: ", reviewPerMonth)    
+            }
+        };
+        processReviews();
+    }, [ReviewQuery.data]);
+
+    useEffect(() => {
+        if (ReviewQuery.data && yearReview) {
+            setCurrYearReview(yearReview[year])
         }
-    }, [ReviewQuery.data])
+    }, [year, yearReview])
 
     const handleReviewDetail = (review) => {
         navigate(`/mypage/review/detail`, { state: review })
@@ -75,12 +102,11 @@ const UniversePage = () =>{
             <Background>
             <DropdownBox>
                 <YearDropdown 
-                        isActive={isActive3}
-                        setIsActive={toggleActive3}
-                        options={years}
-                        setOptions={handleYearChange}
-                        style={{ position: "absolute", left: "50%" }}
-                        />
+                    isActive={isActive3}
+                    setIsActive={toggleActive3}
+                    options={Object.keys(yearReview).reverse()}
+                    setOptions={handleYearChange}
+                    />
             </DropdownBox>
                 <Solar>
                     <Sun src={require("../../assets/graphic/sun.png")}></Sun>
@@ -96,27 +122,29 @@ const UniversePage = () =>{
                     <Orbit10></Orbit10>
                     <Orbit11></Orbit11>
                     <Orbit12></Orbit12>
-                    {reviewList.map((review, index) => {
-                            const endDate = new Date(review.endDate);
-                            const curmonth = endDate.getMonth(); 
-                            
-                            if (curmonth === premonth) {
-                                n += 1
-                            } else (
-                                n = 0
-                            )
-                            premonth = endDate.getMonth(); 
-                    
-                            return (
-                                <PlanetWrapper 
-                                    key={index} 
-                                    review={review}
-                                    m={curmonth + 1} 
-                                    n={n}
-                                    onClick={() => handleReviewDetail(review)}
-                                />
-                            );
-                        })}
+                    {currYearReview && <>
+                        {currYearReview.map((review, index) => {
+                                const endDate = new Date(review.endDate);
+                                const curmonth = endDate.getMonth(); 
+                                
+                                if (curmonth === premonth) {
+                                    n += 1
+                                } else (
+                                    n = 0
+                                )
+                                premonth = endDate.getMonth(); 
+                        
+                                return (
+                                    <PlanetWrapper 
+                                        key={index} 
+                                        review={review}
+                                        $m={curmonth + 1} 
+                                        $n={n}
+                                        onClick={() => handleReviewDetail(review)}
+                                    />
+                                );
+                            })}
+                    </>}
                     {/* <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/> */}
                     {/* <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={1}/>
                     <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={2}/>
@@ -188,6 +216,7 @@ const Background = styled.div`
 `;
 
 const DropdownBox = styled.div`
+    /* position: relative; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -208,8 +237,8 @@ const Sun = styled.img`
     top: calc(50% - 30px);
 `;
 
-const PlanetWrapper = ({ review, m, n, onClick }) => (
-    <BookInfo m={m} n={n} onClick={onClick}>
+const PlanetWrapper = ({ review, $m, $n, onClick }) => (
+    <BookInfo $m={$m} $n={$n} onClick={onClick}>
         <Planet src={review.bookImage} />
         <ReadingBox>
             <img src={review.bookImage} style={{width: 50, height: 70 }} />
@@ -226,7 +255,7 @@ const BookInfo = styled.div`
     position: absolute;
     left: calc(50% - 14px);
     top: calc(50% - 14px);
-    animation: ${props => cloudOrbit(props.m, props.n)} ${props => (props.m + 1) * 15}s linear infinite;
+    animation: ${props => cloudOrbit(props.$m, props.$n)} ${props => (props.$m + 1) * 15}s linear infinite;
 `;
 
 const Planet = styled.img`
