@@ -43,7 +43,7 @@ const QuoteText = styled.div`
     width: 340px;
     margin-left: 130px;
     color: black;
-    font-size: 16px;
+    font-size: 15px;
     font-family: "KOTRA_GOTHIC";
     padding-right: 20px;
     ${props => props.isShortText && css`
