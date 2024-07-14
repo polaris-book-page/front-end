@@ -8,11 +8,14 @@ import EachSentence from "../component/EachSentence";
 import NightSkyBackground from '../../src/component/NightSkyBackground';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useLocation } from "react-router-dom";
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [books, setBooks] = useState([])
     const [selectedBook, setSelectedBook] = useState(null)
+    const navigate = useNavigate();
+    const { state } = useLocation();
 
     const fetchQueries = async () => {
         try {
@@ -77,6 +80,14 @@ const TodaySentencePage = () => {
         setModalIsOpen(true);
     }
 
+    const handlePage = () => {
+        if (selectedBook.isbn13) {
+            navigate('/book/info', {state : selectedBook.isbn13 });
+        } else {
+            navigate('/book/info', {state : selectedBook.isbn });
+        }
+    }
+
     return (
         !QuoteQuery.isLoading &&
         <>
@@ -116,7 +127,7 @@ const TodaySentencePage = () => {
                                     <BookImage src={selectedBook.cover}/>
                                     <BookInfo>
                                         <BookTitleBox>
-                                            <LikeIcon item={selectedBook} />
+                                            <LikeIcon item={{selectedBook}} />
                                             <BookTitle>{selectedBook.title}</BookTitle>
                                         </BookTitleBox>
                                         <BookTextBox>
@@ -127,7 +138,7 @@ const TodaySentencePage = () => {
                                 </BookContainer>
                                 <div style={{height: 10}} />
                                 <BtnContainer>
-                                    <Btn>책 보러가기</Btn>
+                                    <Btn onClick={()=> handlePage()}>책 보러가기</Btn>
                                     <Btn onClick={()=> setModalIsOpen(false)}>닫기</Btn>
                                 </BtnContainer>
                             </ContentBox>
