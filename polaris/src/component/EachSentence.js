@@ -11,7 +11,7 @@ const EachSentence = ({ onClick, quote, bookCategory, bookColor }) => {
                 <QuoteText isShortText={isShortText}>{quote}</QuoteText>
             </QuoteBox>
             <BookIcon size="200" color={bookColor} />
-            <BookCategory>{bookCategory}</BookCategory>
+            <BookCategory>#{bookCategory}</BookCategory>
         </Container>
     );
 }
@@ -59,11 +59,11 @@ const BookIcon = styled(PiBookFill)`
 `;
 
 const BookCategory = styled.div`
-    font-size: 20px;
+    font-size: 15px;
     color: #ffffff;
     position: absolute;
     bottom: 50px;
-    left: 25px;
+    right: 390px;
     font-family: "KOTRA_GOTHIC";
 `;
 
