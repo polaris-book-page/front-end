@@ -121,7 +121,7 @@ const TodaySentencePage = () => {
                     ariaHideApp={false}
                     >
                     {selectedBook && (
-                        <Content>
+                        <Content length={selectedBook.quote.length}>
                             <ContentBox>
                                 <BookContainer>
                                     <BookImage src={selectedBook.cover}/>
@@ -220,9 +220,12 @@ const ExplainationText = styled.p`
     font-family: "KOTRA_GOTHIC";
 `;
 
+// 대충 45자가 한 줄
+// 4줄까지 들어감
+// font size 16
 const Content = styled.div`
     width: 1000px;
-    height: 400px;
+    height: ${props => 500 + Math.ceil((props.length - 400) / 45) * 16}px;
     position: absolute;
     left: 0;
     right: 0;
