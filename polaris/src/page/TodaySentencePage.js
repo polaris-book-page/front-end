@@ -127,7 +127,7 @@ const TodaySentencePage = () => {
                                     <BookImage src={selectedBook.cover}/>
                                     <BookInfo>
                                         <BookTitleBox>
-                                            <LikeIcon item={{selectedBook}} />
+                                            <LikeIcon item={selectedBook} />
                                             <BookTitle>{selectedBook.title}</BookTitle>
                                         </BookTitleBox>
                                         <BookTextBox>
