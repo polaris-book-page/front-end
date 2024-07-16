@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useLocation } from "react-router-dom";
 import Marquee2 from '../component/Marquee2';
+import _ from 'lodash';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,6 +18,19 @@ const TodaySentencePage = () => {
     const [selectedBook, setSelectedBook] = useState(null)
     const navigate = useNavigate();
     const { state } = useLocation();
+    const [width, setWidth] = useState(window.innerWidth);
+    const isMobile = width <= 1200;
+
+    const handleResize = _.debounce(() => {
+        setWidth(window.innerWidth);
+    }, 200);
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => {
+        window.removeEventListener('resize', handleResize); 
+        };
+    }, []);
 
     const fetchQueries = async () => {
         try {
@@ -93,7 +107,9 @@ const TodaySentencePage = () => {
         !QuoteQuery.isLoading &&
         <>
             <NavBar />
-            <NightSkyBackground height={'100vh'} />
+            {isMobile 
+                ? <NightSkyBackground height={'180vh'} /> 
+                : <NightSkyBackground height={'100vh'} /> }
             <Background>
                 <TitleText>오늘의 문장</TitleText>
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
@@ -182,7 +198,7 @@ const SentencesContainer = styled.div`
     justify-content: center;
     margin-bottom: 10%;
 
-    @media all and (max-width: 1050px){
+    @media all and (max-width: 1200px){
         grid-template-columns: repeat(1, 1fr);
     }
 `;
