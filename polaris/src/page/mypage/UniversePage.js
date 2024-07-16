@@ -21,7 +21,7 @@ const UniversePage = () => {
         try {
             const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
-            
+                        
             return data;
         } catch (err) {
             console.log(err)
@@ -239,7 +239,7 @@ const Sun = styled.img`
 
 const PlanetWrapper = ({ review, $m, $n, onClick }) => (
     <BookInfo $m={$m} $n={$n} onClick={onClick}>
-        <Planet src={review.bookImage} />
+        <Planet src={review.planetImage} />
         <ReadingBox>
             <img src={review.bookImage} style={{width: 50, height: 70 }} />
             <ReadingContent>
@@ -258,7 +258,8 @@ const BookInfo = styled.div`
     animation: ${props => cloudOrbit(props.$m, props.$n)} ${props => (props.$m + 1) * 15}s linear infinite;
 `;
 
-const Planet = styled.img`
+const Planet = styled.img.attrs(({ src }) => ({
+    src: src ? src: require('../../assets/graphic/planet-10.png') }))`
     width: 28px;
     height: 28px;
 `;
