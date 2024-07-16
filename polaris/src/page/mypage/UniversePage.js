@@ -147,31 +147,6 @@ const UniversePage = () => {
                                 );
                             })}
                     </>}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/> */}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={1}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={2}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={3}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={4}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={5}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={6}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={7}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={8}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={9}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={10}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={11}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={12}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={13}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={14}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={15}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={16}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={17}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={18}/> */}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-2.png")} m={7} n={2}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-3.png")} m={10} n={1}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-7.png")} m={10} n={3}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-8.png")} m={10} n={5}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-9.png")} m={10} n={7}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={10} n={10}/> */}
                 </Solar>
             </Background>
         </>)
