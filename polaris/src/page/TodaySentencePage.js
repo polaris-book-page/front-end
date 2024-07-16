@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import NavBar from "../component/NavBar";
 import FooterBar from "../component/FooterBar";
 import Modal from 'react-modal';
@@ -9,6 +9,7 @@ import NightSkyBackground from '../../src/component/NightSkyBackground';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useLocation } from "react-router-dom";
+import Marquee2 from '../component/Marquee2';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -128,7 +129,7 @@ const TodaySentencePage = () => {
                                     <BookInfo>
                                         <BookTitleBox>
                                             <LikeIcon item={selectedBook} />
-                                            <BookTitle>{selectedBook.title}</BookTitle>
+                                            <Marquee2 title={selectedBook.title} color={'black'} size={'26px'} font={"KOTRA_BOLD"}/>
                                         </BookTitleBox>
                                         <BookTextBox>
                                             <BookSentence>{selectedBook.quote}</BookSentence>
@@ -225,7 +226,8 @@ const ExplainationText = styled.p`
 // font size 16
 const Content = styled.div`
     width: 1000px;
-    height: ${props => 500 + Math.ceil((props.length - 400) / 45) * 16}px;
+    height: ${props => props.length < 180 ? '400px' :
+        `${400 + Math.ceil((props.length - 180) / 45) * 16}px`};
     position: absolute;
     left: 0;
     right: 0;
@@ -248,11 +250,15 @@ const Content = styled.div`
     }
 
     @media all and (max-width: 1100px){
+        //textbox 최소 120, 4줄은 126, 5줄 150, 6즐 174
         width: 800px;
-        height: 400px;
+        height: ${props => props.length < 185 ? '400px' :
+        `${400 + Math.ceil((props.length - 148) / 37) * 24}px`};
     }
     @media all and (max-width: 900px){
         width: 500px;
+        height: ${props => props.length < 185 ? '400px' :
+        `${400 + Math.ceil((props.length - 148) / 37) * 24}px`};
         height: 600px;
         top: 10%;
         overflow-y: scroll;
@@ -278,9 +284,8 @@ const BookModal = styled(Modal)`
 
 const BookContainer = styled.div`
     display: flex;
-    align-items: center;
-
     @media all and (max-width: 900px){
+        align-items: center;
         flex-direction: column;
     }
 `;
@@ -290,6 +295,7 @@ const BookImage = styled.img`
     height: 270px;
     background-color: #d9d9d9;
     box-shadow: 0px 5px 10px #d9d9d9;
+    margin-top: 5px;
 
     @media all and (max-width: 1100px){
         width: 150px;
@@ -306,17 +312,18 @@ const BookInfo = styled.div`
 `;
 
 const BookTitleBox = styled.div`
-    display: flex;
-    align-items: center;
     margin-bottom: 10px;
-`;
-
-const BookTitle = styled.p`
-    font-size: 24px;
-    font-family: "KOTRA_BOLD";
-    margin: 0;
-    margin-left: 10px;
-    margin-top: 7px;
+    @media all and (min-width: 900px){
+        align-items: center;
+        display: flex;
+    }
+    @media all and (max-width: 900px){
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column-reverse;
+        margin-right: 24px;
+    }
 `;
 
 const BookTextBox = styled.div`
@@ -329,13 +336,13 @@ const BookTextBox = styled.div`
     clip-path: polygon(0% 0%, 100% 0, 90% 50%, 100% 100%, 0% 100%);
 
     @media all and (max-width: 1100px){
-        width: 400px;
+        width: 500px;
     }
     @media all and (max-width: 900px){
-        width: 300px;
+        width: 400px;
     }
     @media all and (max-width: 600px){
-        width: 200px;
+        width: 300px;
     }
 `;
 
