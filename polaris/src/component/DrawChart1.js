@@ -92,9 +92,6 @@ const DrawChart1 = ({ legendContainerId }) => {
           legend: {
             display: false,
           },
-          labels: {
-            labels: false
-          },
           datalabels: {
             formatter: function (value, ctx) {
               var value = ctx.dataset.data[ctx.dataIndex];
@@ -105,6 +102,19 @@ const DrawChart1 = ({ legendContainerId }) => {
             },
             color: 'white',
           },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                let label = ' ';
+                let value = context.raw;
+                let total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                let percentage = ((value / total) * 100).toFixed(0);
+
+                label += value + '권 (' + percentage + '%)';
+                return label;
+              }
+            }
+          }
         }
       },
       plugins: [customLegendPlugin, ChartDataLabels],
