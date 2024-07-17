@@ -52,6 +52,10 @@ const LoginPage = () =>{
         navigate('/auth/register')
     }
 
+    const navigatePasswordReset = () => {
+        navigate('/auth/forget-password')
+    }
+
     const handleOnKeyPress = e => {
         if (e.key === 'Enter') {
             handleLogin(); 
@@ -78,7 +82,7 @@ const LoginPage = () =>{
                         </FlotingLabelContainer>
                     </InputContainer>
                     <BtnContainer>
-                        <FindPwdText>비밀번호를 잊어버리셨나요?</FindPwdText>
+                        <FindPwdText onClick={navigatePasswordReset}>비밀번호를 잊어버리셨나요?</FindPwdText>
                         <RegisterText onClick={navigateRegister}>계정이 없으신가요?</RegisterText>
                         <LoginBtn onClick={handleLogin}> 로그인 </LoginBtn>
                     </BtnContainer>
