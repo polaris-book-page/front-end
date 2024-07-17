@@ -60,10 +60,14 @@ const DrawChart1 = ({ legendContainerId }) => {
         let color = chart.data.datasets[0].backgroundColor;
 
         chart.data.labels.forEach(function (label, index) {
-          ul.innerHTML += `<li style="margin-bottom: 5px; display: inline-block; margin-right: 10px; color: ${color[index]};">
-            <span style="background-color: ${color[index]}; display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1.5px solid white"></span>
-            ${label}
-          </li>`;
+          if (index < 6) {
+            ul.innerHTML += `<li style="margin-bottom: 5px; display: inline-block; margin-right: 10px; color: ${color[index]};">
+              <span style="background-color: ${color[index]}; display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1.5px solid white"></span>
+              ${label}
+            </li>`;
+          } else if (index === 6) {
+            ul.innerHTML += 'more...'
+          }
         });
 
         let legendContainer = document.getElementById(`legend-container-${legendContainerId}`);
