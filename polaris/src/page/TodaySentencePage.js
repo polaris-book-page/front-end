@@ -196,9 +196,11 @@ const SentencesContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     justify-content: center;
+    align-items: center;
     margin-bottom: 10%;
+    column-gap: 15%;
 
-    @media all and (max-width: 1200px){
+    @media all and (max-width: 1215px){
         grid-template-columns: repeat(1, 1fr);
     }
 `;

@@ -21,8 +21,8 @@ const Container = styled.div`
     width: 500px;
     margin: 70px 0;
     margin-right: 20px;
-    margin-left: 90px;
     padding: 0;
+    justify-self: center;
 `;
 
 const QuoteBox = styled.div`
