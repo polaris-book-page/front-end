@@ -159,16 +159,22 @@ const StatisticsPage = () => {
                     <Category>
                         <CategoryContainer/>
                         <CategoryText>읽은 카테고리</CategoryText>
-                        <DrawChartContainer>
-                            <DrawChart11 legendContainerId="1" />
-                        </DrawChartContainer>
+                        { ReviewQuery.data.findMyReview ? 
+                            <DrawChartContainer>
+                                <DrawChart11 legendContainerId="1" />
+                            </DrawChartContainer> :
+                            <ChartText>아직 남긴 리뷰가 없어요!</ChartText>
+                        }
                     </Category>
                     <Type>
                         <TypeContainer/>
                         <TypeText>책 타입</TypeText>
-                        <DrawChartContainer>
-                            <DrawChart22 legendContainerId="2" />
-                        </DrawChartContainer>
+                        { ReviewQuery.data.findMyReview ? 
+                            <DrawChartContainer>
+                                <DrawChart22 legendContainerId="2" />
+                            </DrawChartContainer> :
+                            <ChartText>아직 남긴 리뷰가 없어요!</ChartText>
+                        }
                     </Type>
                     <Review>
                         <ReviewText>지금까지 남긴 별점</ReviewText>
@@ -417,6 +423,16 @@ const DrawChartContainer = styled.div`
     position: absolute;
     left: 55px;
     bottom: 70px;
+`;
+
+const ChartText = styled.p`
+    text-align: center;
+    font-size: 20px;
+    font-family: "KOTRA_GOTHIC";
+    color: #4659A9;
+    position: absolute;
+    left: 120px;
+    bottom: 160px;
 `;
 
 const Type = styled.div`

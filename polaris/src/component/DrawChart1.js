@@ -36,7 +36,7 @@ const DrawChart1 = ({ legendContainerId }) => {
   };
 
   useEffect(() => {
-      if (ReviewQuery.data) {
+      if (ReviewQuery.data.findMyReview) {
           initCount();
           ReviewQuery.data.reviewList.forEach(review => {
             if (!categoryCnt.has(review.category)) {
