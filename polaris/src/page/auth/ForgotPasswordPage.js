@@ -1,10 +1,37 @@
 import styled from "styled-components";
 import NavBar from "../../component/NavBar";
 import FooterBar from "../../component/FooterBar";
+import axios from "axios";
+import { useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () =>{
+    const [_id, setUserId] = useState('')
+    let navigate = useNavigate();
+
+    const { mutate } = useMutation({
+        mutationFn: async (userInfo) => {
+            const { data } = await axios.post(`/api/user/forgot-password`, userInfo, { withCredentials: true })
+            console.log("data", data)
+            return data;
+        }, 
+        onSuccess: (data) => {
+            console.log("send email success")
+            navigate('/auth/send-email')
+        },
+        onError: () => {
+            console.log("send email failure")
+        }
+    });
+
+    const handleReset = () => {
+        mutate({ _id });
+    }
+
     return (
         <>
+            <NavBar />
             <Background>
                 <LoginContainer >
                     <TitleText>비밀번호 찾기</TitleText>
@@ -14,12 +41,12 @@ const ForgotPasswordPage = () =>{
                     </SubtextContainer>
                     <InputContainer>
                     <FlotingLabelContainer className="has-float-label">
-                        <FlotingLabelInput type="text" placeholder=""/>
+                        <FlotingLabelInput type="text" placeholder="" onChange={(e) => {setUserId(e.target.value)}}/>
                         <FlotingLabelTitle>아이디</FlotingLabelTitle>
                     </FlotingLabelContainer>
                 </InputContainer>
                     <BtnContainer>
-                        <LoginBtn>다음</LoginBtn>
+                        <LoginBtn onClick={handleReset}>다음</LoginBtn>
                     </BtnContainer>
                 </LoginContainer>
             </Background>
@@ -27,7 +54,6 @@ const ForgotPasswordPage = () =>{
         </>
     )
 }
-
 
 const Background = styled.div`
     position: relative;
