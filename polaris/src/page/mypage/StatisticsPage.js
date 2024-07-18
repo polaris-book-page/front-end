@@ -246,7 +246,6 @@ const Goal = styled.div`
 
 const ContainerRocketBlind = styled.div`
     position: absolute;
-    right: 83px;
     width: 445px;
     height: 727px;
     border-radius: 61px;
@@ -256,7 +255,7 @@ const ContainerRocketBlind = styled.div`
 
 const GoalBtn = styled.button`
     position: absolute;
-    right: 95px;
+    right: 140px;
     bottom: 340px;
     width: 165px;
     height: 63px;
@@ -357,12 +356,14 @@ const Current = styled.div`
     right: 25px;
     // 600px이 최대
     bottom: ${({ $userGoal, $currReviewCnt }) => {
-                if ($userGoal >= $currReviewCnt) {
-                    return `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px`
-                } else if ($userGoal <= $currReviewCnt) {
-                    return '600px'
+                if ($userGoal) {
+                    if ($userGoal > $currReviewCnt) {
+                        return `${ ($currReviewCnt / $userGoal * 100) * (570 / 100) + 30}px`
+                    } else if ($userGoal <= $currReviewCnt) {
+                        return '600px'
+                    }
                 } else {
-                        return  '30px'
+                    return  '30px'
                 }
             }};
 `;
