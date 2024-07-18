@@ -44,19 +44,19 @@ const WritingReviewPage = () => {
 
     // quote func
     const quoteList = () => {
-        const quotesItem = quotes.map((item, index) => {
-            console.log(index)
-            return(
-                <>
-                    <QuoteInputBox key={index}>
-                        <QuoteInput name={index} style={{flex: 0.8}} defaultValue={item.quote} placeholder={'인용구를 작성하세요.'} onChange={handleQuote} />
-                        <QuotePageInput name={index} style={{flex: 0.2}} defaultValue={item.page} onChange={handleQuotePage} />
-                    </QuoteInputBox>
-                </>
-        )})
-        return quotesItem;
-    }
-
+            const quotesItem = quotes.map((item, index) => {
+                console.log(index)
+                return(
+                    <>
+                        <QuoteInputBox key={index}>
+                            <QuoteInput name={index} style={{flex: 0.8}} defaultValue={item.quote} placeholder={'인용구를 작성하세요.'} onChange={handleQuote} />
+                            <QuotePageInput name={index} style={{flex: 0.2}} defaultValue={item.page} onChange={handleQuotePage} />
+                        </QuoteInputBox>
+                    </>
+            )})
+            return quotesItem;
+        }
+        
     const inputQuoteFunc = () => {
         const quote = {
             id: quoteIdNxt.current,
@@ -107,7 +107,7 @@ const WritingReviewPage = () => {
             const res = await axios.get(`/api/mypage/iswrited/review/${UserAuthInfoCheck.userId}/${state.isbn13}`)
             const data = res.data
             console.log(queryClient.userId, data.iswrited);
-            setIsWrited(data.iswrited);
+                        setIsWrited(data.iswrited);
 
             return data.iswrited;
             
@@ -230,16 +230,18 @@ const WritingReviewPage = () => {
 
             if(iswrited){
                 onRate(data.evaluation)
-                const updateQuotes = data.quotes.map((item, index) => {
-                    return ({
-                        id: quoteIdNxt.current++,
-                        quote: item.quote,
-                        page: item.page
-                    });
-                }) 
-                console.log("updateQuotes", updateQuotes)
-                setQuotes(updateQuotes)
                 onContent(data.content);
+                if (data.quotes) {
+                    const updateQuotes = data.quotes.map((item, index) => {
+                        return ({
+                            id: quoteIdNxt.current++,
+                            quote: item.quote,
+                            page: item.page
+                        });
+                    }) 
+                    console.log("updateQuotes", updateQuotes)
+                    setQuotes(updateQuotes)
+                }
             }
 
             return data;
@@ -353,7 +355,7 @@ const WritingReviewPage = () => {
                     {/* input date */}
                     <DateInputBox>
                         <TitleText color={'white'} size={"16px"}>읽기 시작한 날짜</TitleText>
-                        <CustomDatePicker setDate={iswrited ? queries[1].data.startDate : date} page="addreview" onDate={setStartDate} />
+                                                <CustomDatePicker setDate={iswrited ? queries[1].data.startDate : date} page="addreview" onDate={setStartDate} />
                         <div style={{height: 20}} />
                         <TitleText color={'white'} size={"16px"}>읽기 종료한 날짜</TitleText>
                         <CustomDatePicker setDate={iswrited ? queries[1].data.endDate :date} page="addreview" onDate={setEndDate} />
