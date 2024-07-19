@@ -9,9 +9,8 @@ const BookReviewItem = ({ item }) => {
     const navigate = useNavigate();
     
     const handleClick = async () => {    
-            navigate(`/mypage/review/detail`, { state: item });
-        }
-    };
+        navigate(`/mypage/review/detail`, { state: item });
+    }
 
     return (
             <Container onClick={handleClick}>
