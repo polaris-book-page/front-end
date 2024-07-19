@@ -2,15 +2,13 @@ import styled from "styled-components";
 import StarRatingVertical from "./StarRatingVertical";
 import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
 import Marquee from "./Marquee";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const BookReviewItem = ({ item }) => {
 
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const handleClick = () => {    
-        if (location.pathname !== '/auth/register/evaluate') {
+    
+    const handleClick = async () => {    
             navigate(`/mypage/review/detail`, { state: item });
         }
     };

@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StarInput from "./StarInput";
 
-const MoveStarRating = ({onRate}) => {
+const MoveStarRating = ({onRate, rate}) => {
     
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(rate)
+
+    useEffect(() =>{
+        handleClickRating(rate)
+    }, [])
 
     const handleClickRating = (value) => {
         setRating(value)
