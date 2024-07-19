@@ -1,15 +1,16 @@
 import NavBar from "../../component/NavBar";
 import styled from "styled-components";
-import BookReviewItem from "../../component/BookReviewItem";
 import axios from 'axios';
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NightSkyBackground from "../../component/NightSkyBackground";
+import BookEvalItem from "../../component/BookEvalItem";
 
 const RegisterEvaluatePage = () => {
 
-    const maxResults = 42;
+    const maxResults = 42; // 최대 검색 아이템 수
+    const [select, useSelect] = useState([]); // 평가한 책의 정보
 
     const fetchBestSellerFunc = async(start) => {
         try{
@@ -73,14 +74,14 @@ const RegisterEvaluatePage = () => {
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
-                            return <BookReviewItem key={index} item={item} />
+                            return <BookEvalItem key={index} item={item} />
                         })
                     ) : <ContentText color={'white'} size={'15px'}>로딩 중입니다...</ContentText>
                     }
                     {!isFetchingNextPage && <div ref={ref} />}
                 </EvaluateContainer>
                 <div style={{margin:'20px'}} />
-                <Button>완료!</Button>
+                <Button select>완료!</Button>
                 <div style={{margin:'20px'}} />
             </Background>
         </>
