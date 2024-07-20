@@ -48,7 +48,8 @@ const ReviewDetailPage = () => {
             title: state.title,
             author: state.author,
             cover: state.bookImage,
-            isbn13: state.isbn
+            isbn13: state.isbn,
+            planetImage: state.planetImage
         }
         navigate('/mypage/write', {state: obj})
     }

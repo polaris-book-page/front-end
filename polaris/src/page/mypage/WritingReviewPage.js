@@ -231,6 +231,7 @@ const WritingReviewPage = () => {
             if(iswrited){
                 onRate(data.evaluation)
                 onContent(data.content);
+                setSelPlanet(state.planetImage)
                 if (data.quotes) {
                     const updateQuotes = data.quotes.map((item, index) => {
                         return ({
