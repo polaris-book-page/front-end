@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { FaStar, FaStarHalf } from "react-icons/fa";
 
-const StarInput = ({ onClickRating, value, ishalf }) => {
+const StarInput = ({ onClickRating, value, ishalf, name, checked }) => {
 
     const handleClickRatingInput = (value) => {
         onClickRating(value);
@@ -9,7 +9,7 @@ const StarInput = ({ onClickRating, value, ishalf }) => {
 
     return (
         <>
-            <Input type="radio" name="rating" id={`star${value}`} value={value} />
+            <Input type="radio" name={name} id={`star${value}`} value={value} checked={checked} />
             <Label
                 onClick={handleClickRatingInput}
                 ishalf={ishalf}

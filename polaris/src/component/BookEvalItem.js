@@ -4,9 +4,9 @@ import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
 import Marquee from "./Marquee";
 import { useNavigate, useLocation } from "react-router-dom";
 import MoveStarRatingVertical from "./MoveStarRatingVertical";
-import { useState } from "react";
 
-const BookEvalItem = ({ item }) => {
+const BookEvalItem = ({ item, rate, handleRatingChange }) => {
+    
 
     return (
             <Container>
@@ -14,7 +14,7 @@ const BookEvalItem = ({ item }) => {
                     <Bookmark>
                         <ICBookmark width={40} />
                     </Bookmark>
-                    <MoveStarRatingVertical/>
+                <MoveStarRatingVertical key={item.isbn13} isbn={item.isbn13} rate={rate} item={item} onRatingChange={handleRatingChange}/>
                     <Image src={item.bookImage || item.cover} />
                 </BookContainer>
                 <Marquee title={item.title} size={'15px'} color={'white'} />

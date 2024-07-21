@@ -1,7 +1,7 @@
 import NavBar from "../../component/NavBar";
 import styled from "styled-components";
 import axios from 'axios';
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useMemo, useState } from "react";
 import NightSkyBackground from "../../component/NightSkyBackground";
@@ -10,7 +10,57 @@ import BookEvalItem from "../../component/BookEvalItem";
 const RegisterEvaluatePage = () => {
 
     const maxResults = 42; // 최대 검색 아이템 수
-    const [select, useSelect] = useState([]); // 평가한 책의 정보
+    const [rate, setRate] = useState({});
+    const queryClient = useQueryClient();
+
+    const updateEvaluate = async (rate) => {
+        console.log(rate);
+        const bookValues = Object.values(rate);
+        console.log("bookValues: ", bookValues)
+
+        const res = await axios.post('/api/user/initial-evaluation', bookValues)
+        const data = res.data;
+        console.log("data:", data);
+
+        return data;
+    }
+
+    const { mutate } = useMutation(['evaluate-update'], {
+        mutationFn: () => updateEvaluate(rate), 
+        onError: (error, variable, rollback) => {
+            if (rollback) rollback();
+            else console.log(error);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(['review-list']);
+        },
+    })
+
+        // category func
+    const categorySlicingFunc = ( category ) => {
+        const categoryList = category.split('>')
+        return categoryList[1];
+    }
+
+    // manage rate
+    const handleRatingChange = (item, newRating) => {
+        setRate((prevRatings) => ({
+        ...prevRatings,
+            [item.isbn13]: {
+                "isbn13: ": item.isbn13,
+                "evaluation": newRating,
+                "title": item.title,
+                "author": item.author,
+                "publisher": item.publisher,
+                "cover": item.cover,
+                "category": categorySlicingFunc(item.categoryName),
+                "categoryName": item.categoryName
+            }
+    }));
+    }
+
+    console.log("rate: ", rate)
+
 
     const fetchBestSellerFunc = async(start) => {
         try{
@@ -74,14 +124,14 @@ const RegisterEvaluatePage = () => {
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
-                            return <BookEvalItem key={index} item={item} />
+                            return <BookEvalItem key={index} item={item} rate={rate} handleRatingChange={handleRatingChange} />
                         })
                     ) : <ContentText color={'white'} size={'15px'}>로딩 중입니다...</ContentText>
                     }
                     {!isFetchingNextPage && <div ref={ref} />}
                 </EvaluateContainer>
                 <div style={{margin:'20px'}} />
-                <Button select>완료!</Button>
+                <Button select onClick={mutate}>완료!</Button>
                 <div style={{margin:'20px'}} />
             </Background>
         </>

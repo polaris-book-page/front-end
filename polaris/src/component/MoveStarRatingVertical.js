@@ -1,72 +1,21 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
 import StarInput from "./StarInput";
 
-const MoveStarRatingVertical = () => {
-
-    const [rate, onRate] = useState(0);
-
-    useEffect(() =>{
-        handleClickRating(rate)
-    },[])
-
-    const handleClickRating = (value) => {
-        onRate(value)
-    }
+const MoveStarRatingVertical = ({ item, rate, isbn, onRatingChange }) => {
 
     return (
         <StarRatingContainer>
             <StarRatingBox>
+            {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((value) => (
                 <StarInput
-                    onClickRating={() => handleClickRating(5)}
-                    value={5}
-                    ishalf={false}
+                    key={value}
+                    name={isbn}
+                    onClickRating={() => onRatingChange(item, value)}
+                    value={value}
+                    ishalf={value % 1 !== 0}
+                    checked={rate[isbn] && rate[isbn].evaluation === value}
                 />
-                <StarInput
-                    onClickRating={() => handleClickRating(4.5)}
-                    value={4.5}
-                    ishalf={true}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(4)}
-                    value={4}
-                    ishalf={false}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(3.5)}
-                    value={3.5}
-                    ishalf={true}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(3)}
-                    value={3}
-                    ishalf={false}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(2.5)}
-                    value={2.5}
-                    ishalf={true}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(2)}
-                    value={2}
-                    ishalf={false}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(1.5)}
-                    value={1.5}
-                    ishalf={true}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(1)}
-                    value={1}
-                    ishalf={false}
-                />
-                <StarInput
-                    onClickRating={() => handleClickRating(0.5)}
-                    value={0.5}
-                    ishalf={true}
-                />
+            ))}
             </StarRatingBox>
         </StarRatingContainer>
     )
