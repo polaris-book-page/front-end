@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import NavBar from "../../component/NavBar";
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -16,12 +16,14 @@ const UniversePage = () => {
     const [isActive3, setIsActive3] = useState(false);
     let premonth = -1
     let n = 0
+    const currMonth = new Date().getMonth() + 1;
+    console.log(currMonth)
 
     const fetchReviewList = async () => {
         try {
             const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
             const data = response.data;
-            
+                        
             return data;
         } catch (err) {
             console.log(err)
@@ -110,18 +112,18 @@ const UniversePage = () => {
             </DropdownBox>
                 <Solar>
                     <Sun src={require("../../assets/graphic/sun.png")}></Sun>
-                    <Orbit1></Orbit1>
-                    <Orbit2></Orbit2>
-                    <Orbit3></Orbit3>
-                    <Orbit4></Orbit4>
-                    <Orbit5></Orbit5>
-                    <Orbit6></Orbit6>
-                    <Orbit7></Orbit7>
-                    <Orbit8></Orbit8>
-                    <Orbit9></Orbit9>
-                    <Orbit10></Orbit10>
-                    <Orbit11></Orbit11>
-                    <Orbit12></Orbit12>
+                    <Orbit1 $m={1} curm={currMonth}/>
+                    <Orbit2 $m={2} curm={currMonth}/>
+                    <Orbit3 $m={3} curm={currMonth}/>
+                    <Orbit4 $m={4} curm={currMonth}/>
+                    <Orbit5 $m={5} curm={currMonth}/>
+                    <Orbit6 $m={6} curm={currMonth}/>
+                    <Orbit7 $m={7} curm={currMonth}/>
+                    <Orbit8 $m={8} curm={currMonth}/>
+                    <Orbit9 $m={9} curm={currMonth}/>
+                    <Orbit10 $m={10} curm={currMonth}/>
+                    <Orbit11 $m={11} curm={currMonth}/>
+                    <Orbit12 $m={12} curm={currMonth}/>
                     {currYearReview && <>
                         {currYearReview.map((review, index) => {
                                 const endDate = new Date(review.endDate);
@@ -145,31 +147,6 @@ const UniversePage = () => {
                                 );
                             })}
                     </>}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={9} n={1}/> */}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={1}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={2}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={3}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={4}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={5}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={6}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={7}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={8}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={9}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={10}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={11}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={12}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={13}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={14}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={15}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-4.png")} m={3} n={16}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-5.png")} m={3} n={17}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-6.png")} m={3} n={18}/> */}
-                    {/* <PlanetWrapper src={require("../../assets/graphic/planet-2.png")} m={7} n={2}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-3.png")} m={10} n={1}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-7.png")} m={10} n={3}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-8.png")} m={10} n={5}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-9.png")} m={10} n={7}/>
-                    <PlanetWrapper src={require("../../assets/graphic/planet-10.png")} m={10} n={10}/> */}
                 </Solar>
             </Background>
         </>)
@@ -206,8 +183,8 @@ const neon_flicker = keyframes`
     100% {
         box-shadow: 
         inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), 
-        inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4),
-        inset 0 0 35px rgba(255, 255, 255, 0.4), 0 0 35px rgba(255, 255, 255, 0.4);
+        inset 0 0 25px rgba(255, 255, 255, 0.6), 0 0 25px rgba(255, 255, 255, 0.6),
+        inset 0 0 45px rgba(255, 255, 255, 0.6), 0 0 45px rgba(255, 255, 255, 0.6);
     }
 `;
 
@@ -239,7 +216,7 @@ const Sun = styled.img`
 
 const PlanetWrapper = ({ review, $m, $n, onClick }) => (
     <BookInfo $m={$m} $n={$n} onClick={onClick}>
-        <Planet src={review.bookImage} />
+        <Planet src={review.planetImage} />
         <ReadingBox>
             <img src={review.bookImage} style={{width: 50, height: 70 }} />
             <ReadingContent>
@@ -258,7 +235,8 @@ const BookInfo = styled.div`
     animation: ${props => cloudOrbit(props.$m, props.$n)} ${props => (props.$m + 1) * 15}s linear infinite;
 `;
 
-const Planet = styled.img`
+const Planet = styled.img.attrs(({ src }) => ({
+    src: src ? src: require('../../assets/graphic/planet-10.png') }))`
     width: 28px;
     height: 28px;
 `;
@@ -303,7 +281,9 @@ const Orbit1 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 60px);
     top: calc(50% - 60px);
@@ -319,7 +299,9 @@ const Orbit2 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 95px);
     top: calc(50% - 95px);
@@ -335,7 +317,9 @@ const Orbit3 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 130px);
     top: calc(50% - 130px);
@@ -351,7 +335,9 @@ const Orbit4 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 165px);
     top: calc(50% - 165px);
@@ -367,7 +353,9 @@ const Orbit5 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 200px);
     top: calc(50% - 200px);
@@ -383,7 +371,9 @@ const Orbit6 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 235px);
     top: calc(50% - 235px);
@@ -399,7 +389,9 @@ const Orbit7 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 270px);
     top: calc(50% - 270px);
@@ -415,7 +407,9 @@ const Orbit8 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 305px);
     top: calc(50% - 305px);
@@ -431,7 +425,9 @@ const Orbit9 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 340px);
     top: calc(50% - 340px);
@@ -447,7 +443,9 @@ const Orbit10 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 375px);
     top: calc(50% - 375px);
@@ -463,7 +461,9 @@ const Orbit11 = styled.div`
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +
         'inset 0 0 25px rgba(255, 255, 255, 0.4), 0 0 25px rgba(255, 255, 255, 0.4)'};
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     position: absolute;
     left: calc(50% - 410px);
     top: calc(50% - 410px);
@@ -475,7 +475,9 @@ const Orbit12 = styled.div`
     border-radius: 50%;
     background-color: transparent;
     border: 1.2px solid white;
-    /* animation: ${neon_flicker} 1.5s infinite alternate; */
+    ${props => props.$m == props.curm && css`
+        animation: ${neon_flicker} 1.5s infinite alternate;
+    `};
     box-shadow: ${props => props.animated ? 'none' :
         'inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.4), ' + 
         'inset 0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4), ' +

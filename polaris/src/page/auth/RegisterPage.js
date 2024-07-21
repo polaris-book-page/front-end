@@ -176,7 +176,7 @@ const RegisterPage = () =>{
     return (
         <>
             <NavBar />
-            <NightSkyBackground height={'100vh'} />
+            <NightSkyBackground height={'115vh'} />
             <Background>
                 <RegisterContainer >
                     <TitleText>REGISTER</TitleText>
@@ -263,7 +263,7 @@ const RegisterContainer = styled.div`
     border-radius: 50px;
     padding: 60px 80px;
     margin: 0 auto;
-    @media (min-width: 978px) {
+    @media (min-width: 650px) {
         width: 586px;
     }
 `;

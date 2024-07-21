@@ -24,6 +24,7 @@ const MainPage = () => {
   const [currentReadArray, setCurrentReadArray] = useState(1);
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
+  const [checked, setChecked] = useState(false);
 
     const bestsellerResult = async (start) => {
       setLoading(true);
@@ -202,7 +203,13 @@ const MainPage = () => {
   }, [currentArray]);
 
   const handleSubscribe = () => {
-    subscribe.mutate({ nickname, email });
+    if (nickname && email) {
+      subscribe.mutate({ nickname, email });
+    }
+  }
+
+  const checkHandled = ({target}) => {
+    setChecked(!checked);
   }
 
   return (
@@ -256,11 +263,14 @@ const MainPage = () => {
             <TextInput placeholder="여러분의 닉네임을 입력하세요." onChange={(e) => {setNickname(e.target.value)}}/>
             <TextInput placeholder="여러분의 이메일을 입력하세요." onChange={(e) => {setEmail(e.target.value)}}/>
             <PersonalInfoBox>
-              <PersonalInfoCheck type="checkbox" />
+              <PersonalInfoCheck type="checkbox" onChange={(e) => checkHandled(e)} />
               <PersonalInfoText>개인정보처리방침에 동의합니다.</PersonalInfoText>
             </PersonalInfoBox>
             <div style={{ height: "50px" }} />
-            <SubscribeBtn onClick={handleSubscribe}>구독하기</SubscribeBtn>
+            { checked && nickname && email
+              ? <SubscribeBtn id='subBtn' onClick={handleSubscribe} checked={checked} nickname={nickname} email={email}>구독하기</SubscribeBtn>
+              : <SubscribeBtn disabled id='subBtn' onClick={handleSubscribe} checked={checked} nickname={nickname} email={email}>구독하기</SubscribeBtn>
+            }
           </SubscribeContainer>
           <div style={{ height: "100px" }} />
           </MainContainer>
@@ -340,7 +350,7 @@ const TextInput = styled.input`
 const SubscribeBtn = styled.button`
   width: 300px;
   height: 60px;
-  background-color: #4659a9;
+  background-color: ${props => props.checked && props.nickname && props.email ? '#4659a9 ': '#909090'};
   border: none;
   border-radius: 50px;
   color: white;

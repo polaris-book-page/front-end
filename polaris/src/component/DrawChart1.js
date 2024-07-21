@@ -36,7 +36,7 @@ const DrawChart1 = ({ legendContainerId }) => {
   };
 
   useEffect(() => {
-      if (ReviewQuery.data) {
+      if (ReviewQuery.data.findMyReview) {
           initCount();
           ReviewQuery.data.reviewList.forEach(review => {
             if (!categoryCnt.has(review.category)) {
@@ -60,10 +60,14 @@ const DrawChart1 = ({ legendContainerId }) => {
         let color = chart.data.datasets[0].backgroundColor;
 
         chart.data.labels.forEach(function (label, index) {
-          ul.innerHTML += `<li style="margin-bottom: 5px; display: inline-block; margin-right: 10px; color: ${color[index]};">
-            <span style="background-color: ${color[index]}; display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1.5px solid white"></span>
-            ${label}
-          </li>`;
+          if (index < 6) {
+            ul.innerHTML += `<li style="margin-bottom: 5px; display: inline-block; margin-right: 10px; color: ${color[index]};">
+              <span style="background-color: ${color[index]}; display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 3px; border: 1.5px solid white"></span>
+              ${label}
+            </li>`;
+          } else if (index === 6) {
+            ul.innerHTML += 'more...'
+          }
         });
 
         let legendContainer = document.getElementById(`legend-container-${legendContainerId}`);
@@ -92,9 +96,6 @@ const DrawChart1 = ({ legendContainerId }) => {
           legend: {
             display: false,
           },
-          labels: {
-            labels: false
-          },
           datalabels: {
             formatter: function (value, ctx) {
               var value = ctx.dataset.data[ctx.dataIndex];
@@ -105,6 +106,19 @@ const DrawChart1 = ({ legendContainerId }) => {
             },
             color: 'white',
           },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                let label = ' ';
+                let value = context.raw;
+                let total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                let percentage = ((value / total) * 100).toFixed(0);
+
+                label += value + '권 (' + percentage + '%)';
+                return label;
+              }
+            }
+          }
         }
       },
       plugins: [customLegendPlugin, ChartDataLabels],

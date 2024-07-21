@@ -96,9 +96,9 @@ const LikeIcon = ({ item, onModalOpen }) => {
 				</linearGradient>
 			</svg>
 			{isChecked ? (
-				<HeartFilledIcon size={40} onClick={onClick} />
+				<HeartFilledIcon onClick={onClick} />
 			) : ( 
-				<HeartOutlinedIcon size={40} onClick={onClick} />
+				<HeartOutlinedIcon onClick={onClick} />
 			)}
 		</Icon>
 	)
@@ -110,19 +110,27 @@ const Icon = styled.div`
 
 const HeartFilledIcon = styled(AiFillHeart)`
     fill: url(#gradient);
+    font-size: 40px;
     cursor: pointer;
     transition: transform 300ms ease;
     &:hover {
         transform: scale(1.1);
     }
+    @media all and (max-width: 900px){
+        font-size: 30px;
+    }
 `;
 
 const HeartOutlinedIcon = styled(AiOutlineHeart)`
+    font-size: 40px;
     color: #6F61C6;
     cursor: pointer;
     transition: transform 300ms ease;
     &:hover {
         transform: scale(1.1);
+    }
+    @media all and (max-width: 900px){
+        font-size: 30px;
     }
 `;
 
