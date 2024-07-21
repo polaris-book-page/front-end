@@ -1,15 +1,68 @@
 import NavBar from "../../component/NavBar";
-import styled from "styled-components";
-import BookReviewItem from "../../component/BookReviewItem";
+import styled, { css } from "styled-components";
 import axios from 'axios';
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NightSkyBackground from "../../component/NightSkyBackground";
+import BookEvalItem from "../../component/BookEvalItem";
+import { useNavigate } from "react-router-dom";
 
 const RegisterEvaluatePage = () => {
 
-    const maxResults = 42;
+    const maxResults = 42; // 최대 검색 아이템 수
+    const [rate, setRate] = useState({});
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
+    const updateEvaluate = async (rate) => {
+        const bookValues = Object.values(rate);
+        //console.log("bookValues: ", bookValues)
+
+        const res = await axios.post('/api/user/initial-evaluation', bookValues)
+        const data = res.data;
+        console.log("data:", data);
+
+        return data;
+    }
+
+    const { mutate } = useMutation(['evaluate-update'], {
+        mutationFn: () => updateEvaluate(rate), 
+        onError: (error, variable, rollback) => {
+            if (rollback) rollback();
+            else console.log(error);
+        },
+        onSettled: () => {
+            queryClient.invalidateQueries(['review-list']);
+            navigate('/main/')
+        },
+    })
+
+        // category func
+    const categorySlicingFunc = ( category ) => {
+        const categoryList = category.split('>')
+        return categoryList[1];
+    }
+
+    // manage rate
+    const handleRatingChange = (item, newRating) => {
+        setRate((prevRatings) => ({
+        ...prevRatings,
+            [item.isbn13]: {
+                "isbn13: ": item.isbn13,
+                "evaluation": newRating,
+                "title": item.title,
+                "author": item.author,
+                "publisher": item.publisher,
+                "cover": item.cover,
+                "category": categorySlicingFunc(item.categoryName),
+                "categoryName": item.categoryName
+            }
+    }));
+    }
+
+    console.log("rate: ", Object.keys(rate).length)
+
 
     const fetchBestSellerFunc = async(start) => {
         try{
@@ -73,14 +126,15 @@ const RegisterEvaluatePage = () => {
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
-                            return <BookReviewItem key={index} item={item} />
+                            return <BookEvalItem key={index} item={item} rate={rate} handleRatingChange={handleRatingChange} />
                         })
                     ) : <ContentText color={'white'} size={'15px'}>로딩 중입니다...</ContentText>
                     }
                     {!isFetchingNextPage && <div ref={ref} />}
                 </EvaluateContainer>
                 <div style={{margin:'20px'}} />
-                <Button>완료!</Button>
+                <Button select onClick={mutate} isEvaluate={Object.keys(rate).length >= 5 ? true : false}>완료!</Button>
+                {Object.keys(rate).length < 5 && <ContentText color={'white'}>5개 이상 별점을 등록해주세요.</ContentText>}
                 <div style={{margin:'20px'}} />
             </Background>
         </>
@@ -148,15 +202,24 @@ const TextBox = styled.div`
 `;
 
 // component
-const Button = styled.button`
+const Button = styled.button.attrs((props) => ({
+    disabled: !props.isEvaluate
+}))`
     border-radius: 20px;
     border: none;
     background: linear-gradient(#7B85B7, #4659A9);
     font-family: "KOTRA_GOTHIC";
     color: white;
     min-width: 250px;
-    padding: 5px;
-    width: 10%;
+    padding: 10px;
+    width: 20rem;
+    margin-bottom: 1rem;
+    
+    ${({isEvaluate}) =>
+        !isEvaluate &&
+        css`
+            background: linear-gradient(#B7B5B5, #6E6F8B);
+    `}
 `;
 
 export default RegisterEvaluatePage;

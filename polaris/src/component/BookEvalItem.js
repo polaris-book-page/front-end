@@ -2,38 +2,25 @@ import styled from "styled-components";
 import StarRatingVertical from "./StarRatingVertical";
 import { ReactComponent as ICBookmark } from "../assets/ic-bookmark.svg";
 import Marquee from "./Marquee";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import MoveStarRatingVertical from "./MoveStarRatingVertical";
 
-const BookReviewItem = ({ item }) => {
-
-    const navigate = useNavigate();
+const BookEvalItem = ({ item, rate, handleRatingChange }) => {
     
-    const handleClick = async () => {    
-        navigate(`/mypage/review/detail`, { state: item });
-    }
 
     return (
-            <Container onClick={handleClick}>
+            <Container>
                 <BookContainer>
                     <Bookmark>
-                        <ICBookmark width={35} />
+                        <ICBookmark width={40} />
                     </Bookmark>
-                    <StarRatingVertical rating={item.evaluation} size={'18px'} />
+                <MoveStarRatingVertical key={item.isbn13} isbn={item.isbn13} rate={rate} item={item} onRatingChange={handleRatingChange}/>
                     <Image src={item.bookImage || item.cover} />
                 </BookContainer>
                 <Marquee title={item.title} size={'15px'} color={'white'} />
             </Container>
     );
 }
-
-
-const TitleText = styled.text`
-    position: relative;
-    top: -10px;
-    color: white;
-    font-family: "KOTRA_BOLD";
-    font-size: 16px;
-`;
 
 const Container = styled.div`
     display: flex;
@@ -64,8 +51,7 @@ const Image = styled.img`
 
 const Bookmark = styled.div`
     position: relative;
-    top: -20px;
     left: -10px;
 `
 
-export default BookReviewItem;
+export default BookEvalItem;

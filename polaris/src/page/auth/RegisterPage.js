@@ -103,6 +103,7 @@ const RegisterPage = () =>{
         console.log(is_id, isPassword, isConfirmPassword, isNickname, isEmail, agreePrivacyPolicy)
         if (is_id && isPassword && isConfirmPassword && isNickname && isEmail && agreePrivacyPolicy) {
             mutate({ _id, password, nickname, email });
+            navigate('/register/evaluate')
         }
     }
     
