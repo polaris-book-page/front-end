@@ -1,22 +1,23 @@
 import NavBar from "../../component/NavBar";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import axios from 'axios';
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useMemo, useState } from "react";
 import NightSkyBackground from "../../component/NightSkyBackground";
 import BookEvalItem from "../../component/BookEvalItem";
+import { useNavigate } from "react-router-dom";
 
 const RegisterEvaluatePage = () => {
 
     const maxResults = 42; // 최대 검색 아이템 수
     const [rate, setRate] = useState({});
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const updateEvaluate = async (rate) => {
-        console.log(rate);
         const bookValues = Object.values(rate);
-        console.log("bookValues: ", bookValues)
+        //console.log("bookValues: ", bookValues)
 
         const res = await axios.post('/api/user/initial-evaluation', bookValues)
         const data = res.data;
@@ -33,6 +34,7 @@ const RegisterEvaluatePage = () => {
         },
         onSettled: () => {
             queryClient.invalidateQueries(['review-list']);
+            navigate('/main/')
         },
     })
 
@@ -59,7 +61,7 @@ const RegisterEvaluatePage = () => {
     }));
     }
 
-    console.log("rate: ", rate)
+    console.log("rate: ", Object.keys(rate).length)
 
 
     const fetchBestSellerFunc = async(start) => {
@@ -131,7 +133,8 @@ const RegisterEvaluatePage = () => {
                     {!isFetchingNextPage && <div ref={ref} />}
                 </EvaluateContainer>
                 <div style={{margin:'20px'}} />
-                <Button select onClick={mutate}>완료!</Button>
+                <Button select onClick={mutate} isEvaluate={Object.keys(rate).length >= 5 ? true : false}>완료!</Button>
+                {Object.keys(rate).length < 5 && <ContentText color={'white'}>5개 이상 별점을 등록해주세요.</ContentText>}
                 <div style={{margin:'20px'}} />
             </Background>
         </>
@@ -199,15 +202,24 @@ const TextBox = styled.div`
 `;
 
 // component
-const Button = styled.button`
+const Button = styled.button.attrs((props) => ({
+    disabled: !props.isEvaluate
+}))`
     border-radius: 20px;
     border: none;
     background: linear-gradient(#7B85B7, #4659A9);
     font-family: "KOTRA_GOTHIC";
     color: white;
     min-width: 250px;
-    padding: 5px;
-    width: 10%;
+    padding: 10px;
+    width: 20rem;
+    margin-bottom: 1rem;
+    
+    ${({isEvaluate}) =>
+        !isEvaluate &&
+        css`
+            background: linear-gradient(#B7B5B5, #6E6F8B);
+    `}
 `;
 
 export default RegisterEvaluatePage;
