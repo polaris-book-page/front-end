@@ -76,8 +76,12 @@ const HomePage = () => {
     }
 
     const handleLogin = () => {
-        if (initialData) navigate('/mypage')   
-        else navigate('/auth/login')
+        if (initialData.is_logined) {
+            navigate('/mypage')
+        }
+        else {
+            navigate('/auth/login')
+        }
     }
 
     // fetch API
