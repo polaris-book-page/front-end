@@ -167,6 +167,7 @@ const ContentText = styled.text`
 
 // container
 const Background = styled.div`
+    position: relative;
     background: linear-gradient(#6F61C6, #667BD4, #97A4E8, #C9C6F7, #FACECB);
     padding-left: 3vw;
     padding-right: 3vw;
