@@ -112,17 +112,8 @@ const RegisterEvaluatePage = () => {
     return (
         <>
             <NavBar/>
-            <NightSkyBackground height={'120vh'} />
+            <NightSkyBackground height={'calc(100vh - 100px)'} />
             <Background>
-                <div style={{margin:'20px'}} />
-                <TextBox>
-                    <TitleText color={'white'} size={'20px'}>책에 별점 남기기</TitleText> <br/>
-                    <ContentText color={'white'}>이 별점을 기반으로 책을 추천해드립니다.</ContentText> <br />
-                    <ContentText color={'white'}>그 전에 @닉네임@님의 취향을 알기 위한 5개 이상의 별점이 먼저 필요해요.</ContentText> <br />
-                    <ContentText color={'white'}>하지만 5권 이상의 별점을 남기기 어려우시면 평소에 읽고 싶었던 책을 기준으로 평가하셔도 돼요!</ContentText> <br />
-                    <ContentText color={'white'}>남기신 별점은 마이페이지의 '지금까지 남긴 별점' 부분에서 확인하실 수 있습니다.</ContentText> <br />
-                </TextBox>
-                <div style={{margin:'20px'}} />
                 <EvaluateContainer>
                     { (!isLoading && data) ? (
                         listItem.map((item, index) =>{
@@ -132,10 +123,18 @@ const RegisterEvaluatePage = () => {
                     }
                     {!isFetchingNextPage && <div ref={ref} />}
                 </EvaluateContainer>
-                <div style={{margin:'20px'}} />
-                <Button select onClick={mutate} isEvaluate={Object.keys(rate).length >= 5 ? true : false}>완료!</Button>
-                {Object.keys(rate).length < 5 && <ContentText color={'white'}>5개 이상 별점을 등록해주세요.</ContentText>}
-                <div style={{margin:'20px'}} />
+                <TextBox>
+                    <TitleText color={'white'} size={'20px'}>책에 별점 남기기</TitleText> <br/>
+                    <ContentText color={'white'}>이 별점을 기반으로 책을 추천해드립니다.</ContentText> <br />
+                    <ContentText color={'white'}>그 전에 @닉네임@님의 취향을 알기 위한 5개 이상의 별점이 먼저 필요해요.</ContentText> <br />
+                    <ContentText color={'white'}>하지만 5권 이상의 별점을 남기기 어려우시면 평소에 읽고 싶었던 책을 기준으로 평가하셔도 돼요!</ContentText> <br />
+                    <ContentText color={'white'}>남기신 별점은 마이페이지의 '지금까지 남긴 별점' 부분에서 확인하실 수 있습니다.</ContentText> <br />
+                    <div style={{height: '30px'}} />
+                    <ButtonBox>
+                        <Button select onClick={mutate} isEvaluate={Object.keys(rate).length >= 5 ? true : false}>완료!</Button>
+                        {Object.keys(rate).length < 5 && <ContentText color={'white'}>5개 이상 별점을 등록해주세요.</ContentText>}
+                    </ButtonBox>
+                </TextBox>
             </Background>
         </>
     )
@@ -160,20 +159,22 @@ const Background = styled.div`
     top: 70px;
     left: 0;
     right: 0;
-    height: 120vh;
+    min-width: 50rem;
+    height: calc(100vh - 100px);
     margin: auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
     padding: 20px 5%;
+    gap: 2rem;
 `;
 
 // container
 const EvaluateContainer = styled.div`
     display: grid;
+    flex-grow: 2;
     grid-template-columns: 1fr 1fr 1fr;
     overflow-y: scroll;
-    height: 80vh;
+    height: 70vh;
     gap: 30px;
 
     &::-webkit-scrollbar {
@@ -198,7 +199,14 @@ const EvaluateContainer = styled.div`
 
 // box
 const TextBox = styled.div`
+    flex-grow: 1;
     text-align: center;
+`;
+
+const ButtonBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 // component
