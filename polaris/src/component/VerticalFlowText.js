@@ -7,7 +7,7 @@ const VerticalFlowText = ({ quote, width }) => {
     useEffect(() => {
         const timeRandom = Math.floor(Math.random(0, 100) * 10000 + 1000)
         setTimeout(() => { setShow(true) } , timeRandom)
-        console.log(timeRandom, show)
+        //console.log(timeRandom, show)
         //clearTimeout(timerId);
     }, [])
 
