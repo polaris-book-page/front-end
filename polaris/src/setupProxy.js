@@ -9,7 +9,7 @@ module.exports = function(app) {
     );
     app.use(
         createProxyMiddleware('/api', {
-            target: 'http://localhost:3001',
+            target: 'http://13.124.200.174:3001',
             changeOrigin: true,
         }),
     );
