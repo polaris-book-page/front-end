@@ -22,7 +22,7 @@ const WritingReviewPage = () => {
     
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
-    const [selPlanet, setSelPlanet] = useState('')
+    const [selPlanet, setSelPlanet] = useState(null)
     const [content, onContent] = useState('');
     const [rate, onRate] = useState(5);
     const [startDate, setStartDate] = useState('');
@@ -324,7 +324,7 @@ const WritingReviewPage = () => {
                                     })}
                                 </PlenetList>
                                 <div style={{margin: 5}} />
-                                {selPlanet === "" ?
+                                {selPlanet == null ?
                                     <AddPlanet ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}>
                                         <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
                                     </AddPlanet> :  <SelectedPlanetImg src={selPlanet} ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}/>
