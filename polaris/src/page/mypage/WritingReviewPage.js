@@ -45,7 +45,6 @@ const WritingReviewPage = () => {
     // quote func
     const quoteList = () => {
             const quotesItem = quotes.map((item, index) => {
-                console.log(index)
                 return(
                     <>
                         <QuoteInputBox key={index}>
