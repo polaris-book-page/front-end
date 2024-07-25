@@ -23,6 +23,7 @@ const WritingReviewPage = () => {
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
     const [selPlanet, setSelPlanet] = useState(null)
+    const [updatePlanet, setUpdatePlanet] = useState(false)
     const [content, onContent] = useState('');
     const [rate, onRate] = useState(5);
     const [startDate, setStartDate] = useState('');
@@ -117,11 +118,11 @@ const WritingReviewPage = () => {
 
     const fetchEditReview = async () => {
         const reviewId = queries[1].data.reviewId;
-
+        
         // set form data
         const formData = new FormData();
         formData.append('dir', 'planetImg');
-        if(selPlanet !== ''){
+        if(selPlanet != null & updatePlanet == true){
             const blob = b64toBlob(selPlanet);
             formData.append('planetImage', blob);
         }
@@ -166,7 +167,7 @@ const WritingReviewPage = () => {
     }
 
     // bas64 to blob
-    const b64toBlob =(b64Data, sliceSize = 512) => {
+    const b64toBlob = (b64Data, sliceSize = 512) => {
         const image_data = atob(b64Data.split(',')[1]);
     
         const arraybuffer = new ArrayBuffer(image_data.length);
@@ -184,7 +185,7 @@ const WritingReviewPage = () => {
         queryClient.refetchQueries(["check"]);
         const userAuthInfoCheck = queryClient.getQueryData(["check"]);
         const formData = new FormData();
-        if(selPlanet !== ''){
+        if (selPlanet !== null) {
             const blob = b64toBlob(selPlanet);
             formData.append('planetImage', blob);
         } else formData.append('planetImage', null);
@@ -322,7 +323,7 @@ const WritingReviewPage = () => {
                             <PlanetSelBox>
                                 <PlenetList $isClicked={isOpen} >
                                     {plenetImgArr.map((item, index) => {
-                                        return (<PlenetComponents src={item} key={index} onClick={(e) => {console.log(item); setSelPlanet(item)}} />)
+                                        return (<PlenetComponents src={item} key={index} onClick={(e) => { console.log(item); setSelPlanet(item); setUpdatePlanet(true) }} />)
                                     })}
                                 </PlenetList>
                                 <div style={{margin: 5}} />
