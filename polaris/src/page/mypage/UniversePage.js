@@ -1,9 +1,9 @@
 import styled, { keyframes, css } from "styled-components";
 import NavBar from "../../component/NavBar";
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import Moment from 'moment';
 import YearDropdown from "../../component/YearDropdown";
 
@@ -17,14 +17,19 @@ const UniversePage = () => {
     let premonth = -1
     let n = 0
     const currMonth = new Date().getMonth() + 1;
-    console.log(currMonth)
-
+    const { state } = useLocation();
+    const queryClient = useQueryClient()
+    
     const fetchReviewList = async () => {
         try {
-            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
-            const data = response.data;
-                        
-            return data;
+            const UserAuthInfoCheck = await queryClient.getQueryData(["check"]);
+            if (UserAuthInfoCheck.userId) {
+                const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+                const data = response.data;
+                console.log("fetchReviewList", data)
+                            
+                return data;
+            }
         } catch (err) {
             console.log(err)
         }
@@ -98,8 +103,7 @@ const UniversePage = () => {
     };
 
     return (
-        !ReviewQuery.isLoading && <>
-        {/* <> */}
+        !ReviewQuery.isLoading && <> 
             <NavBar/>
             <Background>
             <DropdownBox>
