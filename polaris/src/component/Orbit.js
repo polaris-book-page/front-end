@@ -9,7 +9,7 @@ const Orbit = () => {
     return (
         <div>
             {arr.map(i => (
-                <Circle $m={i} curm={currMonth}/>
+                <Circle key={i} $m={i} curm={currMonth}/>
             ))}
         </div>
     );
