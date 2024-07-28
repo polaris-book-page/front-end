@@ -22,7 +22,8 @@ const WritingReviewPage = () => {
     
     const dropDownRef = useRef(null);
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false)
-    const [selPlanet, setSelPlanet] = useState('')
+    const [selPlanet, setSelPlanet] = useState(null)
+    const [updatePlanet, setUpdatePlanet] = useState(false)
     const [content, onContent] = useState('');
     const [rate, onRate] = useState(5);
     const [startDate, setStartDate] = useState('');
@@ -45,7 +46,6 @@ const WritingReviewPage = () => {
     // quote func
     const quoteList = () => {
             const quotesItem = quotes.map((item, index) => {
-                console.log(index)
                 return(
                     <>
                         <QuoteInputBox key={index}>
@@ -118,11 +118,11 @@ const WritingReviewPage = () => {
 
     const fetchEditReview = async () => {
         const reviewId = queries[1].data.reviewId;
-
+        
         // set form data
         const formData = new FormData();
         formData.append('dir', 'planetImg');
-        if(selPlanet !== ''){
+        if(selPlanet != null & updatePlanet == true){
             const blob = b64toBlob(selPlanet);
             formData.append('planetImage', blob);
         }
@@ -167,7 +167,7 @@ const WritingReviewPage = () => {
     }
 
     // bas64 to blob
-    const b64toBlob =(b64Data, sliceSize = 512) => {
+    const b64toBlob = (b64Data, sliceSize = 512) => {
         const image_data = atob(b64Data.split(',')[1]);
     
         const arraybuffer = new ArrayBuffer(image_data.length);
@@ -185,7 +185,7 @@ const WritingReviewPage = () => {
         queryClient.refetchQueries(["check"]);
         const userAuthInfoCheck = queryClient.getQueryData(["check"]);
         const formData = new FormData();
-        if(selPlanet !== ''){
+        if (selPlanet !== null) {
             const blob = b64toBlob(selPlanet);
             formData.append('planetImage', blob);
         } else formData.append('planetImage', null);
@@ -232,6 +232,8 @@ const WritingReviewPage = () => {
                 onRate(data.evaluation)
                 onContent(data.content);
                 setSelPlanet(state.planetImage)
+                setStartDate(data.startDate)
+                setEndDate(data.endDate)
                 if (data.quotes) {
                     const updateQuotes = data.quotes.map((item, index) => {
                         return ({
@@ -321,11 +323,11 @@ const WritingReviewPage = () => {
                             <PlanetSelBox>
                                 <PlenetList $isClicked={isOpen} >
                                     {plenetImgArr.map((item, index) => {
-                                        return (<PlenetComponents src={item} key={index} onClick={(e) => {console.log(item); setSelPlanet(item)}} />)
+                                        return (<PlenetComponents src={item} key={index} onClick={(e) => { console.log(item); setSelPlanet(item); setUpdatePlanet(true) }} />)
                                     })}
                                 </PlenetList>
                                 <div style={{margin: 5}} />
-                                {selPlanet === "" ?
+                                {selPlanet == null ?
                                     <AddPlanet ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}>
                                         <TitleText color={'#4659A9'} size={"12px"} >내 행성 <br /> 선택하기</TitleText>
                                     </AddPlanet> :  <SelectedPlanetImg src={selPlanet} ref={dropDownRef} onClick={() => { setIsOpen(!isOpen) }}/>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import StarInput from "./StarInput";
+import StarInputVertical from "./StarInputVertical";
 
 const MoveStarRatingVertical = ({ item, rate, isbn, onRatingChange }) => {
 
@@ -7,7 +7,7 @@ const MoveStarRatingVertical = ({ item, rate, isbn, onRatingChange }) => {
         <StarRatingContainer>
             <StarRatingBox>
             {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map((value) => (
-                <StarInput
+                <StarInputVertical
                     key={value}
                     name={isbn}
                     onClickRating={() => onRatingChange(item, value)}
