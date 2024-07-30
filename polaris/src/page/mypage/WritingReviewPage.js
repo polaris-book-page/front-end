@@ -30,6 +30,7 @@ const WritingReviewPage = () => {
     const [endDate, setEndDate] = useState(Date());
     const queryClient = useQueryClient()
     const [iswrited, setIsWrited] = useState(false);
+    
 
     const date = new Date();
 
@@ -155,7 +156,7 @@ const WritingReviewPage = () => {
 
     // radio func
     const selectTypeFunc = () => {
-        if(select == 1) return '종이책';
+        if(select == '1') return '종이책';
         else return '전자책';
     }
 
