@@ -31,7 +31,7 @@ const RecommendPage = () =>{
                             <BookCategory>#카테고리</BookCategory>
                         </Book4>
                 </BookGrid>
-                <div style={{height: 50}} />
+                <div style={{height: 20}} />
                     <BtnContainer>
                         <RefreshBtn>
                             <RefreshBtnText>새로고침</RefreshBtnText>
@@ -40,7 +40,6 @@ const RecommendPage = () =>{
                         <BtnText>※ 새로고침은 하루에 5번으로 제한되어 있습니다.</BtnText>
                     </BtnContainer>
                 </Background>
-            <FooterBar />
         </>
     )
 }
@@ -48,12 +47,14 @@ const RecommendPage = () =>{
 const TitleContainer = styled.div`
     display: flex;
     justify-content: center;
-    margin: 100px 0 30px 0;
+    margin: 50px 0 30px 0;
 `;
 
 const Background = styled.div`
-    padding-right: 5%;
-    padding-left: 5%;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    padding: 0 5vw;
 `;
 
 const TitleText = styled.p`
@@ -68,7 +69,7 @@ const RocketIcon = styled.img`
     margin-left: 10px;
 `;
 
-const SubtitleText = styled.p`
+const SubtitleText = styled.span`
     text-align: center;
     font-size: 20px;
     font-family: "KOTRA_GOTHIC";
@@ -84,46 +85,45 @@ const ExplainationText = styled.p`
 
 const BookGrid = styled.div`
     display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
-    grid-template-areas: 
-    "book1 book2 book3 book4";
+    @media all and (max-width: 900px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 `;
 
 const Book1 = styled.div`
-    grid-area: book1;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 const Book2 = styled.div`
-    grid-area: book2;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 const Book3 = styled.div`
-    grid-area: book3;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 const Book4 = styled.div`
-    grid-area: book4;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 
 const BookImg = styled.div`
-    width: 220px;
-    height: 310px;
+    width: 150px;
+    height: 200px;
     background-color: #d9d9d9;
     margin: 10px 20px;
     box-shadow: 0px 5px 10px #d9d9d9;
 `;
 
 const BookCategory = styled.div`
-    font-size: 25px;
+    font-size: 20px;
     color: #6F61C6;
     font-family: "KOTRA_GOTHIC";
 `;
@@ -137,7 +137,7 @@ const BtnContainer = styled.div`
 const RefreshBtn = styled.button`
     display: flex;
     width: 210px;
-    height: 60px;
+    height: 45px;
     background-color: #4659A9;
     border: none;
     border-radius: 50px;
@@ -150,15 +150,15 @@ const RefreshBtn = styled.button`
 `;
 
 const RefreshBtnText = styled.span`
-    font-size: 20px;
+    font-size: 18px;
 `;
 
 const RefreshIcon = styled.img`
-    height: 19px;
+    height: 20px;
 `;
 
 const BtnText = styled.p`
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 10px;
     margin-bottom: 30px;
     color: #4659A9;
