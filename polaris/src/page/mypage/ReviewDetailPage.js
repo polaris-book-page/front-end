@@ -57,7 +57,7 @@ const ReviewDetailPage = () => {
     return(        
         !DetailReviewQuery.isLoading && <>
         <NavBar/>
-        <NightSkyBackground height={'90vh'} />
+        <NightSkyBackground height={'calc(100vh - 100px)'} />
         <EditBtn onClick={handleMovePage}>수정하기</EditBtn>
         <Container>
             {/* scroll */}
