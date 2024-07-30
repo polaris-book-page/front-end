@@ -24,6 +24,7 @@ const TodaySentencePage = () => {
     const [width, setWidth] = useState(window.innerWidth);
     const isMobile = width <= 1200;
 
+    // when window size change, set width
     const handleResize = _.debounce(() => {
         setWidth(window.innerWidth);
     }, 200);
@@ -31,10 +32,11 @@ const TodaySentencePage = () => {
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return () => {
-        window.removeEventListener('resize', handleResize); 
+            window.removeEventListener('resize', handleResize); 
         };
     }, []);
 
+    // load quotes
     const fetchQueries = async () => {
         try {
             const res = await axios.get(`/api/book/ten-quotes`)
@@ -52,6 +54,7 @@ const TodaySentencePage = () => {
         queryFn: fetchQueries
     })
 
+    // load each book info
     const fetchBookInfo = async (isbn) => {
         try {
             const response = await axios.get(`/api/book/info/${isbn}`, { withCredentials: 'true'});
@@ -63,6 +66,7 @@ const TodaySentencePage = () => {
         }
     }
     
+    // if there isn't any quotes, load new quotes
     useEffect(() => {
         const selectQuote = async () => {
             if (!books || localStorage.getItem("day").toString() !== new Date().getDate().toString()) {
@@ -95,6 +99,7 @@ const TodaySentencePage = () => {
         selectQuote()
     }, [QuoteQuery.data])
 
+    // if load new quotes, save in local storage
     useEffect(() => {
         let day = new Date().getDate();
         localStorage.setItem("day", day)
