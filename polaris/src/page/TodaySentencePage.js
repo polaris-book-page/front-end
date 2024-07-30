@@ -14,7 +14,10 @@ import _ from 'lodash';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [books, setBooks] = useState([])
+    const [books, setBooks] = useState(() => {
+        const localData = localStorage.getItem("quotelist");
+        return localData ? JSON.parse(localData) : [];
+    });
     const [selectedBook, setSelectedBook] = useState(null)
     const navigate = useNavigate();
     const { state } = useLocation();
@@ -62,33 +65,41 @@ const TodaySentencePage = () => {
     
     useEffect(() => {
         const selectQuote = async () => {
-            if (QuoteQuery.data) {
-                const quotes = QuoteQuery.data.quotes
-                const selectedBooks = []
-                const isbnSet = new Set()
-                const bookColor = ["#97A4E8", "#4659A9", "#6F61C6", "#2C2C60"]
-
-                for (const quote of quotes) {
-                    if (selectedBooks.length >= 4) {
-                        break;
+            if (!books || localStorage.getItem("day").toString() !== new Date().getDate().toString()) {
+                if (QuoteQuery.data) {
+                    const quotes = QuoteQuery.data.quotes
+                    const selectedBooks = []
+                    const isbnSet = new Set()
+                    const bookColor = ["#97A4E8", "#4659A9", "#6F61C6", "#2C2C60"]
+    
+                    for (const quote of quotes) {
+                        if (selectedBooks.length >= 4) {
+                            break;
+                        }
+                        if (!isbnSet.has(quote.isbn)) {
+                            const bookInfo = await fetchBookInfo(quote.isbn)
+                            selectedBooks.push({
+                                ...quote,
+                                ...bookInfo,
+                                isbn13: bookInfo.isbn,
+                                bookColor: bookColor[selectedBooks.length]
+                            });
+                            isbnSet.add(quote.isbn)
+                        }
                     }
-                    if (!isbnSet.has(quote.isbn)) {
-                        const bookInfo = await fetchBookInfo(quote.isbn)
-                        selectedBooks.push({
-                            ...quote,
-                            ...bookInfo,
-                            isbn13: bookInfo.isbn,
-                            bookColor: bookColor[selectedBooks.length]
-                        });
-                        isbnSet.add(quote.isbn)
-                    }
+                    console.log("selectedBook ", selectedBooks)
+                    setBooks(selectedBooks)
                 }
-                console.log("selectedBook ", selectedBooks)
-                setBooks(selectedBooks)
             }
         };
         selectQuote()
     }, [QuoteQuery.data])
+
+    useEffect(() => {
+        let day = new Date().getDate();
+        localStorage.setItem("day", day)
+        localStorage.setItem("quotelist", JSON.stringify(books));
+    }, [books]);
 
     const openModal = (book) => {
         setSelectedBook(book);
