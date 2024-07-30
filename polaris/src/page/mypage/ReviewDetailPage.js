@@ -93,8 +93,8 @@ const ReviewDetailPage = () => {
                             {DetailReviewQuery.data.quotes == null ? <ContentText color={"white"} size={'13px'}>등록된 인용구가 없습니다.</ContentText> :  (
                                 DetailReviewQuery.data.quotes.map((item, index) => {
                                     return (<div key={index}>
-                                        <ContentText color={"white"} size={'13px'}>- {item.page} page</ContentText>
-                                        <ContentText color={"white"}>{item.quote}</ContentText>
+                                        <ContentText color={"white"} size={'15px'}>- {item.page} page: </ContentText>
+                                        <ContentText color={"white"} size={'14px'}>{item.quote}</ContentText>
                                         <div style={{height: 10}} />
                                     </div>)
                                 })
@@ -104,7 +104,7 @@ const ReviewDetailPage = () => {
                         <div style={{height: 20}} />
                         <ReviewBox>
                             <TitleText color='white' size='16px'>리뷰</TitleText>
-                            <ContentText color={'white'}>{DetailReviewQuery.data.content}</ContentText>
+                            <ContentText color={'white'} size='15px'>{DetailReviewQuery.data.content}</ContentText>
                         </ReviewBox>
                     </ReviewContainer>
                 </ContentContainer>
@@ -125,6 +125,7 @@ const ContentText = styled.span`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};
+    line-height: 1.8;
 `
 
 // container
