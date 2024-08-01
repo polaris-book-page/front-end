@@ -1,5 +1,5 @@
 import { ReactComponent as MenuIcon } from "../assets/ic-hamburger.svg";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 import useDetectClose from "./hook/useDetectClose";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,9 @@ const NavMenuList = () => {
     const queryClient = useQueryClient();
     const [isLogined, setIsLogined] = useState(false);
 
+    useEffect(() => {
+        setIsLogined(queryClient.getQueriesData(['check']));
+    }, [])
     
     const logoutquery = async () => {
         try {
