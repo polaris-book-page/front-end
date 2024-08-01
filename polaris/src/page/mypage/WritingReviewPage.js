@@ -9,6 +9,7 @@ import NightSkyBackground from "../../component/NightSkyBackground";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import LoadSpinner from "../../component/LoadSpinner";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -307,11 +308,12 @@ const WritingReviewPage = () => {
     });
 
     return (
-        !queries[0].isLoading && (queries[0].data ? !queries[1].isFetching : true) && <>
+        <>
             <NavBar/>
             <NightSkyBackground height={'calc(100vh - 100px)'} />
             <Container>
                 {/* scroll */}
+                {!queries[0].isLoading && (queries[0].data ? !queries[1].isFetching : true) ? 
                 <ScrollbarContainer>
                     <ContentContainer>
                     {/* book image */}
@@ -394,7 +396,7 @@ const WritingReviewPage = () => {
                         <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
                     </Button>
                     </ContentContainer>
-                </ScrollbarContainer>
+                </ScrollbarContainer> : <LoadSpinner />}
             </Container>
         </>
     )

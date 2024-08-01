@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useLocation } from "react-router-dom";
 import Marquee2 from '../component/Marquee2';
 import _ from 'lodash';
+import LoadSpinner from '../component/LoadSpinner';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -104,7 +105,6 @@ const TodaySentencePage = () => {
     }
 
     return (
-        !QuoteQuery.isLoading &&
         <>
             <NavBar />
             {isMobile 
@@ -115,6 +115,7 @@ const TodaySentencePage = () => {
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
                 <ExplainationText>※ 하루에 한 문장만 선택해서 책을 추천받을 수 있습니다.</ExplainationText>
                 <div style={{height: 30}} />
+                {!QuoteQuery.isLoading ? <>
                 <SentencesContainer className="container">
                     {/* <EachSentence onClick={()=>setModalIsOpen(true)} quote="고독을 배설한 자리에서 내려앉는 환희. 이 달콤함을 위해 그는 예술을 표방한다." bookCategory="#카테고리" bookColor="#97A4E8" isbn="9788901276533" />
                     <EachSentence onClick={()=>setModalIsOpen(true)} quote="전부 바다에 밀어버리자. 더 이상 내가 나를 미워하지 않고 싫어하지 않을 때까지." bookCategory="#카테고리" bookColor="#4659A9" isbn="9791167740984" />
@@ -186,6 +187,7 @@ const TodaySentencePage = () => {
                         </ContentBox>
                     </Content> */}
                 </BookModal>
+                </> : <LoadSpinner />}
             </Background>
             <FooterBar/>
         </>

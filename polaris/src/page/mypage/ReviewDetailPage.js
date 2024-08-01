@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../../component/NavBar";
 import NightSkyBackground from "../../component/NightSkyBackground";
 import StarRating from "../../component/StarRating";
+import LoadSpinner from "../../component/LoadSpinner";
 
 const ReviewDetailPage = () => {
     const { state } = useLocation();
@@ -55,13 +56,15 @@ const ReviewDetailPage = () => {
     }
 
     return(        
-        !DetailReviewQuery.isLoading && <>
+        <>
         <NavBar/>
         <NightSkyBackground height={'calc(100vh - 100px)'} />
         <EditBtn onClick={handleMovePage}>수정하기</EditBtn>
         <Container>
+        {!DetailReviewQuery.isLoading ? <>
             {/* scroll */}
             <ScrollbarContainer>
+            
                 <ContentContainer>
                 {/* book image */}
                     <BookInfoBox>
@@ -109,6 +112,7 @@ const ReviewDetailPage = () => {
                     </ReviewContainer>
                 </ContentContainer>
             </ScrollbarContainer>
+            </>: <LoadSpinner />}
         </Container>
     </>
     )

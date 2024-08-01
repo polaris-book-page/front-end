@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NightSkyBackground from '../../component/NightSkyBackground';
 import { useNavigate } from "react-router";
+import LoadSpinner from "../../component/LoadSpinner";
 
 const MyReviewPage = () => {
 
@@ -38,11 +39,12 @@ const MyReviewPage = () => {
     }
 
     return (
-        !ReviewQuery.isLoading && <>
+        <>
             <NavBar />
             <NightSkyBackground height={'calc(100vh - 100px)'}/>
             <Background>
                 <Container>
+                    { !ReviewQuery.isLoading ? <>
                     <StatisticsWrapper>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
                     <StatisticsContainer>
@@ -71,6 +73,8 @@ const MyReviewPage = () => {
                         </ReviewContainer> : <>작성한 리뷰가 없습니다.</>
                     }
                     </ReviewWrapper>
+                    </> : <LoadSpinner />
+                }
                 </Container>
             </Background>
         </>
