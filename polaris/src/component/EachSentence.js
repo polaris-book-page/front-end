@@ -59,7 +59,7 @@ const QuoteText = styled.div`
         background: rgba(255, 255, 255, 0.4);
     }
     &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 1.0);
         border-radius: 6px;
     }
 `;
