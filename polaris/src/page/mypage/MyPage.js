@@ -83,15 +83,20 @@ const MyPage = () => {
       return `${year}.${month + 1}.${day}`
   }
 
+  const handleDetail = async (item) =>{
+    await queryClient.refetchQueries(["detail-review"]);
+    navigate(`/mypage/review/detail`, { state: item })
+  }
+
   const reviewList = (data) => {
     if (data.length >= 2) {
       const newData = data.slice(-2).reverse()
       const items = newData.map((item, index) => {
-        
+
         return (
           <ReadingBox key={index}>
             <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
-            <ReadingContent>
+            <ReadingContent onClick={() =>handleDetail(item)}>
               <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
@@ -313,7 +318,6 @@ const TitleText = styled.text`
 const Background = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   background: linear-gradient(#c4cef9, #facecb, #ffffff00);
   justify-content: center;
   padding-right: 5vw;
