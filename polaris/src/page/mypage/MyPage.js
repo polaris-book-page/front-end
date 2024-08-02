@@ -297,7 +297,7 @@ const MyPage = () => {
           <ListItemOne onClick={() => navigate('/mypage/statistics')}>통계 보러가기</ListItemOne>
           <ListItemTwo onClick={() => navigate('/mypage/universe')}>우주를 향유하러</ListItemTwo>
           <ListItemThree onClick={() => navigate('/mypage/review')}>작성한 기록보기</ListItemThree>
-          <ListItemFour onClick={() => navigate('/mypage/statistics')}>북극성 달력</ListItemFour>
+          <ListItemFour onClick={() => navigate('/mypage/calendar')}>북극성 달력</ListItemFour>
         </ListContainer>
         </ListWrapper>
       </BookContainer>
