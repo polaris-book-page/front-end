@@ -19,7 +19,9 @@ const NavMenuList = () => {
     const [isLogined, setIsLogined] = useState(false);
 
     useEffect(() => {
-        setIsLogined(queryClient.getQueriesData(['check']));
+        const object = queryClient.getQueriesData(['check'])
+        setIsLogined(object.is_logined);
+        console.log("isLogined: ", isLogined);
     }, [])
     
     const logoutquery = async () => {
