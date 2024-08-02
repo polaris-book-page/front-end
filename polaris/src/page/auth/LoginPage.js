@@ -65,7 +65,7 @@ const LoginPage = () =>{
     return (
         <>
             <NavBar />
-            <NightSkyBackground height={'90vh'} />
+            <NightSkyBackground height={'calc(100vh - 100px)'} />
             <Background>
                 <LoginContainer >
                     <TitleText>LOGIN</TitleText>
@@ -95,7 +95,7 @@ const LoginPage = () =>{
 
 const Background = styled.div`
     position: absolute;
-    top: 200px;
+    top: 150px;
     left: 0;
     right: 0;
     bottom: 0;
