@@ -8,6 +8,7 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useInView } from 'react-intersection-observer';
+import LoadSpinner from "../component/LoadSpinner";
 
 const ReviewPage = () => {
 
@@ -71,7 +72,7 @@ const ReviewPage = () => {
       <CenterContainer>
       <Container>
         <ReviewContainer>
-          {!reviewQuery.isLoading && reviewQuery.data && <>
+          {!reviewQuery.isLoading && reviewQuery.data ? <>
           {/* review title */}
           <ReviewTitleBox>
             <ReviewTitle>
@@ -88,7 +89,7 @@ const ReviewPage = () => {
               {handleReviewList()}
               {!reviewQuery.isFetchingNextPage && <div ref={ref}/>}
           </ReviewContentBox>
-          </>}
+          </>: <LoadSpinner />}
         </ReviewContainer>
         <div style={{ height: 30 }} />
       </Container>

@@ -49,7 +49,19 @@ const QuoteText = styled.div`
     ${props => props.isShortText && css`
         display: flex;
         align-items: center; 
+        overflow: hidden;
     `}
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 1.0);
+        border-radius: 6px;
+    }
 `;
 
 const BookIcon = styled(PiBookFill)`

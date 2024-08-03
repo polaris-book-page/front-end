@@ -1,8 +1,30 @@
 import styled from "styled-components";
 import NavBar from "../component/NavBar";
 import FooterBar from "../component/FooterBar";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import LoadSpinner from "../component/LoadSpinner";
 
-const RecommendPage = () =>{
+const RecommendPage = () => {
+
+    const queryClient = useQueryClient();
+
+    const fetchRecommend = async() => {
+        const UserAuthInfoCheck = await queryClient.getQueryData(["check"]);
+        const res = await axios.post('/flask/recommend_books/', {userId: UserAuthInfoCheck.userId});
+        const data = res.data
+
+        console.log(data)
+
+        return data;
+    }
+    
+    const RecommendQuery = useQuery(['recommend'], fetchRecommend)
+
+    const handleButton = () => {
+        queryClient.refetchQueries(['recommend'])
+    }
+
     return (
         <>
             <NavBar />
@@ -12,35 +34,31 @@ const RecommendPage = () =>{
                         <RocketIcon src='rocket.png' alt="로켓 아이콘"/>
                     </TitleContainer>
                     <SubtitleText>여러분이 지금까지 읽었던 책을 바탕으로 다음 여행지를 추천해드립니다.</SubtitleText>
-                    <ExplainationText>※ 여러분이 선호하는 분야와 완독한 책을 바탕으로 4개의 책을 추천해드립니다.<br/>※ 완독한 책은 북극성 탐험에 나타나지 않습니다.</ExplainationText>
-                    <BookGrid className="container">
-                        <Book1>
-                            <BookImg></BookImg>
-                            <BookCategory>#카테고리</BookCategory>
-                        </Book1>
-                        <Book2>
-                            <BookImg></BookImg>
-                            <BookCategory>#카테고리</BookCategory>
-                        </Book2>
-                        <Book3>
-                            <BookImg></BookImg>
-                            <BookCategory>#카테고리</BookCategory>
-                        </Book3>
-                        <Book4>
-                            <BookImg></BookImg>
-                            <BookCategory>#카테고리</BookCategory>
-                        </Book4>
-                </BookGrid>
-                <div style={{height: 50}} />
+                <ExplainationText>※ 여러분이 선호하는 분야와 완독한 책을 바탕으로 4개의 책을 추천해드립니다.<br />※ 완독한 책은 북극성 탐험에 나타나지 않습니다.</ExplainationText>
+                { !RecommendQuery.isFetching ? 
+                    <BookGrid>
+                        {
+                            RecommendQuery.data.result.map((item, index) => {
+                                return (
+                                    <BookItem key={index}>
+                                        <BookImg src={item.bookImage} />
+                                        <BookCategory>#{item.category}</BookCategory>
+                                    </BookItem>
+                                )
+
+                            })
+                        }
+                    </BookGrid> : <LoadSpinner />
+                }
+                <div style={{height: 20}} />
                     <BtnContainer>
-                        <RefreshBtn>
+                        <RefreshBtn onClick={handleButton}>
                             <RefreshBtnText>새로고침</RefreshBtnText>
                             <RefreshIcon src='refresh-page-option.png' alt="새로고침 아이콘"/>
                         </RefreshBtn>
                         <BtnText>※ 새로고침은 하루에 5번으로 제한되어 있습니다.</BtnText>
                     </BtnContainer>
                 </Background>
-            <FooterBar />
         </>
     )
 }
@@ -48,12 +66,14 @@ const RecommendPage = () =>{
 const TitleContainer = styled.div`
     display: flex;
     justify-content: center;
-    margin: 100px 0 30px 0;
+    margin: 50px 0 30px 0;
 `;
 
 const Background = styled.div`
-    padding-right: 5%;
-    padding-left: 5%;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    padding: 0 5vw;
 `;
 
 const TitleText = styled.p`
@@ -68,7 +88,7 @@ const RocketIcon = styled.img`
     margin-left: 10px;
 `;
 
-const SubtitleText = styled.p`
+const SubtitleText = styled.span`
     text-align: center;
     font-size: 20px;
     font-family: "KOTRA_GOTHIC";
@@ -84,46 +104,29 @@ const ExplainationText = styled.p`
 
 const BookGrid = styled.div`
     display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
-    grid-template-areas: 
-    "book1 book2 book3 book4";
+    @media all and (max-width: 900px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 `;
 
-const Book1 = styled.div`
-    grid-area: book1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-const Book2 = styled.div`
-    grid-area: book2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-const Book3 = styled.div`
-    grid-area: book3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-const Book4 = styled.div`
-    grid-area: book4;
+const BookItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 
-const BookImg = styled.div`
-    width: 220px;
-    height: 310px;
-    background-color: #d9d9d9;
+const BookImg = styled.img`
+    width: 150px;
+    height: 200px;
     margin: 10px 20px;
     box-shadow: 0px 5px 10px #d9d9d9;
 `;
 
 const BookCategory = styled.div`
-    font-size: 25px;
+    font-size: 20px;
     color: #6F61C6;
     font-family: "KOTRA_GOTHIC";
 `;
@@ -137,7 +140,7 @@ const BtnContainer = styled.div`
 const RefreshBtn = styled.button`
     display: flex;
     width: 210px;
-    height: 60px;
+    height: 45px;
     background-color: #4659A9;
     border: none;
     border-radius: 50px;
@@ -150,15 +153,15 @@ const RefreshBtn = styled.button`
 `;
 
 const RefreshBtnText = styled.span`
-    font-size: 20px;
+    font-size: 18px;
 `;
 
 const RefreshIcon = styled.img`
-    height: 19px;
+    height: 20px;
 `;
 
 const BtnText = styled.p`
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 10px;
     margin-bottom: 30px;
     color: #4659A9;

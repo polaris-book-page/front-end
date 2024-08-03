@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
 import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
 import { ReactComponent as ArrowRight } from "../../assets/arrow-right.svg";
@@ -83,15 +83,20 @@ const MyPage = () => {
       return `${year}.${month + 1}.${day}`
   }
 
+  const handleDetail = async (item) =>{
+    await queryClient.refetchQueries(["detail-review"]);
+    navigate(`/mypage/review/detail`, { state: item })
+  }
+
   const reviewList = (data) => {
     if (data.length >= 2) {
       const newData = data.slice(-2).reverse()
       const items = newData.map((item, index) => {
-        
+
         return (
           <ReadingBox key={index}>
             <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
-            <ReadingContent>
+            <ReadingContent onClick={() =>handleDetail(item)}>
               <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
@@ -203,7 +208,6 @@ const MyPage = () => {
               <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
-                  <ProfileSubTitleText onClick={() => navigate('/mypage/statistics')}>더보기</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>통계 살펴보기</ContentText>
                 <StatisticsBox>
@@ -234,8 +238,6 @@ const MyPage = () => {
               <ContentBox>
                 <ProfileTitleBox>
                   <ProfileTitleText>: 나의 우주</ProfileTitleText>
-                  <ProfileSubTitleText onClick={() => navigate('/mypage/review')}>리뷰 목록</ProfileSubTitleText>
-                  <ProfileSubTitleText onClick={() => navigate('/mypage/universe')}>우주를 향유하러</ProfileSubTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>지금까지 읽은 책 탐방하기</ContentText>
                 {queries[1].data.findMyReview ? reviewList(queries[1].data.reviewList) : <ContentText>작성한 리뷰가 없습니다.</ContentText>}
@@ -272,7 +274,8 @@ const MyPage = () => {
             </CardBox>
           </CardContainer>
         </Background>
-
+        
+        <ListWrapper>
         {/* favorite */}
         <FavoriteContainer>
           <div style={{ height: '50px' }} />
@@ -290,6 +293,13 @@ const MyPage = () => {
             <div style={{flex: 1}} />
           </FavoriteBox>
         </FavoriteContainer>
+        <ListContainer>
+          <ListItemOne onClick={() => navigate('/mypage/statistics')}>통계 보러가기</ListItemOne>
+          <ListItemTwo onClick={() => navigate('/mypage/universe')}>우주를 향유하러</ListItemTwo>
+          <ListItemThree onClick={() => navigate('/mypage/review')}>작성한 기록보기</ListItemThree>
+          <ListItemFour onClick={() => navigate('/mypage/calendar')}>북극성 달력</ListItemFour>
+        </ListContainer>
+        </ListWrapper>
       </BookContainer>
       <div style={{ height: '50px' }} />
       <FooterBar />
@@ -313,7 +323,6 @@ const TitleText = styled.text`
 const Background = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   background: linear-gradient(#c4cef9, #facecb, #ffffff00);
   justify-content: center;
   padding-right: 5vw;
@@ -323,6 +332,7 @@ const Background = styled.div`
 const BookContainer = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `;
 
 const CardContainer = styled.div`
@@ -350,6 +360,152 @@ const ProfileContainer = styled.div`
   flex: 1;
   flex-direction: row;
   margin: 10px;
+`;
+
+const ListWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 5vw;
+  padding-left: 5vw;
+
+  @media all and (max-width: 1250px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
+const ListContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 40rem;
+
+  @media all and (max-width: 1250px) {
+    height: 37rem;
+  }
+`;
+
+const Gradient = keyframes`
+    0% {
+      background-position: 50% 100%;
+      opacity: 0.9;
+      transform: translateY(0px);
+    }
+    50%{
+      opacity: 1.0;
+      transform: translateY(5px);
+    }
+    100% {
+      background-position: 50% 100%;
+      opacity: 0.9;
+      transform: translateY(0px);
+    }
+`;
+
+const ListItemOne = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "KOTRA_GOTHIC";
+
+  width: 10rem;
+  height: 10rem;
+  color: white;
+  border-radius: 30rem;
+
+  background-color: #2C2C60ee;
+  animation: ${Gradient} 5s ease-in-out infinite;
+  bottom: 12rem;
+  left: 10rem;
+
+  transition: 0.5s;
+  &:hover {
+    width: 11rem;
+    height: 11rem;
+    curser: pointer;
+    font-size: 1.1rem;
+  }
+`;
+
+const ListItemTwo = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "KOTRA_GOTHIC";
+
+  width: 8rem;
+  height: 8rem;
+  color: white;
+  border-radius: 30rem;
+
+  background: linear-gradient( #6F61C6, #4659A9, #2C2C60);
+  animation: ${Gradient} 10s ease-in-out infinite;
+  right: 5rem;
+  bottom: 3rem;
+
+  transition: 0.5s;
+  &:hover {
+    width: 9rem;
+    height: 9rem;
+    curser: pointer;
+    font-size: 1.1rem;
+  }
+`;
+
+const ListItemThree = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "KOTRA_GOTHIC";
+
+  width: 9rem;
+  height: 9rem;
+  color: white;
+  border-radius: 30rem;
+
+  background-size: 2000% 2000%;
+  background: linear-gradient(#6F61C6, #97A4E8);
+  animation: ${Gradient} 3s ease-in-out infinite;
+  right: 3rem;
+  bottom: 1rem;
+
+  transition: 0.5s;
+  &:hover {
+    width: 10rem;
+    height: 10rem;
+    curser: pointer;
+    font-size: 1.1rem;
+  }
+`;
+
+const ListItemFour = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "KOTRA_GOTHIC";
+
+  width: 10rem;
+  height: 10rem;
+  color: white;
+  border-radius: 30rem;
+
+  background-size: 2000% 2000%;
+  background: linear-gradient(#D5CFFB, #97A4E8);
+  animation: ${Gradient} 5s ease-in-out infinite;
+  top: 8rem;
+  right: 20rem;
+
+  transition: 0.5s;
+  &:hover {
+    width: 11rem;
+    height: 11rem;
+    curser: pointer;
+    font-size: 1.1rem;
+  }
 `;
 
 const ProfileBox = styled.div`
@@ -506,10 +662,12 @@ const FavoriteBox = styled.div`
 `;
 
 const BookListBox = styled.div`
-    display: flex;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 
     @media screen and (max-width: 1500px) {
-      display: grid;
+      
       grid-template-rows: 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
     }
@@ -527,20 +685,11 @@ const BookListBox = styled.div`
 `;
 
 const BookItem = styled.img`
-  width: 200px;
-  height: 300px;
+  width: 180px;
+  height: 250px;
   background-color: #d9d9d9;
   margin: 10px;
   box-shadow: 0px 5px 10px #d9d9d9;
-  @media screen and (max-width: 1200px) {
-    width: 200px;
-    height: 300px;
-  }
-
-  @media screen and (max-width: 800px) {
-    width: 200px;
-    height: 300px;
-  }
 
   @media screen and (max-width: 380px) {
     width: 120px;

@@ -30,6 +30,7 @@ const FlowContainer = styled.div`
     position: absolute;
     overflow: visible;
     min-height: 100dvh;
+    z-index: 0;
 `;
 
 const FlowText = styled.div`

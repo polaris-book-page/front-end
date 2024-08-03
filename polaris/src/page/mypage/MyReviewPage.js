@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NightSkyBackground from '../../component/NightSkyBackground';
 import { useNavigate } from "react-router";
+import LoadSpinner from "../../component/LoadSpinner";
 
 const MyReviewPage = () => {
 
@@ -38,11 +39,13 @@ const MyReviewPage = () => {
     }
 
     return (
-        !ReviewQuery.isLoading && <>
+        <>
             <NavBar />
-            <NightSkyBackground height={'90vh'}/>
+            <NightSkyBackground height={'calc(100vh - 100px)'}/>
             <Background>
                 <Container>
+                    { !ReviewQuery.isLoading ? <>
+                    <StatisticsWrapper>
                     <TitleText color={'#ffffff'} size={'28px'}>내 리뷰</TitleText>
                     <StatisticsContainer>
                         <StatisticsBox>
@@ -53,9 +56,13 @@ const MyReviewPage = () => {
                             <TitleText color={'#ffffff'} size={'20px'}>{ReviewQuery.data.findMyReview ? ReviewQuery.data.reviewList.length : 0}</TitleText>
                         </StatisticsBox>
                         {/* statistics lib */}
+                        <RatingChartContainer>
                         <ReviewRatingChart />
+                        </RatingChartContainer>
                     </StatisticsContainer>
+                    </StatisticsWrapper>
                     <div style={{ height: 20 }} />
+                    <ReviewWrapper>
                     { ReviewQuery.data.findMyReview ?
                         <ReviewContainer>
                             { 
@@ -65,6 +72,9 @@ const MyReviewPage = () => {
                             }
                         </ReviewContainer> : <>작성한 리뷰가 없습니다.</>
                     }
+                    </ReviewWrapper>
+                    </> : <LoadSpinner />
+                }
                 </Container>
             </Background>
         </>
@@ -84,28 +94,39 @@ const Background = styled.div`
     top: 10px;
     margin: auto;
     display: flex;
+    flex-direction: columns;
     justify-content: center;
     padding: 20px 5%;
 `;
 
 // container
 const Container = styled.div`
-    display: flex;
     position: fixed;
-    top: 0;
+    margin: 5vw 20px;
+    top: 100px;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: 120px auto;
+    display: flex;
+    align-self: center;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 50px;
-    flex-direction: column;
     padding: 40px 20px;
-    width: 75vw;
-    max-width: 1000px;
-    height: 80vh;
+    height: 83vh;
     box-shadow: 0px 2px 7px #00000022;
+
+    @media all and (max-width: 1300px) {
+        flex-direction: column;
+        height: 83vh;
+    }
+`;
+
+const StatisticsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 2;
 `;
 
 const StatisticsContainer = styled.div`
@@ -114,6 +135,17 @@ const StatisticsContainer = styled.div`
     align-items: center;
     margin: 10px;
 `
+
+const ReviewWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    flex-grow: 1;
+    @media all and (max-width: 1300px) {
+        flex-direction: column;
+        height: 60vh;
+    }
+`;
 
 const ReviewContainer = styled.div`
     display: grid;
@@ -139,7 +171,13 @@ const ReviewContainer = styled.div`
     @media screen and (max-width: 500px) {
         grid-template-columns: 1fr;
     }
-`
+` 
+
+const RatingChartContainer = styled.div`
+    @media screen and (max-width: 1300px) {
+        display: none;
+    }
+`;
 
 // box
 const StatisticsBox = styled.div`

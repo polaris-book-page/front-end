@@ -9,6 +9,7 @@ import NightSkyBackground from "../../component/NightSkyBackground";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import LoadSpinner from "../../component/LoadSpinner";
 
 const WritingReviewPage = () => {
     const [select, setSelect] = useState('1');
@@ -30,6 +31,7 @@ const WritingReviewPage = () => {
     const [endDate, setEndDate] = useState(Date());
     const queryClient = useQueryClient()
     const [iswrited, setIsWrited] = useState(false);
+    
 
     const date = new Date();
 
@@ -155,7 +157,7 @@ const WritingReviewPage = () => {
 
     // radio func
     const selectTypeFunc = () => {
-        if(select == 1) return '종이책';
+        if(select == '1') return '종이책';
         else return '전자책';
     }
 
@@ -306,11 +308,12 @@ const WritingReviewPage = () => {
     });
 
     return (
-        !queries[0].isLoading && (queries[0].data ? !queries[1].isFetching : true) && <>
+        <>
             <NavBar/>
-            <NightSkyBackground height={'90vh'} />
+            <NightSkyBackground height={'calc(100vh - 100px)'} />
             <Container>
                 {/* scroll */}
+                {!queries[0].isLoading && (queries[0].data ? !queries[1].isFetching : true) ? 
                 <ScrollbarContainer>
                     <ContentContainer>
                     {/* book image */}
@@ -393,7 +396,7 @@ const WritingReviewPage = () => {
                         <ContentText color={'white'} size={'16px'}>내 행성에 추가하기</ContentText>
                     </Button>
                     </ContentContainer>
-                </ScrollbarContainer>
+                </ScrollbarContainer> : <LoadSpinner />}
             </Container>
         </>
     )
@@ -416,7 +419,7 @@ const ContentText = styled.span`
 const Container = styled.div`
     display: flex;
     position: fixed;
-    top: 70px;
+    top: 100px;
     left: 0;
     right: 0;
     bottom: 0;
