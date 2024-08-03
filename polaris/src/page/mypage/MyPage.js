@@ -16,6 +16,9 @@ const MyPage = () => {
   let navigate = useNavigate();
   const queryClient = useQueryClient()
   const basicImg = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+ 
+  const fields = [];
+  const fieldCnt = new Map();
 
     const fetchReviewList = async () => {
       try {
@@ -158,6 +161,48 @@ const MyPage = () => {
     }
   }
 
+  const CountingCategory = (reviews) => {
+    const categories = [];
+    const categoryCnt = new Map();
+    if (reviews) {
+        // init category count list
+        categoryCnt.forEach((value, key, map) => {
+          map.set(key, 0);
+        });;
+        
+        // count category
+        reviews.forEach(review => {
+          if (!categoryCnt.has(review.category)) {
+            categoryCnt.set(review.category, 0);
+            categories.push(review.category);
+          }
+          categoryCnt.set(review.category, categoryCnt.get(review.category) + 1);
+        });
+    }
+    return categories[0]
+  }
+
+  const CountingField = (reviews) => {
+    const fields = [];
+    const fieldCnt = new Map();
+    if (reviews) {
+        // init field count list
+        fieldCnt.forEach((value, key, map) => {
+          map.set(key, 0);
+        });;
+        
+        // count field
+        reviews.forEach(review => {
+          if (!fieldCnt.has(review.field)) {
+            fieldCnt.set(review.field, 0);
+            fields.push(review.field);
+          }
+          fieldCnt.set(review.field, fieldCnt.get(review.field) + 1);
+        });
+    }
+    return fields[0]
+  }
+
   return (
     !queries[0].isLoading && !queries[1].isLoading && !queries[2].isLoading && <>
       <NavBar/>
@@ -210,29 +255,31 @@ const MyPage = () => {
                   <ProfileTitleText>: 지금까지의 여행 기록</ProfileTitleText>
                 </ProfileTitleBox>
                 <ContentText color={'#97A4E8'}>통계 살펴보기</ContentText>
-                <StatisticsBox>
-                  <StatisticsContent>
-                    <StatisticIcon color={'#CBCDFA'} style={{zIndex: 1}}>
-                      <IcType />
-                    </StatisticIcon >
-                    <StatisticsBar color={'#CBCDFA'} style={{zIndex: 0}}>56권, 560km</StatisticsBar>
-                    <ContentText color={'#97A4E8'}>만큼 탐험했어요!</ContentText>
-                  </StatisticsContent>
-                  <StatisticsContent>
-                    <StatisticIcon color={'#D5CFFB'}>
-                      <IcBook />
-                    </StatisticIcon>
-                    <StatisticsBar color={'#D5CFFB'}>인문학</StatisticsBar>
-                    <ContentText color={'#97A4E8'}>카테고리를 많이 읽었어요!</ContentText>
-                  </StatisticsContent>
-                  <StatisticsContent>
-                    <StatisticIcon color={ '#DDCBFA'}>
-                      <IcRocket />
-                    </StatisticIcon>
-                    <StatisticsBar color={'#DDCBFA'}>과학</StatisticsBar>
-                    <ContentText color={'#97A4E8'}>분야를 많이 읽었어요!</ContentText>
-                  </StatisticsContent>
-                </StatisticsBox>
+                {queries[1].data.findMyReview ? 
+                  <StatisticsBox>
+                    <StatisticsContent>
+                      <StatisticIcon color={'#CBCDFA'} style={{zIndex: 1}}>
+                        <IcType />
+                      </StatisticIcon >
+                      {queries[1].data.findMyReview ? <StatisticsBar color={'#CBCDFA'} style={{zIndex: 0}}>{queries[1].data.reviewList.length}권</StatisticsBar> : <StatisticsBar color={'#CBCDFA'} style={{zIndex: 0}}>0권</StatisticsBar>}
+                      <ContentText color={'#97A4E8'}>만큼 탐험했어요!</ContentText>
+                    </StatisticsContent>
+                    <StatisticsContent>
+                      <StatisticIcon color={'#D5CFFB'}>
+                        <IcBook />
+                      </StatisticIcon>
+                      {queries[1].data.findMyReview ? <StatisticsBar color={'#D5CFFB'}>{CountingCategory(queries[1].data.reviewList)}</StatisticsBar> : <StatisticsBar color={'#D5CFFB'}>0</StatisticsBar>}
+                      <ContentText color={'#97A4E8'}>카테고리를 많이 읽었어요!</ContentText>
+                    </StatisticsContent>
+                    <StatisticsContent>
+                      <StatisticIcon color={ '#DDCBFA'}>
+                        <IcRocket />
+                      </StatisticIcon>
+                      {queries[1].data.findMyReview ? <StatisticsBar color={'#D5CFFB'}>{CountingField(queries[1].data.reviewList)}</StatisticsBar> : <StatisticsBar color={'#D5CFFB'}>0</StatisticsBar>}
+                      <ContentText color={'#97A4E8'}>분야를 많이 읽었어요!</ContentText>
+                    </StatisticsContent>
+                  </StatisticsBox>
+                  : <ContentText>작성한 리뷰가 없습니다.</ContentText>}
               </ContentBox>
               {/* reading */}
               <ContentBox>
