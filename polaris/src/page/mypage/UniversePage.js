@@ -23,14 +23,11 @@ const UniversePage = () => {
     
     const fetchReviewList = async () => {
         try {
-            const UserAuthInfoCheck = await queryClient.getQueryData(["check"]);
-            if (UserAuthInfoCheck.userId) {
-                const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
-                const data = response.data;
-                console.log("fetchReviewList", data)
-                            
-                return data;
-            }
+            const response = await axios.get(`/api/mypage/star-review`, { withCredentials: 'true'});
+            const data = response.data;
+            console.log("fetchReviewList", data)
+                        
+            return data;
         } catch (err) {
             console.log(err)
         }

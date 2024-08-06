@@ -14,13 +14,17 @@ import LoadSpinner from '../component/LoadSpinner';
 
 const TodaySentencePage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [books, setBooks] = useState([])
+    const [books, setBooks] = useState(() => {
+        const localData = localStorage.getItem("quotelist");
+        return localData ? JSON.parse(localData) : [];
+    });
     const [selectedBook, setSelectedBook] = useState(null)
     const navigate = useNavigate();
     const { state } = useLocation();
     const [width, setWidth] = useState(window.innerWidth);
     const isMobile = width <= 1200;
 
+    // when window size change, set width
     const handleResize = _.debounce(() => {
         setWidth(window.innerWidth);
     }, 200);
@@ -28,10 +32,11 @@ const TodaySentencePage = () => {
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         return () => {
-        window.removeEventListener('resize', handleResize); 
+            window.removeEventListener('resize', handleResize); 
         };
     }, []);
 
+    // load quotes
     const fetchQueries = async () => {
         try {
             const res = await axios.get(`/api/book/ten-quotes`)
@@ -49,6 +54,7 @@ const TodaySentencePage = () => {
         queryFn: fetchQueries
     })
 
+    // load each book info
     const fetchBookInfo = async (isbn) => {
         try {
             const response = await axios.get(`/api/book/info/${isbn}`, { withCredentials: 'true'});
@@ -60,35 +66,45 @@ const TodaySentencePage = () => {
         }
     }
     
+    // if there isn't any quotes, load new quotes
     useEffect(() => {
         const selectQuote = async () => {
-            if (QuoteQuery.data) {
-                const quotes = QuoteQuery.data.quotes
-                const selectedBooks = []
-                const isbnSet = new Set()
-                const bookColor = ["#97A4E8", "#4659A9", "#6F61C6", "#2C2C60"]
-
-                for (const quote of quotes) {
-                    if (selectedBooks.length >= 4) {
-                        break;
+            if (!books || localStorage.getItem("day").toString() !== new Date().getDate().toString()) {
+                if (QuoteQuery.data) {
+                    const quotes = QuoteQuery.data.quotes
+                    const selectedBooks = []
+                    const isbnSet = new Set()
+                    const bookColor = ["#97A4E8", "#4659A9", "#6F61C6", "#2C2C60"]
+    
+                    for (const quote of quotes) {
+                        if (selectedBooks.length >= 4) {
+                            break;
+                        }
+                        if (!isbnSet.has(quote.isbn)) {
+                            const bookInfo = await fetchBookInfo(quote.isbn)
+                            selectedBooks.push({
+                                ...quote,
+                                ...bookInfo,
+                                isbn13: bookInfo.isbn,
+                                bookColor: bookColor[selectedBooks.length]
+                            });
+                            isbnSet.add(quote.isbn)
+                        }
                     }
-                    if (!isbnSet.has(quote.isbn)) {
-                        const bookInfo = await fetchBookInfo(quote.isbn)
-                        selectedBooks.push({
-                            ...quote,
-                            ...bookInfo,
-                            isbn13: bookInfo.isbn,
-                            bookColor: bookColor[selectedBooks.length]
-                        });
-                        isbnSet.add(quote.isbn)
-                    }
+                    console.log("selectedBook ", selectedBooks)
+                    setBooks(selectedBooks)
                 }
-                console.log("selectedBook ", selectedBooks)
-                setBooks(selectedBooks)
             }
         };
         selectQuote()
     }, [QuoteQuery.data])
+
+    // if load new quotes, save in local storage
+    useEffect(() => {
+        let day = new Date().getDate();
+        localStorage.setItem("day", day)
+        localStorage.setItem("quotelist", JSON.stringify(books));
+    }, [books]);
 
     const openModal = (book) => {
         setSelectedBook(book);
@@ -116,10 +132,6 @@ const TodaySentencePage = () => {
                 <div style={{height: 10}} />
                 {!QuoteQuery.isLoading ? <>
                 <SentencesContainer className="container">
-                    {/* <EachSentence onClick={()=>setModalIsOpen(true)} quote="고독을 배설한 자리에서 내려앉는 환희. 이 달콤함을 위해 그는 예술을 표방한다." bookCategory="#카테고리" bookColor="#97A4E8" isbn="9788901276533" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="전부 바다에 밀어버리자. 더 이상 내가 나를 미워하지 않고 싫어하지 않을 때까지." bookCategory="#카테고리" bookColor="#4659A9" isbn="9791167740984" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="타인의 언어는 결코, 나의 정답이 될 수 없음을 알기에, 홀로 밤을 읽지 않기로 한다." bookCategory="#카테고리" bookColor="#6F61C6" isbn="9788998441012" />
-                    <EachSentence onClick={()=>setModalIsOpen(true)} quote="슬픔을 병처럼 여기지 않겠다고 말하면서 나는 조금씩 의연해졌다. 슬픔에게도 비밀이 있을거라고. 그 비밀을 추궁하지 않기로 했다." bookCategory="#카테고리" bookColor="#2C2C60" isbn="9788982730009" /> */}
                     {books.map(book => (
                         <EachSentence 
                             key={book.isbn} 
