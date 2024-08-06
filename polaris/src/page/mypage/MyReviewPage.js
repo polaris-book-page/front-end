@@ -7,7 +7,6 @@ import { ReactComponent as ICBook } from "../../assets/ic-book-covered-white.svg
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import NightSkyBackground from '../../component/NightSkyBackground';
-import { useNavigate } from "react-router";
 import LoadSpinner from "../../component/LoadSpinner";
 
 const MyReviewPage = () => {

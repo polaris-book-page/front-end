@@ -18,7 +18,6 @@ const NavBar = () => {
   const queryClient = useQueryClient()
   let navigate = useNavigate();
   const initialData = queryClient.getQueryData(['check']);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const logoutquery = async () => {
     try {

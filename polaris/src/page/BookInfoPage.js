@@ -347,12 +347,6 @@ const InfoContentDetailText = styled.div`
   }
 `;
 
-const LinkText = styled.a`
-  color: #ffffff;
-  font-family: "KOTRA_GOTHIC";
-  text-decoration: none;
-`;
-
 // sub container
 const InfoContainer = styled.div`
   max-width: 1200px;

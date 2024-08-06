@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import NavBar from "../component/NavBar";
-import FooterBar from "../component/FooterBar";
 
 const RecommendPage = () =>{
     return (

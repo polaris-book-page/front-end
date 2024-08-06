@@ -8,7 +8,7 @@ import GridBox from "../../component/GridBox";
 import Pagination from "../../component/Pagination";
 import { bookOptions, bookOptionsSelect, categoryOptions, categoryKeys, orderOptions, orderOptionsSelect } from "../../component/optionsData"; 
 import FilterDropdown from "../../component/FilterDropdown";
-import { useNavigate, useLocation, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 
 const SearchResultPage = () => {

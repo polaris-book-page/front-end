@@ -4,8 +4,8 @@ import NavBar from "../component/NavBar";
 import ReviewComment from "../component/ReviewComment";
 import StarRating from '../component/StarRating.js'
 import axios from "axios";
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useLocation } from "react-router-dom";
 import { useEffect, useMemo } from "react";
 import { useInView } from 'react-intersection-observer';
 import LoadSpinner from "../component/LoadSpinner";

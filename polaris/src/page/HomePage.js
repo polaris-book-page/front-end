@@ -1,6 +1,4 @@
-import NavBar from "../component/NavBar";
 import styled from "styled-components";
-import FooterBar from "../component/FooterBar";
 import VerticalFlowText from "../component/VerticalFlowText";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from '@tanstack/react-query'

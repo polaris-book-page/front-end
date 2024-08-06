@@ -1,12 +1,10 @@
 import styled, {keyframes} from "styled-components";
 import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
-import { ReactComponent as ArrowRight } from "../../assets/arrow-right.svg";
-import { ReactComponent as ArrowLeft } from "../../assets/arrow-left.svg";
 import { ReactComponent as IcType } from "../../assets/ic-type.svg";
 import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
@@ -565,13 +563,6 @@ const ProfileTitleText = styled.div`
   font-family: "KOTRA_BOLD";
   color: #4659A9;
   margin-right: 10px;
-`
-const ProfileSubTitleText = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-size: 14px;
-  font-family: "KOTRA_BOLD";
-  color: #97A4E8;
 `
 
 // statistics content
