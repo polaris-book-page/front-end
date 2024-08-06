@@ -40,7 +40,7 @@ const LoginPage = () =>{
         if (state) {
             navigate(state, {state : UserAuthInfoCheck.userId });
         } else {
-        navigate("/");
+        navigate("/main");
         }
     };
 
