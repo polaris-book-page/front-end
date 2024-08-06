@@ -83,8 +83,7 @@ const MyPage = () => {
       return `${year}.${month + 1}.${day}`
   }
 
-  const handleDetail = async (item) =>{
-    await queryClient.refetchQueries(["detail-review"]);
+  const handleDetail = (item) =>{
     navigate(`/mypage/review/detail`, { state: item })
   }
 
@@ -94,9 +93,9 @@ const MyPage = () => {
       const items = newData.map((item, index) => {
 
         return (
-          <ReadingBox key={index}>
+          <ReadingBox onClick={() =>handleDetail(item)} key={index}>
             <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
-            <ReadingContent onClick={() =>handleDetail(item)}>
+            <ReadingContent>
               <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
