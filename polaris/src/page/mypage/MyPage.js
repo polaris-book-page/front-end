@@ -307,13 +307,13 @@ const MyPage = () => {
 };
 
 
-const ContentText = styled.text`
+const ContentText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};
 `
 
-const TitleText = styled.text`
+const TitleText = styled.div`
   color: ${(props) => props.color || 'gray'};
   font-family: "KOTRA_BOLD";
   font-size: ${(props) => props.size || '12px'};
@@ -558,7 +558,7 @@ const ProfileTitleBox = styled.div`
   gap: 10px;
 `
 
-const ProfileTitleText = styled.text`
+const ProfileTitleText = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 18px;
@@ -566,7 +566,7 @@ const ProfileTitleText = styled.text`
   color: #4659A9;
   margin-right: 10px;
 `
-const ProfileSubTitleText = styled.text`
+const ProfileSubTitleText = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 14px;

@@ -27,7 +27,7 @@ const BookReviewItem = ({ item }) => {
 }
 
 
-const TitleText = styled.text`
+const TitleText = styled.div`
     position: relative;
     top: -10px;
     color: white;
