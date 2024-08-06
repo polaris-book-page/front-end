@@ -349,32 +349,18 @@ const TextContainer = styled.div`
 
 const HaveBookText = styled.p`
     color: #B7B5B5;
+    font-size: 1.5rem;
     font-family: "KOTRA_BOLD";
-    @media screen and (min-width: 516px) {
-        font-size: 30px;
-        width: 359px;
-    }
-    @media screen and (max-width: 515px) {
-        font-size: 20px;
-        width: 250px;
-    }
 `;
 
-const AddBookText = styled.p`
+const AddBookText = styled.div`
     color: #4659A9;
+    font-size : 1.3rem;
     font-family: "KOTRA_BOLD";
     border-bottom : 3px solid #4659A9;
     margin-top: 10px;
     &:hover {
         cursor: default;
-    }
-    @media screen and (min-width: 516px) {
-        font-size: 30px;
-        width: 196px;
-    }
-    @media screen and (max-width: 515px) {
-        font-size: 20px;
-        width: 130px;
     }
 `;
 
