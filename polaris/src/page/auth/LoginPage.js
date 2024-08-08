@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from "react";
 import NavBar from "../../component/NavBar";
 import NightSkyBackground from '../../component/NightSkyBackground';
+import { toast } from 'react-toastify';
+import {toastContent} from '../../utils/toastContent';
 
 const LoginPage = () =>{
     const [_id, setUserId] = useState('')
@@ -24,9 +26,16 @@ const LoginPage = () =>{
             return data;
         }, 
         onSuccess: (data) => {
-            console.log("login success")
-            queryClient.invalidateQueries(['check']);
-            goBack()
+            if (data.loginSuccess){
+                console.log("login success")
+                queryClient.invalidateQueries(['check']);
+                toast.success(toastContent.loginSuccess);
+                goBack()
+            }
+            else{
+                console.log(data.loginSuccess);
+                toast.error(toastContent.loginError);
+            }
         },
         onError: () => {
             console.log("login failure")

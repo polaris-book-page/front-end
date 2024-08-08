@@ -13,6 +13,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import NavMenuList from "../component/NavMenuList"
 import Modal from 'react-modal';
+import { toast } from 'react-toastify';
+import { toastContent } from "../utils/toastContent";
 
 const NavBar = () => {
   const [isLogined, setIsLogined] = useState(false)
@@ -34,7 +36,7 @@ const NavBar = () => {
   
       const somebodyIn = queryClient.getQueryData(['check']);
       console.log("is anyone in? after logout: ", somebodyIn);
-      return response;
+      return response.data.logoutSuccess;
     } catch (error) {
       console.error("Error during logout:", error);
   
@@ -58,7 +60,12 @@ const NavBar = () => {
   
   const handleLogout = async () => {
     console.log("로그아웃 완")
-    await logoutquery();
+    const isLogout = await logoutquery();
+    if(isLogout){
+      toast.success(toastContent.logoutSuccess);
+    } else{
+      toast.error(toastContent.logoutError);
+    }
     setIsLogined(false)
     queryClient.invalidateQueries(['check']);
     navigate('/auth/login');
