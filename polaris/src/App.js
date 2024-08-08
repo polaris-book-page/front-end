@@ -26,6 +26,8 @@ import ResetPasswordPage from './page/auth/ResetPasswordPage';
 import CompleteEmailSendPage from './page/auth/CompleteEmailSendPage';
 import EditProfilePage from './page/mypage/EditProfilePage.js'
 import ReviewDetailPage from './page/mypage/ReviewDetailPage.js';
+import { StyledToastConatiner } from './style/ToastStyle';
+import 'react-toastify/dist/ReactToastify.css';
 
 const checkUser = async () => {
   const response = await axios.get(`/api/user/check`, {
@@ -70,6 +72,8 @@ function App() {
           <Route path="/mypage/edit-profile" element={<EditProfilePage />} />
         </Routes>
       </Router>
+
+      <StyledToastConatiner limit={1}/>
     </>
   );
 }
