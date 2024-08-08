@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import { ReactComponent as Search } from "../assets/ic-search.svg";
 import { ReactComponent as Unlock } from "../assets/ic-unlock.svg";
 import { FiLock } from "react-icons/fi";
@@ -12,12 +12,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import NavMenuList from "../component/NavMenuList"
+import Modal from 'react-modal';
 
 const NavBar = () => {
   const [isLogined, setIsLogined] = useState(false)
   const queryClient = useQueryClient()
   let navigate = useNavigate();
   const initialData = queryClient.getQueryData(['check']);
+  const [isModal, setIsModal] = useState(false);
 
   const logoutquery = async () => {
     try {
@@ -138,7 +140,7 @@ const NavBar = () => {
             <Favorite fill='white' onClick={navigateBooket}/>
             <MyPage fill='white' onClick={navigateMypage}/>
             {isLogined ? (
-              <Unlock id="log_btn" fill="white" onClick={handleLogout}/>
+              <Unlock id="log_btn" fill="white" onClick={() => setIsModal(true)}/>
             ) : ( 
               <FiLock id="log_btn" size={35} color="white" onClick={handleLogin}/>
               )}
@@ -149,9 +151,90 @@ const NavBar = () => {
         </NavBarIconContainer>
 
       </NavbarContainer>
+
+        {/* modal */}
+        <Modal
+      ariaHideApp={false}
+      style={customStyle}
+      isOpen={isModal}
+      onRequestClose={() => setIsModal(false)}
+      shouldCloseOnOverlayClick={true}>
+      <ModalTitleContainer>
+          <ModalTitleText color={'#ffffff'}>Polaris</ModalTitleText>
+      </ModalTitleContainer>
+      <ModalContentContainer>
+        <div style={{height: 25}} />
+        <ModalTitleText color={'#4659A9'}>로그아웃 하시겠습니까?</ModalTitleText>
+        <div style={{height: 25}} />
+          <ModalButtonBox>
+            <ModalButton status={'logout'} onClick={handleLogout}>확인</ModalButton>
+            <ModalButton status={'cancel'} onClick={() => setIsModal(false)}>취소</ModalButton>
+          </ModalButtonBox>
+      </ModalContentContainer>
+  </Modal>
     </>
   );
 };
+
+// modal style
+const customStyle = {
+  overlay: {
+      backgroundColor: '#00000040',
+  },
+  content: {
+      maxWidth: '800px',
+      position: 'fixed',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      margin: 'auto',
+      width: '75%',
+      height: 235,
+      background: '#fff',
+      overflow: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      borderStyle: 'none',
+      borderRadius: '30px',
+      outline: 'none',
+      padding: 0,
+      backgroundColor: 'rgb(255,255,255,0.9)',
+      boxShadow: '0px 2px 7px #00000040'
+  }
+};
+
+// text
+const ModalTitleText = styled.div`
+    font-family: 'KOTRA_BOLD';
+    color: ${(props) => props.color || 'gray'};
+    font-size: 20px;
+`;
+
+// modal-container
+const ModalTitleContainer = styled.div`
+    height: 60px;
+    display: flex;
+    background-color: #4659A9;
+    justify-content: center;
+    align-items: center;
+`
+
+const ModalContentContainer = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+`
+
+// modal-box
+const ModalButtonBox = styled.div`
+    display: flex;
+    flex-align: columns;
+    justify-content: center;
+    align-items: center;
+`;
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -269,5 +352,28 @@ const SearchBtn = styled(Search)`
   }
 `;
 
+const ModalButton = styled.button`
+    width: 10rem;
+    font-family: "KOTRA_GOTHIC";
+    color: white; 
+    font-size: 16px;
+    padding: 7px 50px;
+    margin: 10px;
+    border-radius: 50px;
+
+    ${({status}) => {switch(status){
+      case 'logout' : return css`
+        background-color: #4659A9;
+        color: white;
+        border-style: none;
+      `
+      case 'cancel' : return css`
+        color: #4659A9;
+        bacoground-color: white;
+        border-width: 2px;
+        border-color: #4659A9;
+      `
+    }}}
+`;
 
 export default NavBar;
