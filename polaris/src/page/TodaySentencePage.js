@@ -69,7 +69,7 @@ const TodaySentencePage = () => {
     // if there isn't any quotes, load new quotes
     useEffect(() => {
         const selectQuote = async () => {
-            if (!books || localStorage.getItem("day").toString() !== new Date().getDate().toString()) {
+            if (!books.length || localStorage.getItem("day").toString() !== new Date().getDate().toString()) {
                 if (QuoteQuery.data) {
                     const quotes = QuoteQuery.data.quotes
                     const selectedBooks = []
