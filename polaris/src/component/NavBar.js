@@ -62,6 +62,7 @@ const NavBar = () => {
     console.log("로그아웃 완")
     const isLogout = await logoutquery();
     if(isLogout){
+      localStorage.removeItem('islogined')
       toast.success(toastContent.logoutSuccess);
     } else{
       toast.error(toastContent.logoutError);

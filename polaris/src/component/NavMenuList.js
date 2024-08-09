@@ -9,6 +9,8 @@ import { ReactComponent as Unlock } from "../assets/ic-unlock.svg";
 import axios from "axios";
 import { useQueryClient } from '@tanstack/react-query'
 import { FiLock } from "react-icons/fi";
+import { toast } from 'react-toastify';
+import { toastContent } from "../utils/toastContent";
 
 const NavMenuList = () => {
 
@@ -19,8 +21,9 @@ const NavMenuList = () => {
     const [isLogined, setIsLogined] = useState(false);
 
     useEffect(() => {
-        setIsLogined(queryClient.getQueryData(['check']).is_logined)
-    }, [isLogined])
+        const getUserLogin = localStorage.getItem('islogined') ?? false
+        setIsLogined(Boolean(getUserLogin))
+    }, [])
     
     const logoutquery = async () => {
         try {
@@ -35,7 +38,8 @@ const NavMenuList = () => {
     
         const somebodyIn = queryClient.getQueryData(['check']);
         console.log("is anyone in? after logout: ", somebodyIn);
-        return response;
+
+        return response.data.logoutSuccess;
         } catch (error) {
         console.error("Error during logout:", error);
     
@@ -48,9 +52,15 @@ const NavMenuList = () => {
 
     const handleLogout = async () => {
         console.log("로그아웃 완")
-        await logoutquery();
+        const isLogout = await logoutquery();
+        if(isLogout){
+            queryClient.invalidateQueries(['check']);
+            localStorage.removeItem('islogined')
+            toast.success(toastContent.logoutSuccess);
+        } else{
+            toast.error(toastContent.logoutError);
+        }
         setIsLogined(false)
-        queryClient.invalidateQueries(['check']);
         navigate('/auth/login');
     };
 

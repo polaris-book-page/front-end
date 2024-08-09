@@ -28,6 +28,7 @@ const LoginPage = () =>{
         onSuccess: (data) => {
             if (data.loginSuccess){
                 console.log("login success")
+                localStorage.setItem('islogined', true)
                 queryClient.invalidateQueries(['check']);
                 toast.success(toastContent.loginSuccess);
                 goBack()
