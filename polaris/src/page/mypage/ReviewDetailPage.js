@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NavBar from "../../component/NavBar";
 import NightSkyBackground from "../../component/NightSkyBackground";
 import StarRating from "../../component/StarRating";
@@ -11,8 +11,13 @@ import LoadSpinner from "../../component/LoadSpinner";
 const ReviewDetailPage = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
-    console.log(state)
+    // useEffect
+    useEffect(()=> {
+        queryClient.invalidateQueries(['detail-review']);
+    }, [state.isbn])
+
     // fetch func
     const fetchDetailReview = async () =>{
         try{

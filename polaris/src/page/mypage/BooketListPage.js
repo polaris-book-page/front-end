@@ -101,25 +101,32 @@ const BooketListPage = () =>{
     return (
         <>
             <NavBar/>
+            <Container>
+            <ResultText>{currentUser}님의 북킷리스트({data.length})</ResultText>
             <MainContainer className="container">
-                <ResultText>{currentUser}님의 북킷리스트({data.length})</ResultText>
                 {currentItems && currentItems.map((item, index) => (
                     <GridBox key={index} item={item} gridArea={`gridBox${index % 10 + 1}`} />
                 ))}
-                <Pagination
+                {currentItems && <Pagination
                     slicePages={slicePages}
                     currentArray={currentArray}
                     currentPage={currentPage}
                     onPageChange={handlePageChange}
-                />
+                />}
             </MainContainer>
-            <FooterBar/> 
+            {!currentItems &&
+                <ContentText>아직 담아둔 책이 없어요. 책을 탐험하러 떠나볼까요?</ContentText>
+            }
+            </Container>
         </>
     )
 }
 
+const Container = styled.div`
+    padding: 0 5vw;
+`
+
 const MainContainer = styled.div`
-    width: 100%;
     display: grid;
     justify-items: center;
     align-content: center; 
@@ -165,9 +172,7 @@ const MainContainer = styled.div`
 `;
 
 const ResultText = styled.div`
-    margin-top: 50px;
-    margin-bottom: 10px;
-    margin-left: 20px;
+    margin: 20px 0;    
     grid-area: resultText;
     color: #4659A9;
     font-family: "KOTRA_BOLD";
@@ -179,5 +184,11 @@ const ResultText = styled.div`
         font-size: 24px;
     }
 `;
+
+const ContentText = styled.div`
+    color: #4659A9;
+    font-family: "KOTRA_GOTHIC";
+    font-size: 15px;
+`
 
 export default BooketListPage;

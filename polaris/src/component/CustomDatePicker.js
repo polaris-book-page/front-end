@@ -65,7 +65,7 @@ const CustomDatePicker = ({ setDate, page, onDate}) => {
 }
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_BOLD";
     font-size: ${(props) => props.size || '12px'};

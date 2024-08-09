@@ -17,7 +17,7 @@ const LoadSpinnerWrapper = styled.div`
   align-items: center;
 `;
 
-const ContentText = styled.span`
+const ContentText = styled.div`
     color: #4659A9;
     font-family: "KOTRA_GOTHIC";
     font-size: 15px;

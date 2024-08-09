@@ -52,14 +52,14 @@ const Container = styled.div`
 `;
 
 // text
-const UserNameText = styled.text`
+const UserNameText = styled.div`
     grid-column: auto / span 3;
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_BOLD";
     font-size: ${(props) => props.size || '12px'};
 `;
 
-const ContentText = styled.text`
+const ContentText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};

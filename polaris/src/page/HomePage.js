@@ -1,6 +1,4 @@
-import NavBar from "../component/NavBar";
 import styled from "styled-components";
-import FooterBar from "../component/FooterBar";
 import VerticalFlowText from "../component/VerticalFlowText";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -23,6 +21,7 @@ const HomePage = () => {
     useGSAP(() => {
         const boxItems = gsap.context((self) => {
             const boxes = self.selector('.box');
+            console.log("boxes:", boxes)
             boxes.forEach((box) => {
                 gsap.from(box, {
                     x: 1000,
@@ -57,6 +56,7 @@ const HomePage = () => {
         //     opacity: 1,
         //     duration: 2,
         // })
+
     }, {scope: container})
 
     const RandomFlowTextFuxc = () => {
@@ -103,10 +103,9 @@ const HomePage = () => {
     })
 
     return (
-        !tenQuoteQuery.isLoading  && tenQuoteQuery.data &&
         <>
             <Background>
-                {RandomFlowTextFuxc()}
+                {!tenQuoteQuery.isLoading  && tenQuoteQuery.data && RandomFlowTextFuxc()}
                 <Container ref={container}>
                     <ContentBox className="box">
                         <TextBox>
@@ -157,13 +156,13 @@ const HomePage = () => {
 }
 
 // text
-const TitleText = styled.text`
+const TitleText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_BOLD";
     font-size: ${(props) => props.size || '12px'};
 `;
 
-const ContentText = styled.text`
+const ContentText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};

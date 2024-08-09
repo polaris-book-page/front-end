@@ -297,7 +297,7 @@ const MainContainer = styled.div`
   padding: 0 48px;
 `;
 
-const TitleText = styled.p`
+const TitleText = styled.div`
   font-size: 30px;
   color: #4659a9;
   font-weight: 700;
@@ -313,6 +313,7 @@ const SubTitleText = styled.span`
 const BookContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
   grid-template-areas:
   "arrowl gridBox1 gridBox2 gridBox3 gridBox4 gridBox5 arrowr";
 `;

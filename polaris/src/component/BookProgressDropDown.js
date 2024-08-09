@@ -103,7 +103,7 @@ const customStyle = {
 };
 
 // text
-const ModalTitleText = styled.text`
+const ModalTitleText = styled.div`
     font-family: 'KOTRA_BOLD';
     color: ${(props) => props.color || 'gray'};
     font-size: 20px;

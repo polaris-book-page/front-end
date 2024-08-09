@@ -1,12 +1,10 @@
 import styled, {keyframes} from "styled-components";
 import NavBar from "../../component/NavBar.js";
 import FooterBar from "../../component/FooterBar";
-import { ReactComponent as ArrowRight } from "../../assets/arrow-right.svg";
-import { ReactComponent as ArrowLeft } from "../../assets/arrow-left.svg";
 import { ReactComponent as IcType } from "../../assets/ic-type.svg";
 import { ReactComponent as IcRocket } from "../../assets/ic-rocket.svg";
 import { ReactComponent as IcBook} from "../../assets/ic-book.svg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useQueries, useQueryClient } from "@tanstack/react-query";
 import axios from 'axios';
@@ -86,8 +84,7 @@ const MyPage = () => {
       return `${year}.${month + 1}.${day}`
   }
 
-  const handleDetail = async (item) =>{
-    await queryClient.refetchQueries(["detail-review"]);
+  const handleDetail = (item) =>{
     navigate(`/mypage/review/detail`, { state: item })
   }
 
@@ -97,9 +94,9 @@ const MyPage = () => {
       const items = newData.map((item, index) => {
 
         return (
-          <ReadingBox key={index}>
+          <ReadingBox onClick={() =>handleDetail(item)} key={index}>
             <img src={item.bookImage} style={{ backgroundColor: '#ddd', width: 50, height: 70 }} />
-            <ReadingContent onClick={() =>handleDetail(item)}>
+            <ReadingContent>
               <ContentText color={'#4659A9'} size={'14px'}>{item.title}</ContentText>
               <ContentText color={'#4659A9'}>{DateFormat(item.startDate) + '~' + DateFormat(item.endDate)}</ContentText>
             </ReadingContent>
@@ -229,7 +226,7 @@ const MyPage = () => {
           <div style={{ height: '20px' }} />
           {/* info-card */}
           <CardContainer>
-            <CardBox>
+            <CardBox flipped={flip}>
               {!flip ? (
                 <>
                 {/* ticket front */}
@@ -295,14 +292,14 @@ const MyPage = () => {
                 <>
                   {/* Ticket back */}
                   <TicketContainer>
-                    <ContentText color={'black'} size={'12px'}>북극성 회원인 이 여권 소지인은 아무 지장 없이 다양한 행성을 탐험할 수 있도록 하여 주시고 웹사이트에서 제공하는 서비스를 사용할 수 있도록 한다.</ContentText>
+                    <ContentText color={'black'} size={'13px'}>북극성 회원인 이 여권 소지인은 아무 지장 없이 다양한 행성을 탐험할 수 있도록 하여 주시고 웹사이트에서 제공하는 서비스를 사용할 수 있도록 한다.</ContentText>
                     <TicketLogoBox>
                       <TitleText color={'#4659A9'} size={'20px'} style={{zIndex: 1}}>북 극 성  운 영 자</TitleText>
                       <TicketLogo src={require('../../assets/graphic/app-logo.png')} style={{zIndex: 0}}/>
                     </TicketLogoBox>
-                    <ContentText color={'black'} size={'12px'}>As a member of the Polaris, this passport holder will be able to explore to the various planets without any hindrance and use the services provided by the website.</ContentText>
+                    <ContentText color={'black'} size={'13px'}>As a member of the Polaris, this passport holder will be able to explore to the various planets without any hindrance and use the services provided by the website.</ContentText>
                     <TicketSignatureBox>
-                      <ContentText color={'#4659A9'} size={'12px'}>소지인의 서명</ContentText>
+                      <ContentText color={'#4659A9'} size={'13px'}>소지인의 서명</ContentText>
                       <TicketNameBox>
                         <ContentText color={'#4659A9'} size={'12px'}>holder's signature</ContentText>
                           <ContentText color={'black'} size={'12px'}> &nbsp; {queries[0].data._id}</ContentText>
@@ -355,13 +352,13 @@ const MyPage = () => {
 };
 
 
-const ContentText = styled.text`
+const ContentText = styled.div`
     color: ${(props) => props.color || 'gray'};
     font-family: "KOTRA_GOTHIC";
     font-size: ${(props) => props.size || '12px'};
 `
 
-const TitleText = styled.text`
+const TitleText = styled.div`
   color: ${(props) => props.color || 'gray'};
   font-family: "KOTRA_BOLD";
   font-size: ${(props) => props.size || '12px'};
@@ -387,6 +384,8 @@ const CardContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  perspective: 1000px;
 `;
 
 const CardBox = styled.div`
@@ -400,6 +399,10 @@ const CardBox = styled.div`
   border-color: #4659A9;
   border-width: 1;
   border-radius: 30px;
+
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  transform: ${({ flipped }) => (flipped ? 'rotateX(180deg)' : 'rotateX(0deg)')};
 `;
 
 const ProfileContainer = styled.div`
@@ -606,20 +609,13 @@ const ProfileTitleBox = styled.div`
   gap: 10px;
 `
 
-const ProfileTitleText = styled.text`
+const ProfileTitleText = styled.div`
   display: flex;
   flex-direction: row;
   font-size: 18px;
   font-family: "KOTRA_BOLD";
   color: #4659A9;
   margin-right: 10px;
-`
-const ProfileSubTitleText = styled.text`
-  display: flex;
-  flex-direction: row;
-  font-size: 14px;
-  font-family: "KOTRA_BOLD";
-  color: #97A4E8;
 `
 
 // statistics content
@@ -799,6 +795,14 @@ const TicketContainer = styled.div`
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     padding: 15px;
+
+    @media screen and (max-width: 600px) {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    transform: rotateX(180deg);
 `;
 
 const TicketLogoBox = styled.div`

@@ -1,4 +1,4 @@
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 import NavBar from "../../component/NavBar";
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

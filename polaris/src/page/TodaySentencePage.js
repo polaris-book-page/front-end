@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import NavBar from "../component/NavBar";
-import FooterBar from "../component/FooterBar";
 import Modal from 'react-modal';
 import LikeIcon from "../component/LikeIcon"; 
 import EachSentence from "../component/EachSentence"; 
@@ -124,13 +123,13 @@ const TodaySentencePage = () => {
         <>
             <NavBar />
             {isMobile 
-                ? <NightSkyBackground height={'180vh'} /> 
-                : <NightSkyBackground height={'100vh'} /> }
+                ? <NightSkyBackground height={'calc(190vh - 100px)'} /> 
+                : <NightSkyBackground height={'calc(100vh)'} /> }
             <Background>
                 <TitleText>오늘의 문장</TitleText>
                 <SubtitleText>오늘의 한 문장이 여러분 책여행의 북극성이 되어줄 것입니다.</SubtitleText>
                 <ExplainationText>※ 하루에 한 문장만 선택해서 책을 추천받을 수 있습니다.</ExplainationText>
-                <div style={{height: 30}} />
+                <div style={{height: 10}} />
                 {!QuoteQuery.isLoading ? <>
                 <SentencesContainer className="container">
                     {books.map(book => (
@@ -177,7 +176,6 @@ const TodaySentencePage = () => {
                 </BookModal>
                 </> : <LoadSpinner />}
             </Background>
-            <FooterBar/>
         </>
     )
 }
