@@ -21,9 +21,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_DEPLOY_POLARIS }}
         with:
           source-directory: 'output'
-          destination-github-username: otcorz
+          destination-github-username: otcroz
           destination-repository-name: Polaris-front-end
-          user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL_OTCROZ }}
+          user-email: ${{ secrets.AUTO_EMAIL_OTCROZ }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
       - name: Test get variable exported by push-to-another-repository
