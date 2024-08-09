@@ -22,7 +22,7 @@ jobs:
         with:
           source-directory: 'output'
           destination-github-username: otcroz
-          destination-repository-name: Polaris-front-end
+          destination-repository-name: Polaris_front-end
           user-email: ${{ secrets.AUTO_EMAIL_OTCROZ }}
           commit-message: ${{ github.event.commits[0].message }}
           target-branch: main
