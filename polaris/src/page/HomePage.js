@@ -21,6 +21,7 @@ const HomePage = () => {
     useGSAP(() => {
         const boxItems = gsap.context((self) => {
             const boxes = self.selector('.box');
+            console.log("boxes:", boxes)
             boxes.forEach((box) => {
                 gsap.from(box, {
                     x: 1000,
@@ -55,6 +56,7 @@ const HomePage = () => {
         //     opacity: 1,
         //     duration: 2,
         // })
+
     }, {scope: container})
 
     const RandomFlowTextFuxc = () => {
@@ -101,10 +103,9 @@ const HomePage = () => {
     })
 
     return (
-        !tenQuoteQuery.isLoading  && tenQuoteQuery.data &&
         <>
             <Background>
-                {RandomFlowTextFuxc()}
+                {!tenQuoteQuery.isLoading  && tenQuoteQuery.data && RandomFlowTextFuxc()}
                 <Container ref={container}>
                     <ContentBox className="box">
                         <TextBox>
