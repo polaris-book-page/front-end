@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/ttb/:path*",
-      "destination": "http://www.aladin.co.kr/:path*"
+      "destination": "http://www.aladin.co.kr/ttb/:path*"
     },
     {
       "source": "/api/:path*",
-      "destination": "http://13.124.200.174:3001/:path*"
+      "destination": "http://13.124.200.174:3001/api/:path*"
     },
     {
       "source": "/flask/:path*",
