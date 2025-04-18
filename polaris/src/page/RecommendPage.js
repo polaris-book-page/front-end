@@ -11,7 +11,7 @@ const RecommendPage = () => {
 
     const fetchRecommend = async() => {
         const UserAuthInfoCheck = await queryClient.getQueryData(["check"]);
-        const res = await axios.post('http://13.124.200.174:5000/recommend_books/', {userId: UserAuthInfoCheck.userId});
+        const res = await axios.post('/flask/recommend_books/', {userId: UserAuthInfoCheck.userId});
         const data = res.data
 
         console.log(data)
