@@ -10,7 +10,7 @@
 		},
 		{
 			"source": "/flask/:path*",
-			"destination": "https://cassiopeia2023:5000/:path*"
+			"destination": "https://cassiopeia2023.store/:path*"
 		}
 	]
 }
