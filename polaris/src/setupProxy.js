@@ -15,7 +15,7 @@ module.exports = function(app) {
     );
     app.use(
         createProxyMiddleware('/flask', {
-            target: 'http://13.124.200.174:5000',
+            target: 'https://cassiopeia2023.store',
             changeOrigin: true,
             pathRewrite: { '^/flask': '/' },
         }),
